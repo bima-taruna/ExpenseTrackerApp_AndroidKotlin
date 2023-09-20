@@ -18,12 +18,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,38 +34,41 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.navigation.Screen
-import com.bima.expensetrackerapp.viewmodel.SignInViewModel
+import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: SignInViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val sessionState by viewModel.session.collectAsState()
     val state by viewModel.authState.collectAsState()
+    val context = LocalContext.current
     LaunchedEffect(sessionState?.user) {
-        if (sessionState?.user != null && state.isSuccess) {
+        if (sessionState?.user != null) {
             navController.navigate(Screen.HomeScreen.route) {
                 popUpTo(Screen.Login.route) {
                     inclusive = true
                 }
             }
+            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
         }
     }
-    if (sessionState == null) {
+
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = SnackbarHostState()) },
             topBar = {
@@ -149,11 +152,7 @@ fun SignInScreen(
                         onClick = {
                             localSoftwareKeyboardController?.hide()
                             viewModel.onLogin()
-                            Log.d("session", sessionState?.user.toString())
 
-
-                            Log.d("state", state.toString())
-                            Log.d("sessionState.value", sessionState?.user.toString())
                         }) {
                         Text("Sign in")
                     }
@@ -166,18 +165,11 @@ fun SignInScreen(
                     }
                 }
                 if (state.error.isNotBlank()) {
-                    Text(
-                        text = state.error,
-                        textAlign = TextAlign.Justify,
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-                    )
+                   Toast.makeText(context, "Login gagal", Toast.LENGTH_LONG).show()
                 }
                 if (state.isLoading) {
                     CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
                 }
             }
-        }
     }
 }

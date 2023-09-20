@@ -1,8 +1,6 @@
 package com.bima.expensetrackerapp.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.common.Resource
@@ -10,17 +8,15 @@ import com.bima.expensetrackerapp.domain.AuthenticationRepository
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(
+class AuthViewModel @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
 
@@ -70,8 +66,12 @@ class SignInViewModel @Inject constructor(
     }
 
    suspend fun signOut() {
-            authenticationRepository.signOut()
-            _session.value = null
+       try {
+           authenticationRepository.signOut()
+           _session.value = null
+       } catch (e:Exception) {
+           Log.d("Error", e.message.toString())
+       }
     }
 
 }

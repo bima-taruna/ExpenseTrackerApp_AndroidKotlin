@@ -1,25 +1,18 @@
 package com.bima.expensetrackerapp.presentation.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.bima.expensetrackerapp.presentation.HomeScreen
 import com.bima.expensetrackerapp.presentation.SignInScreen
-import com.bima.expensetrackerapp.viewmodel.SignInViewModel
+import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 
 @Composable
 fun Navigation(
     navController: NavHostController,
-    viewModel: SignInViewModel = hiltViewModel(),
+    viewModel: AuthViewModel = hiltViewModel(),
 ) {
 //    val session by remember {
 //        viewModel.session
