@@ -9,6 +9,9 @@ import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.createSupabaseClient
 import javax.inject.Singleton
 import com.bima.expensetrackerapp.BuildConfig
+import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
+import com.bima.expensetrackerapp.domain.AuthenticationRepository
+import dagger.Binds
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.gotrue.gotrue
@@ -56,5 +59,12 @@ object AppModule {
     @Singleton
     fun provideSupabaseStorage(client: SupabaseClient): Storage {
         return client.storage
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(goTrue: GoTrue): AuthenticationRepository {
+        return AuthenticationRepositoryImpl(goTrue)
     }
 }

@@ -2,11 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".ExpenseTrackerApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -23,18 +26,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="API_KEY"
-            android:value="${API_KEY}"
-            />
+            android:value="${API_KEY}" />
         <meta-data
             android:name="SUPABASE_URL"
-            android:value="${SUPABASE_URL}"
-            />
+            android:value="${SUPABASE_URL}" />
         <meta-data
             android:name="JWT_SECRET"
-            android:value="${JWT_SECRET}"
-            />
+            android:value="${JWT_SECRET}" />
     </application>
 
 </manifest>
