@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
 ) : ViewModel() {
 
     private val _email = MutableStateFlow("")
@@ -25,9 +25,10 @@ class AuthViewModel @Inject constructor(
     private val _password = MutableStateFlow("")
     val password = _password
     private val _session = MutableStateFlow<UserSession?>(null)
-    val session= _session
+    val session = _session
     private val _authState = MutableStateFlow(AuthState())
     val authState = _authState
+
     init {
         getSession()
         Log.d("viewmodel", session.value?.user.toString())
@@ -41,22 +42,26 @@ class AuthViewModel @Inject constructor(
         _password.value = password
     }
 
-   fun onLogin() {
-       authenticationRepository.signIn( email = _email.value, password = _password.value).onEach { result ->
-           when(result) {
-               is Resource.Success -> {
-                   _session.value = authenticationRepository.getSession()
-                   _authState.value = AuthState(isSuccess = true)
-                   Log.d("statefromviewmodel", authState.value.toString())
-               }
-               is Resource.Error -> {
-                   _authState.value = AuthState(error = result.message ?: "An unexpected error occurred")
-               }
-               is Resource.Loading -> {
-                   _authState.value = AuthState(isLoading = true)
-               }
-           }
-       }.launchIn(viewModelScope)
+    fun onLogin() {
+        authenticationRepository.signIn(email = _email.value, password = _password.value)
+            .onEach { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _session.value = authenticationRepository.getSession()
+                        _authState.value = AuthState(isSuccess = true)
+                        Log.d("statefromviewmodel", authState.value.toString())
+                    }
+
+                    is Resource.Error -> {
+                        _authState.value =
+                            AuthState(error = result.message ?: "An unexpected error occurred")
+                    }
+
+                    is Resource.Loading -> {
+                        _authState.value = AuthState(isLoading = true)
+                    }
+                }
+            }.launchIn(viewModelScope)
     }
 
     private fun getSession() {
@@ -65,13 +70,13 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-   suspend fun signOut() {
-       try {
-           authenticationRepository.signOut()
-           _session.value = null
-       } catch (e:Exception) {
-           Log.d("Error", e.message.toString())
-       }
+    suspend fun signOut() {
+        try {
+            authenticationRepository.signOut()
+            _session.value = null
+        } catch (e: Exception) {
+            Log.d("Error", e.message.toString())
+        }
     }
 
 }
