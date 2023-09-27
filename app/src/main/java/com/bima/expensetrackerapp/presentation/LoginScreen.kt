@@ -85,7 +85,7 @@ fun SignInScreen(
                     colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
                     title = {
                         Text(
-                            text = "Login",
+                            text = "Sign In",
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
                     },
