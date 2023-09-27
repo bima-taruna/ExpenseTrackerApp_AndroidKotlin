@@ -53,8 +53,6 @@ fun SignInScreen(
     navController: NavController,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    val snackBarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
     val sessionState by viewModel.session.collectAsState()
     val state by viewModel.authState.collectAsState()
     val context = LocalContext.current

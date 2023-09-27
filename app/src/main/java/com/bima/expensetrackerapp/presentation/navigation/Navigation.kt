@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.bima.expensetrackerapp.presentation.HomeScreen
 import com.bima.expensetrackerapp.presentation.SignInScreen
+import com.bima.expensetrackerapp.presentation.TitleScreen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 
 @Composable
@@ -26,8 +27,13 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Title.route
     ) {
+        composable(
+            route = Screen.Title.route
+        ) {
+            TitleScreen(navController = navController)
+        }
         composable(
             route = Screen.Login.route
         ) {

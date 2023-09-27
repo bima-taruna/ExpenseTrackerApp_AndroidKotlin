@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,23 +18,45 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
+import com.bima.expensetrackerapp.presentation.navigation.Screen
+import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import java.time.format.TextStyle
 
 @Composable
 fun TitleScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
+    val sessionState by viewModel.session.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(sessionState?.user) {
+        if (sessionState?.user != null) {
+            navController.navigate(Screen.HomeScreen.route) {
+                popUpTo(Screen.Login.route) {
+                    inclusive = true
+                }
+            }
+            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -55,23 +78,23 @@ fun TitleScreen(
         Spacer(modifier = modifier.height(20.dp))
         Text(text = "Expense Tracker", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
         Spacer(modifier = modifier.height(20.dp))
-        Button(onClick = { /*TODO*/ }, modifier = modifier
+        Button(onClick = { navController.navigate(Screen.Login.route) }, modifier = modifier
             .fillMaxWidth()
             .size(50.dp), shape = RoundedCornerShape(12.dp)) {
-            Text(text = "Login", fontSize = 16.sp)
+            Text(text = "Login", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
         Spacer(modifier =  modifier.height(8.dp))
         OutlinedButton(onClick = { /*TODO*/ }, modifier = modifier
             .fillMaxWidth()
             .size(50.dp), shape = RoundedCornerShape(12.dp)) {
-            Text(text = "Sign Up", fontSize = 16.sp)
+            Text(text = "Sign Up", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
 
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun TitleScreenPreview() {
-    TitleScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun TitleScreenPreview() {
+//    TitleScreen()
+//}
