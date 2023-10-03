@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
+import com.bima.expensetrackerapp.presentation.component.fadingEdge
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
@@ -43,10 +45,11 @@ import java.time.format.TextStyle
 fun TitleScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val sessionState by viewModel.session.collectAsState()
     val context = LocalContext.current
+    val topBottomFade = Brush.verticalGradient( 0.7f to Color.Red, 0.9f to Color.Transparent)
     LaunchedEffect(sessionState?.user) {
         if (sessionState?.user != null) {
             navController.navigate(Screen.HomeScreen.route) {
@@ -59,35 +62,47 @@ fun TitleScreen(
     }
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier = modifier.fillMaxHeight(0.5f)
+            modifier = modifier
+                .fillMaxHeight(0.5f)
+                .fillMaxWidth()
+                .fadingEdge(topBottomFade)
+
         ) {
             GlideImage(
-                imageModel = { R.drawable.pngtreecartoon_money_bag_gold_coin_6140119 },
+                imageModel = { R.drawable.josh_appel_netpasr_bmq_unsplash },
                 imageOptions = ImageOptions(
-                    contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.FillWidth,
                     alignment = Alignment.Center,
-                ),
-                modifier = modifier.size(300.dp)
+                )
             )
         }
         Spacer(modifier = modifier.height(20.dp))
-        Text(text = "Expense Tracker", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+        Text(
+            text = "Expense Tracker",
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold
+        )
         Spacer(modifier = modifier.height(20.dp))
-        Button(onClick = { navController.navigate(Screen.Login.route) }, modifier = modifier
-            .fillMaxWidth()
-            .size(50.dp), shape = RoundedCornerShape(12.dp)) {
-            Text(text = "Login", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        }
-        Spacer(modifier =  modifier.height(8.dp))
-        OutlinedButton(onClick = { /*TODO*/ }, modifier = modifier
-            .fillMaxWidth()
-            .size(50.dp), shape = RoundedCornerShape(12.dp)) {
-            Text(text = "Sign Up", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Column(modifier = modifier.padding(horizontal = 16.dp)) {
+            Button(
+                onClick = { navController.navigate(Screen.Login.route) }, modifier = modifier
+                    .fillMaxWidth()
+                    .size(50.dp), shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(text = "Login", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            }
+            Spacer(modifier = modifier.height(8.dp))
+            OutlinedButton(
+                onClick = { /*TODO*/ }, modifier = modifier
+                    .fillMaxWidth()
+                    .size(50.dp), shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(text = "Sign Up", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            }
         }
 
     }
