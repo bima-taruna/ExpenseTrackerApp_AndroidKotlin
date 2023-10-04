@@ -25,7 +25,7 @@ fun HomeScreen(
     val sessionState by viewModel.session.collectAsState()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
-            navController.navigate(Screen.Login.route) {
+            navController.navigate(Screen.Title.route) {
                 popUpTo(Screen.HomeScreen.route) {
                     inclusive = true
                 }

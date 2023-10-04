@@ -4,11 +4,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -140,14 +144,6 @@ fun SignInScreen(
                         .fillMaxWidth()
                         .padding(top = 12.dp),
                         onClick = {
-
-                        }) {
-                        Text("Sign in with Google")
-                    }
-                    Button(modifier = modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp),
-                        onClick = {
                             localSoftwareKeyboardController?.hide()
                             viewModel.onLogin()
 
@@ -159,7 +155,11 @@ fun SignInScreen(
                         .padding(top = 12.dp), onClick = {
 //                navController.navigate(SignUpDestination.route)
                     }) {
-                        Text("Sign up")
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(imageVector = Icons.Filled.Email, contentDescription = "google")
+                            Spacer(modifier = modifier.width(8.dp))
+                            Text("Sign in with Google")
+                        }
                     }
                 }
                 if (state.error.isNotBlank()) {

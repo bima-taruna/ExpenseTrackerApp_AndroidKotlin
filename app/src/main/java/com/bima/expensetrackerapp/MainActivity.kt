@@ -11,8 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.bima.expensetrackerapp.presentation.ExpenseTrackerApp
-import com.bima.expensetrackerapp.presentation.navigation.Navigation
-import com.bima.expensetrackerapp.ui.theme.ExpenseTrackerAppTheme
+import com.example.compose.ExpenseTrackerAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
