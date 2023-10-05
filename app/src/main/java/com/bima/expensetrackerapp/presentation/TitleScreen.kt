@@ -63,7 +63,7 @@ fun TitleScreen(
     ) {
         Box(
             modifier = modifier
-                .fillMaxHeight(0.5f)
+                .fillMaxHeight(0.6f)
                 .fillMaxWidth()
                 .fadingEdge(topBottomFade)
 
@@ -71,7 +71,7 @@ fun TitleScreen(
             GlideImage(
                 imageModel = { R.drawable.josh_appel_netpasr_bmq_unsplash },
                 imageOptions = ImageOptions(
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillHeight,
                     alignment = Alignment.Center,
                 )
             )
@@ -91,7 +91,7 @@ fun TitleScreen(
             ) {
                 Text(text = "Login", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
-            Spacer(modifier = modifier.height(8.dp))
+            Spacer(modifier = modifier.height(10.dp))
             OutlinedButton(
                 onClick = { /*TODO*/ }, modifier = modifier
                     .fillMaxWidth()
