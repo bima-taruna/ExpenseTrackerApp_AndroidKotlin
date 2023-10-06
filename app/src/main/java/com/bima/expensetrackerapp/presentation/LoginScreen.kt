@@ -146,7 +146,7 @@ fun SignInScreen(
                 )
                 Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                     TextButton(onClick = { /*TODO*/ }) {
-                        Text(text = "forgot password?")
+                        Text(text = "Forgot password?")
                     }
                 }
                 val localSoftwareKeyboardController = LocalSoftwareKeyboardController.current
