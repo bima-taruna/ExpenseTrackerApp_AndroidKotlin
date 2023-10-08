@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,9 +10,10 @@ import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.createSupabaseClient
 import javax.inject.Singleton
 import com.bima.expensetrackerapp.BuildConfig
+import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
 import com.bima.expensetrackerapp.domain.AuthenticationRepository
-import dagger.Binds
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.gotrue.gotrue
@@ -66,5 +68,11 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(goTrue: GoTrue): AuthenticationRepository {
         return AuthenticationRepositoryImpl(goTrue)
+    }
+
+    @Singleton
+    @Provides
+    fun provideApplication(@ApplicationContext app: Context):   ExpenseTrackerApp{
+        return app as ExpenseTrackerApp
     }
 }

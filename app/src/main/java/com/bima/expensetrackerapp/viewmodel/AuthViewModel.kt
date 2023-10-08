@@ -1,14 +1,15 @@
 package com.bima.expensetrackerapp.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.domain.AuthenticationRepository
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    private val context : ExpenseTrackerApp,
     private val authenticationRepository: AuthenticationRepository,
 ) : ViewModel() {
 
@@ -32,6 +34,7 @@ class AuthViewModel @Inject constructor(
 
     init {
         getSession()
+
         Log.d("viewmodel", session.value?.user.toString())
     }
 
@@ -49,20 +52,23 @@ class AuthViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         _session.value = authenticationRepository.getSession()
-                        _authState.value = AuthState(isSuccess = true)
+                        _authState.value = _authState.value.copy(
+                            isSuccess = true
+                        )
                         Log.d("statefromviewmodel", authState.value.toString())
                     }
 
                     is Resource.Error -> {
-                        _authState.value =
-                            AuthState(error = result.message ?: "An unexpected error occurred")
-                        delay(3000L)
-                        _authState.value =
-                            AuthState(error = "")
+                        Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        _authState.value = _authState.value.copy(
+                            isLoading = false
+                        )
                     }
 
                     is Resource.Loading -> {
-                        _authState.value = AuthState(isLoading = true)
+                        _authState.value = _authState.value.copy(
+                            isLoading = true
+                        )
                     }
                 }
             }.launchIn(viewModelScope)

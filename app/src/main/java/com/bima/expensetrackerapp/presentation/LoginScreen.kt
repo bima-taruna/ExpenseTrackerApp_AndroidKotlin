@@ -156,7 +156,6 @@ fun SignInScreen(
                     onClick = {
                         localSoftwareKeyboardController?.hide()
                         viewModel.onLogin()
-
                     }) {
                     Text("Sign in")
                 }
@@ -172,9 +171,6 @@ fun SignInScreen(
                             )
                     }
                 }
-            }
-            if (state.error.isNotBlank()) {
-                Toast.makeText(context, "Login gagal", Toast.LENGTH_SHORT).show()
             }
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
