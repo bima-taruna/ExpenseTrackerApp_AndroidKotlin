@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.domain
+package com.bima.expensetrackerapp.domain.repository
 
 import com.bima.expensetrackerapp.common.Resource
 import io.github.jan.supabase.gotrue.user.UserSession

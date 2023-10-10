@@ -1,0 +1,19 @@
+package com.bima.expensetrackerapp.data.remote
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserProfileDto(
+	@SerialName("name")
+	val name: String? = null,
+	@SerialName("created_at")
+	val createdAt: String? = null,
+	@SerialName("id")
+	val id: String? = null,
+	@SerialName("isAdmin")
+	val isAdmin: Boolean? = null,
+	@SerialName("email")
+	val email: String? = null
+)
+

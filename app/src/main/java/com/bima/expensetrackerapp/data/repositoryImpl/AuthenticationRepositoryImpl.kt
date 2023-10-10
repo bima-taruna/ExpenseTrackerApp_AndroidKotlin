@@ -1,7 +1,7 @@
 package com.bima.expensetrackerapp.data.repositoryImpl
 
 import com.bima.expensetrackerapp.common.Resource
-import com.bima.expensetrackerapp.domain.AuthenticationRepository
+import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.user.UserSession

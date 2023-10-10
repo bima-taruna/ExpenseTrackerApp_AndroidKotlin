@@ -12,7 +12,7 @@ import javax.inject.Singleton
 import com.bima.expensetrackerapp.BuildConfig
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
-import com.bima.expensetrackerapp.domain.AuthenticationRepository
+import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.GoTrue

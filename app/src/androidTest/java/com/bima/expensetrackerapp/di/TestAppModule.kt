@@ -10,15 +10,13 @@ import io.github.jan.supabase.createSupabaseClient
 import javax.inject.Singleton
 import com.bima.expensetrackerapp.BuildConfig
 import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
-import com.bima.expensetrackerapp.domain.AuthenticationRepository
-import dagger.Binds
+import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.gotrue.gotrue
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.storage.Storage
-import io.github.jan.supabase.storage.storage
 
 
 @InstallIn(SingletonComponent::class)
