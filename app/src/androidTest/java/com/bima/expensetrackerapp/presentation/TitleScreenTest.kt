@@ -7,15 +7,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavController
 import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.testing.TestNavHostController
 import com.bima.expensetrackerapp.MainActivity
-import com.bima.expensetrackerapp.di.AppModule
+import com.bima.expensetrackerapp.di.SupabaseModule
 import com.bima.expensetrackerapp.presentation.navigation.Navigation
 import com.bima.expensetrackerapp.presentation.navigation.Screen
-import com.bima.expensetrackerapp.ui.theme.ExpenseTrackerAppTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -25,7 +21,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-@UninstallModules(AppModule::class)
+@UninstallModules(SupabaseModule::class)
 class TitleScreenTest {
 
     @get:Rule(order = 0)

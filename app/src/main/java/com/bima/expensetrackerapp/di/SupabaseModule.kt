@@ -25,7 +25,7 @@ import io.github.jan.supabase.storage.storage
 
 @InstallIn(SingletonComponent::class)
 @Module
-object AppModule {
+object SupabaseModule {
     @OptIn(SupabaseExperimental::class)
     @Provides
     @Singleton
@@ -72,7 +72,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideApplication(@ApplicationContext app: Context):   ExpenseTrackerApp{
+    fun provideApplication(@ApplicationContext app: Context): ExpenseTrackerApp{
         return app as ExpenseTrackerApp
     }
 }
