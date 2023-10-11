@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.domain.use_case
+package com.bima.expensetrackerapp.domain.use_case.auth
 
 data class AuthUseCases(
     val signIn : SignInUseCase,

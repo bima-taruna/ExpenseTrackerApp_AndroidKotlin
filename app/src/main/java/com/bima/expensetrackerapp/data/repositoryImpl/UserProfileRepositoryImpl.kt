@@ -1,4 +1,16 @@
 package com.bima.expensetrackerapp.data.repositoryImpl
 
-class UserProfileRepositoryImpl {
+import com.bima.expensetrackerapp.data.remote.UserProfileDto
+import com.bima.expensetrackerapp.domain.repository.UserProfileRepository
+import io.github.jan.supabase.postgrest.Postgrest
+import javax.inject.Inject
+
+class UserProfileRepositoryImpl @Inject constructor(
+    private val postgrest: Postgrest
+):UserProfileRepository {
+    override suspend fun getProfile(id: String): UserProfileDto {
+        return postgrest["user_profiles"].select {
+            eq("id", id)
+        }.decodeSingle()
+    }
 }

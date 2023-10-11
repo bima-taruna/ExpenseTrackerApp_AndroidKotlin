@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.domain.use_case
+package com.bima.expensetrackerapp.domain.use_case.auth
 
 import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import javax.inject.Inject

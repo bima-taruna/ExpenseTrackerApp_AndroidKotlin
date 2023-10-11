@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
-import com.bima.expensetrackerapp.domain.use_case.GetSessionUseCase
-import com.bima.expensetrackerapp.domain.use_case.SignInUseCase
-import com.bima.expensetrackerapp.domain.use_case.SignOutUseCase
+import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
+import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
+import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
