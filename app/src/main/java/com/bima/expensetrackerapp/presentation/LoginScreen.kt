@@ -155,7 +155,8 @@ fun SignInScreen(
                     .padding(top = 12.dp, bottom = 8.dp),
                     onClick = {
                         localSoftwareKeyboardController?.hide()
-                        viewModel.onLogin()
+                            viewModel.onLogin()
+
                     }) {
                     Text("Sign in")
                 }

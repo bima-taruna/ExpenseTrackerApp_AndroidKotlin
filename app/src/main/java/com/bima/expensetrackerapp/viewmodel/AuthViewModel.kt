@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
-import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
+import com.bima.expensetrackerapp.domain.use_case.GetSessionUseCase
+import com.bima.expensetrackerapp.domain.use_case.SignInUseCase
+import com.bima.expensetrackerapp.domain.use_case.SignOutUseCase
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val context : ExpenseTrackerApp,
-    private val authenticationRepository: AuthenticationRepository,
+    private val signInUseCase: SignInUseCase,
+    private val getSessionUseCase: GetSessionUseCase,
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
 
     private val _email = MutableStateFlow("")
@@ -34,8 +38,6 @@ class AuthViewModel @Inject constructor(
 
     init {
         getSession()
-
-        Log.d("viewmodel", session.value?.user.toString())
     }
 
     fun onEmailChange(email: String) {
@@ -46,43 +48,42 @@ class AuthViewModel @Inject constructor(
         _password.value = password
     }
 
-    fun onLogin() {
-        authenticationRepository.signIn(email = _email.value, password = _password.value)
-            .onEach { result ->
-                when (result) {
+  fun onLogin() {
+        viewModelScope.launch {
+            signInUseCase.execute(email = _email.value,password = _password.value)
+                .onEach {result ->
+                when(result) {
                     is Resource.Success -> {
-                        _session.value = authenticationRepository.getSession()
+                        _session.value = getSessionUseCase.execute()
                         _authState.value = _authState.value.copy(
                             isSuccess = true
                         )
-                        Log.d("statefromviewmodel", authState.value.toString())
                     }
-
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
                         _authState.value = _authState.value.copy(
                             isLoading = false
                         )
                     }
-
                     is Resource.Loading -> {
                         _authState.value = _authState.value.copy(
                             isLoading = true
                         )
                     }
                 }
-            }.launchIn(viewModelScope)
+            }.collect()
+        }
     }
 
     private fun getSession() {
         viewModelScope.launch {
-            _session.value = authenticationRepository.getSession()
+            _session.value = getSessionUseCase.execute()
         }
     }
 
     suspend fun signOut() {
         try {
-            authenticationRepository.signOut()
+            signOutUseCase.execute()
             _session.value = null
         } catch (e: Exception) {
             Log.d("Error", e.message.toString())

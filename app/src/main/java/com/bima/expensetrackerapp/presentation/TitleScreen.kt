@@ -49,7 +49,7 @@ fun TitleScreen(
     LaunchedEffect(sessionState?.user) {
         if (sessionState?.user != null) {
             navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(Screen.Login.route) {
+                popUpTo(Screen.Title.route) {
                     inclusive = true
                 }
             }
@@ -103,9 +103,3 @@ fun TitleScreen(
 
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun TitleScreenPreview() {
-//    TitleScreen()
-//}

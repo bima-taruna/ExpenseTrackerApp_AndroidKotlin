@@ -13,6 +13,10 @@ import com.bima.expensetrackerapp.BuildConfig
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
 import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
+import com.bima.expensetrackerapp.domain.use_case.AuthUseCases
+import com.bima.expensetrackerapp.domain.use_case.GetSessionUseCase
+import com.bima.expensetrackerapp.domain.use_case.SignInUseCase
+import com.bima.expensetrackerapp.domain.use_case.SignOutUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.GoTrue
@@ -74,5 +78,15 @@ object SupabaseModule {
     @Provides
     fun provideApplication(@ApplicationContext app: Context): ExpenseTrackerApp{
         return app as ExpenseTrackerApp
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthUseCases(repository: AuthenticationRepository): AuthUseCases{
+        return AuthUseCases(
+            signIn = SignInUseCase(repository),
+            getSession = GetSessionUseCase(repository),
+            signOut = SignOutUseCase(repository)
+        )
     }
 }
