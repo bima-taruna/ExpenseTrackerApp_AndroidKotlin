@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.20'
+    id 'kotlinx-serialization'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }

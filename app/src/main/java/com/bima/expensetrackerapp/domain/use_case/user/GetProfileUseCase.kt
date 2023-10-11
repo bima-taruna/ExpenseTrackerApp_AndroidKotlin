@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetProfileUseCase @Inject constructor(
     private val userProfileRepository: UserProfileRepository
 ) {
-    suspend fun execute(id:String): Flow<Resource<UserProfile>> = flow {
+    suspend fun execute(id: String?): Flow<Resource<UserProfile>> = flow {
         try {
             emit(Resource.Loading())
             val result = userProfileRepository.getProfile(id).toUserProfile()

@@ -8,9 +8,11 @@ import javax.inject.Inject
 class UserProfileRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
 ):UserProfileRepository {
-    override suspend fun getProfile(id: String): UserProfileDto {
+    override suspend fun getProfile(id: String?): UserProfileDto {
         return postgrest["user_profiles"].select {
-            eq("id", id)
+            if (id != null) {
+                eq("id", id)
+            }
         }.decodeSingle()
     }
 }

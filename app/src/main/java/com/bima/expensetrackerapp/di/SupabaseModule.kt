@@ -13,7 +13,6 @@ import com.bima.expensetrackerapp.BuildConfig
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
 import com.bima.expensetrackerapp.data.repositoryImpl.UserProfileRepositoryImpl
-import com.bima.expensetrackerapp.domain.model.UserProfile
 import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import com.bima.expensetrackerapp.domain.repository.UserProfileRepository
 import com.bima.expensetrackerapp.domain.use_case.auth.AuthUseCases

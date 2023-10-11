@@ -12,15 +12,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
+import com.bima.expensetrackerapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val sessionState by viewModel.session.collectAsState()
+    val sessionState by authViewModel.session.collectAsState()
+    val userState by userViewModel.userState.collectAsState()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
             navController.navigate(Screen.Title.route) {
@@ -31,10 +34,10 @@ fun HomeScreen(
         }
     }
     Column() {
-        Text(text = "Hallo ${sessionState?.user?.email}")
+        Text(text = "Hallo ${userState.user?.name}")
         Button(onClick = {
             coroutineScope.launch {
-                viewModel.signOut()
+                authViewModel.signOut()
             }
         }) {
             Text("Sign Out")
