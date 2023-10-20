@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,11 +18,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -61,10 +61,11 @@ fun HomeScreen(
             ) {
                 Text(
                     modifier = modifier
-                        .padding(top = 16.dp, start = 8.dp),
-                    text = "Good Morning ${userState.user?.name}",
+                        .padding(top = 16.dp, start = 16.dp),
+                    text = "Good Morning ${userState.user?.name}!",
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
             Spacer(modifier = modifier
@@ -75,15 +76,17 @@ fun HomeScreen(
                     end.linkTo(container.end)
                 }
             )
-            Box(
-                contentAlignment = Alignment.TopCenter,
+            ElevatedCard(
+                shape = RoundedCornerShape(15.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 10.dp
+                ),
                 modifier = modifier
-                    .clip(
-                        RoundedCornerShape(15.dp)
-                    )
                     .fillMaxWidth(0.70f)
                     .fillMaxHeight(0.20f)
-                    .background(MaterialTheme.colorScheme.primary)
                     .constrainAs(totalBalance) {
                         top.linkTo(space.bottom, margin = 60.dp)
                         start.linkTo(container.start)
@@ -93,9 +96,10 @@ fun HomeScreen(
             ) {
                 Text(
                     "Total Balance",
-                    modifier = modifier.padding(top = 12.dp),
+                    modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
                 )
             }
         }
