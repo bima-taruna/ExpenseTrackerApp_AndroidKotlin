@@ -18,7 +18,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,21 +51,25 @@ fun HomeScreen(
             }
         }
     }
-    Column() {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         ConstraintLayout {
             val (container,totalBalance, space) = createRefs()
             Box(
                 modifier = modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.30f)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .clip(shape = RoundedCornerShape(bottomEnd = 30.dp, bottomStart = 30.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
                     .constrainAs(container) {}
             ) {
                 Text(
                     modifier = modifier
                         .padding(top = 16.dp, start = 16.dp),
                     text = "Good Morning ${userState.user?.name}!",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -79,14 +85,14 @@ fun HomeScreen(
             ElevatedCard(
                 shape = RoundedCornerShape(15.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
                 ),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
                 ),
                 modifier = modifier
-                    .fillMaxWidth(0.70f)
-                    .fillMaxHeight(0.20f)
+                    .fillMaxWidth(0.90f)
+                    .fillMaxHeight(0.25f)
                     .constrainAs(totalBalance) {
                         top.linkTo(space.bottom, margin = 60.dp)
                         start.linkTo(container.start)
@@ -95,11 +101,20 @@ fun HomeScreen(
                     }
             ) {
                 Text(
-                    "Total Balance",
+                    "Total Balance :",
                     modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.W600
+                )
+                Text(
+                    "Rp.50000",
+                    modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.W600
                 )
             }
         }
