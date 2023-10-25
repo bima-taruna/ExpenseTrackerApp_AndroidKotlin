@@ -12,8 +12,8 @@ data class UserProfileDto(
 	val createdAt: String? = null,
 	@SerialName("id")
 	val id: String? = null,
-	@SerialName("isAdmin")
-	val isAdmin: Boolean? = null,
+	@SerialName("role")
+	val role: String? = null,
 	@SerialName("email")
 	val email: String? = null
 )
@@ -23,7 +23,7 @@ fun UserProfileDto.toUserProfile() : UserProfile {
 		id = id,
 		name = name,
 		email = email,
-		isAdmin = isAdmin
+		role = role
 	)
 }
 
