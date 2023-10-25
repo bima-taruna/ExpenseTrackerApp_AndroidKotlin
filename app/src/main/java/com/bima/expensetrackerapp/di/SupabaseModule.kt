@@ -86,29 +86,5 @@ object SupabaseModule {
 
 
 
-    @Singleton
-    @Provides
-    fun provideAuthUseCases(repository: AuthenticationRepository): AuthUseCases {
-        return AuthUseCases(
-            signIn = SignInUseCase(repository),
-            getSession = GetSessionUseCase(repository),
-            signOut = SignOutUseCase(repository)
-        )
-    }
-
-    @Provides
-    @Singleton
-    fun provideUserProfileRepository(postgrest: Postgrest): UserProfileRepository {
-        return UserProfileRepositoryImpl(postgrest)
-    }
-
-    @Singleton
-    @Provides
-    fun provideUserUseCases(repository: UserProfileRepository): UserUseCases {
-        return UserUseCases(
-            getProfile = GetProfileUseCase(repository)
-        )
-    }
-
 
 }
