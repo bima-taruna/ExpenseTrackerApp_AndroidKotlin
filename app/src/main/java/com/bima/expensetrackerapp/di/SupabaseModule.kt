@@ -83,8 +83,4 @@ object SupabaseModule {
     fun provideApplication(@ApplicationContext app: Context): ExpenseTrackerApp{
         return app as ExpenseTrackerApp
     }
-
-
-
-
 }
