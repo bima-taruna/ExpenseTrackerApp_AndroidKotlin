@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.viewmodel
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,6 +38,7 @@ class BalanceViewModel @Inject constructor(
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        Log.d("error", result.message.toString())
                         _balanceState.value = _balanceState.value.copy(
                             isLoading = false
                         )

@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BalanceDto(
+    @SerialName("id")
+    val id: Int? = null,
     @SerialName("created_at")
     val createdAt: String? = null,
     @SerialName("total_balance")

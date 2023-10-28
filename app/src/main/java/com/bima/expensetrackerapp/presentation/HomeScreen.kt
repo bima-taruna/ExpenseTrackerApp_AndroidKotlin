@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
+import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
 import com.bima.expensetrackerapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -38,10 +39,12 @@ fun HomeScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel(),
+    balanceViewModel: BalanceViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sessionState by authViewModel.session.collectAsState()
     val userState by userViewModel.userState.collectAsState()
+    val balanceState by balanceViewModel.balanceState.collectAsState()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
             navController.navigate(Screen.Title.route) {
@@ -102,15 +105,19 @@ fun HomeScreen(
             ) {
                 Text(
                     "Total Balance :",
-                    modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
+                    modifier = modifier
+                        .padding(top = 12.dp)
+                        .fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.W600
                 )
                 Text(
-                    "Rp.50000",
-                    modifier = modifier.padding(top = 12.dp).fillMaxWidth(),
+                    "${balanceState.balance?.totalBalance}",
+                    modifier = modifier
+                        .padding(top = 12.dp)
+                        .fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
