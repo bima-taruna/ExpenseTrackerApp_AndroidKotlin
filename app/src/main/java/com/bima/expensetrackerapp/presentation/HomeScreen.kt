@@ -31,6 +31,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.bima.expensetrackerapp.presentation.component.BalanceCard
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
@@ -43,12 +44,10 @@ fun HomeScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel(),
-    balanceViewModel: BalanceViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sessionState by authViewModel.session.collectAsStateWithLifecycle()
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
-    val balanceState by balanceViewModel.balanceState.collectAsStateWithLifecycle()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
             navController.navigate(Screen.Title.route) {
@@ -89,83 +88,17 @@ fun HomeScreen(
                     end.linkTo(container.end)
                 }
             )
-            ElevatedCard(
-                shape = RoundedCornerShape(15.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 10.dp
-                ),
-                modifier = modifier
-                    .fillMaxWidth(0.90f)
-                    .fillMaxHeight(0.30f)
-                    .constrainAs(totalBalance) {
-                        top.linkTo(space.bottom, margin = 60.dp)
-                        start.linkTo(container.start)
-                        end.linkTo(container.end)
-                        bottom.linkTo(container.bottom)
-                    }
-            ) {
-                Text(
-                    "Total Balance :",
-                    modifier = modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.W600
-                )
-                Text(
-                    "${balanceState.balance?.totalBalance}",
-                    modifier = modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.W600
-                )
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Income",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = "${balanceState.balance?.income}",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Expense",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Text(
-                            text = "${balanceState.balance?.expense}",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+            Box(
+                modifier = modifier.constrainAs(totalBalance) {
+                    top.linkTo(space.bottom, margin = 60.dp)
+                    start.linkTo(container.start)
+                    end.linkTo(container.end)
+                    bottom.linkTo(container.bottom)
                 }
+            ) {
+               BalanceCard()
             }
+
         }
         Button(onClick = {
             coroutineScope.launch {
