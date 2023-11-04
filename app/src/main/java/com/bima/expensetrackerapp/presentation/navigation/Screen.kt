@@ -12,6 +12,6 @@ sealed class Screen(val route:String,val name:String ,val icon: ImageVector) {
     object Login: Screen("login_screen","Login", Icons.Filled.Home)
     object HomeScreen: Screen("home_screen","Home", Icons.Filled.Home)
     object StatScreen: Screen("stat_screen","Statistic", Icons.Filled.List)
-    object SettingScreen: Screen("setting_screen","Setting", Icons.Filled.Settings)
     object ProfileScreen: Screen("profile_screen","Profile", Icons.Filled.AccountCircle)
+    object SettingScreen: Screen("setting_screen","Setting", Icons.Filled.Settings)
 }

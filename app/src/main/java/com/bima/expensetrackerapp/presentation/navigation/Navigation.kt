@@ -5,7 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.bima.expensetrackerapp.presentation.HomeScreen
+import com.bima.expensetrackerapp.presentation.ProfileScreen
+import com.bima.expensetrackerapp.presentation.SettingsScreen
 import com.bima.expensetrackerapp.presentation.SignInScreen
+import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.TitleScreen
 
 @Composable
@@ -31,6 +34,21 @@ fun Navigation(
             route = Screen.HomeScreen.route
         ) {
             HomeScreen(navController = navController)
+        }
+        composable(
+            route = Screen.StatScreen.route
+        ) {
+            StatisticScreen()
+        }
+        composable(
+            route = Screen.ProfileScreen.route
+        ) {
+            ProfileScreen()
+        }
+        composable(
+            route = Screen.SettingScreen.route
+        ) {
+            SettingsScreen()
         }
     }
 }
