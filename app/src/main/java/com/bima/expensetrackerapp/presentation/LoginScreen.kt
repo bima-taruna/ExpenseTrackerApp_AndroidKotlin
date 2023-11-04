@@ -63,7 +63,7 @@ fun SignInScreen(
     LaunchedEffect(sessionState?.user) {
         if (sessionState?.user != null) {
             navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(Screen.Title.route) {
+                popUpTo(0) {
                     inclusive = true
                 }
             }

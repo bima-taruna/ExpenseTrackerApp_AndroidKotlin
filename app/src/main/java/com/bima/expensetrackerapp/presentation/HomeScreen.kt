@@ -51,7 +51,7 @@ fun HomeScreen(
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
             navController.navigate(Screen.Title.route) {
-                popUpTo(Screen.HomeScreen.route) {
+                popUpTo(0) {
                     inclusive = true
                 }
             }
