@@ -1,5 +1,8 @@
 package com.bima.expensetrackerapp.presentation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,12 +29,31 @@ fun ExpenseTrackerApp(
         Screen.ProfileScreen,
         Screen.SettingScreen
     )
-    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+    val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    when (navBackStackEntry?.destination?.route) {
+        Screen.Title.route -> {
+            bottomBarState.value = false
+        }
+        Screen.Login.route -> {
+            bottomBarState.value = false
+        }
+        else -> bottomBarState.value = true
+    }
 
     Scaffold(
         bottomBar = {
-            BottomNavigation(navController = navController, screens = bottomNavigationItems)
+            AnimatedVisibility(
+                visible = bottomBarState.value,
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
+                    BottomNavigation(
+                        navController = navController,
+                        screens = bottomNavigationItems
+                    )
+            }
         },
         content = {innerPadding ->
             Box(modifier = modifier.padding(innerPadding)){

@@ -15,7 +15,6 @@ import com.bima.expensetrackerapp.presentation.TitleScreen
 fun Navigation(
     navController: NavHostController,
 ) {
-
     NavHost(
         navController = navController,
         startDestination = Screen.Title.route
