@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun BalanceCard(
@@ -28,6 +31,7 @@ fun BalanceCard(
     balanceViewModel: BalanceViewModel = hiltViewModel(),
 ) {
     val balanceState by balanceViewModel.balanceState.collectAsStateWithLifecycle()
+
     ElevatedCard(
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(
@@ -52,7 +56,7 @@ fun BalanceCard(
             fontWeight = FontWeight.W600
         )
         Text(
-            "${balanceState.balance?.totalBalance}",
+            "Rp ${balanceState.balance?.totalBalance?.convert()}",
             modifier = modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth(),
@@ -79,7 +83,7 @@ fun BalanceCard(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "${balanceState.balance?.income}",
+                    text = "${balanceState.balance?.income?.toBigDecimal()}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -93,11 +97,17 @@ fun BalanceCard(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "${balanceState.balance?.expense}",
+                    text = "${balanceState.balance?.expense?.toBigDecimal()}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
             }
         }
     }
+}
+
+fun Double.convert(): String {
+    val format = DecimalFormat("#,###.00")
+    format.isDecimalSeparatorAlwaysShown = false
+    return format.format(this).toString()
 }

@@ -11,11 +11,11 @@ data class BalanceDto(
     @SerialName("created_at")
     val createdAt: String? = null,
     @SerialName("total_balance")
-    val totalBalance: Int? = null,
+    val totalBalance: Double? = null,
     @SerialName("income")
-    val income: Int? = null,
+    val income: Double? = null,
     @SerialName("expense")
-    val expense: Int? = null,
+    val expense: Double? = null,
     @SerialName("user_id")
     val userId: String? = null,
 )
