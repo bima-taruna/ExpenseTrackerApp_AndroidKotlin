@@ -10,6 +10,7 @@ import com.bima.expensetrackerapp.domain.use_case.balance.GetBalanceUseCase
 import com.bima.expensetrackerapp.viewmodel.state.BalanceState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class BalanceViewModel @Inject constructor(
     private val getBalanceUseCase: GetBalanceUseCase
 ):ViewModel() {
     private val _balanceState = MutableStateFlow(BalanceState())
-    val balanceState = _balanceState
+    val balanceState = _balanceState.asStateFlow()
 
     init {
        getBalance()

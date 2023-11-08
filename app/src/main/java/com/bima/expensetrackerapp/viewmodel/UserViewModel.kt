@@ -12,6 +12,7 @@ import com.bima.expensetrackerapp.viewmodel.state.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,10 +26,10 @@ class UserViewModel @Inject constructor(
     private val context : ExpenseTrackerApp
 ):ViewModel() {
     private val _session = MutableStateFlow<UserSession?>(null)
-    val session = _session
+    val session = _session.asStateFlow()
 
     private val _userState = MutableStateFlow(UserState())
-    val userState = _userState
+    val userState = _userState.asStateFlow()
 
 
 

@@ -20,7 +20,7 @@ fun BottomNavigation(
 ) {
     val currentRoute = currentRoute(navController = navController)
     NavigationBar(
-        modifier = Modifier.fillMaxHeight(0.12f)
+        modifier = modifier.fillMaxHeight(0.12f)
     ) {
         screens.forEach {screen ->
             NavigationBarItem(

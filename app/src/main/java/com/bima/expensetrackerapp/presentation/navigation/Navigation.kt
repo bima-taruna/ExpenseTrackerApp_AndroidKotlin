@@ -42,7 +42,7 @@ fun Navigation(
         composable(
             route = Screen.ProfileScreen.route
         ) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
         composable(
             route = Screen.SettingScreen.route

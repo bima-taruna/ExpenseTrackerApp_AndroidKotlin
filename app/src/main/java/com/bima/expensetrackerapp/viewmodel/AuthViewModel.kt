@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -30,11 +31,11 @@ class AuthViewModel @Inject constructor(
     private val _email = MutableStateFlow("")
     val email: Flow<String> = _email
     private val _password = MutableStateFlow("")
-    val password = _password
+    val password = _password.asStateFlow()
     private val _session = MutableStateFlow<UserSession?>(null)
-    val session = _session
+    val session = _session.asStateFlow()
     private val _authState = MutableStateFlow(AuthState())
-    val authState = _authState
+    val authState = _authState.asStateFlow()
 
     init {
         getSession()
