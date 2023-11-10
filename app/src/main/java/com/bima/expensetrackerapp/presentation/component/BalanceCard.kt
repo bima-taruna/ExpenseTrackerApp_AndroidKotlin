@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bima.expensetrackerapp.common.convert
+import com.bima.expensetrackerapp.common.getSymbol
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
 
 @Composable
@@ -29,6 +30,10 @@ fun BalanceCard(
     balanceViewModel: BalanceViewModel = hiltViewModel(),
 ) {
     val balanceState by balanceViewModel.balanceState.collectAsStateWithLifecycle()
+    val totalBalance = balanceState.balance?.totalBalance
+    val expense = balanceState.balance?.expense
+    val income = balanceState.balance?.income
+
 
     ElevatedCard(
         shape = RoundedCornerShape(15.dp),
@@ -54,7 +59,7 @@ fun BalanceCard(
             fontWeight = FontWeight.W600
         )
         Text(
-            "Rp ${balanceState.balance?.totalBalance?.convert()}",
+            "${getSymbol()} ${totalBalance?.convert()}",
             modifier = modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth(),
