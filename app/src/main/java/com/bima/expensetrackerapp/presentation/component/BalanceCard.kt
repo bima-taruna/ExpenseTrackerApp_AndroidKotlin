@@ -81,12 +81,12 @@ fun BalanceCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Income",
+                    text = "Expense",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "${balanceState.balance?.income?.convert()}",
+                    text = "${balanceState.balance?.expense?.convert()}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -95,12 +95,12 @@ fun BalanceCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Expense",
+                    text = "Income",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "${balanceState.balance?.expense?.convert()}",
+                    text = "${balanceState.balance?.income?.convert()}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )

@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.BalanceCard
+import com.bima.expensetrackerapp.presentation.component.tabs.TransactionTabs
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.bima.expensetrackerapp.viewmodel.UserViewModel
@@ -87,5 +88,7 @@ fun HomeScreen(
                BalanceCard()
             }
         }
+        Spacer(modifier = modifier.padding(10.dp))
+        TransactionTabs()
     }
 }
