@@ -20,10 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bima.expensetrackerapp.common.convert
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.Locale
 
 @Composable
 fun BalanceCard(
@@ -83,7 +81,7 @@ fun BalanceCard(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "${balanceState.balance?.income?.toBigDecimal()}",
+                    text = "${balanceState.balance?.income?.convert()}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -97,7 +95,7 @@ fun BalanceCard(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "${balanceState.balance?.expense?.toBigDecimal()}",
+                    text = "${balanceState.balance?.expense?.convert()}",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -106,8 +104,3 @@ fun BalanceCard(
     }
 }
 
-fun Double.convert(): String {
-    val format = DecimalFormat("#,###.00")
-    format.isDecimalSeparatorAlwaysShown = false
-    return format.format(this).toString()
-}
