@@ -34,6 +34,7 @@ class BalanceViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _balanceState.value = _balanceState.value.copy(
+                            isLoading = false,
                             balance = result.data
                         )
                     }

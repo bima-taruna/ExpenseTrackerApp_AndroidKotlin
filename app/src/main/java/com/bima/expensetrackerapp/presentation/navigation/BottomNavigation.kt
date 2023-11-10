@@ -25,6 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavigation(
+    modifier:Modifier = Modifier,
     navController:NavHostController,
     screens:List<Screen>
 ) {
@@ -40,7 +41,6 @@ fun BottomNavigation(
                         navController.navigate(screen.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
-                                inclusive = true
                             }
                             launchSingleTop = true
                             restoreState = true
