@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -106,6 +107,13 @@ fun BalanceCard(
                 )
             }
         }
+//        if (balanceState.isLoading) {
+//            Box(
+//                modifier = modifier
+//            ) {
+//
+//            }
+//        }
     }
 }
 
