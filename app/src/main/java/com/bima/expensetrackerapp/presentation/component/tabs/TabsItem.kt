@@ -12,6 +12,5 @@ fun tabsItem(): List<TabItem> {
             title = "Income",
             screen = { IncomeTabs() }
         ),
-
     )
 }
