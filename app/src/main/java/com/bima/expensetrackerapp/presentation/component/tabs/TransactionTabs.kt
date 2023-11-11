@@ -13,11 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bima.expensetrackerapp.viewmodel.TabIndexViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun TransactionTabs(
     modifier: Modifier = Modifier,
+    tabIndexViewModel: TabIndexViewModel = hiltViewModel(),
 ) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
@@ -34,7 +37,10 @@ fun TransactionTabs(
                             style = MaterialTheme.typography.titleMedium
                         )
                     },
-                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } }
+                    onClick = {
+                        tabIndexViewModel.saveTabIndex(index)
+                        coroutineScope.launch { pagerState.animateScrollToPage(index)
+                        } }
                 )
             }
         }

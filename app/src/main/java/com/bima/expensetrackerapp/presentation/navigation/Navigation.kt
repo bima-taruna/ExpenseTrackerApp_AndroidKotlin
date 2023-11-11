@@ -10,6 +10,8 @@ import com.bima.expensetrackerapp.presentation.SettingsScreen
 import com.bima.expensetrackerapp.presentation.SignInScreen
 import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.TitleScreen
+import com.bima.expensetrackerapp.presentation.component.expense.ExpenseForm
+import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
 
 @Composable
 fun Navigation(
@@ -48,6 +50,16 @@ fun Navigation(
             route = Screen.SettingScreen.route
         ) {
             SettingsScreen()
+        }
+        composable(
+            route = Screen.ExpenseFormScreen.route
+        ) {
+            ExpenseForm()
+        }
+        composable(
+            route = Screen.IncomeFormScreen.route
+        ) {
+            IncomeForm()
         }
     }
 }
