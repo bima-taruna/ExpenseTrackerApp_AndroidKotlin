@@ -63,18 +63,20 @@ fun BottomNavigation(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                shape = RoundedCornerShape(10.dp),
-                onClick = {
-                    if (tabIndex == 0) {
-                        navController.navigate(Screen.ExpenseFormScreen.route)
-                    } else {
-                        navController.navigate(Screen.IncomeFormScreen.route)
-                    }
-                },
-                contentColor = Color.White
-            ) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add icon")
+            if (navController.currentDestination?.route == "home_screen") {
+                FloatingActionButton(
+                    shape = RoundedCornerShape(10.dp),
+                    onClick = {
+                        if (tabIndex == 0) {
+                            navController.navigate(Screen.ExpenseFormScreen.route)
+                        } else {
+                            navController.navigate(Screen.IncomeFormScreen.route)
+                        }
+                    },
+                    contentColor = Color.White
+                ) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add icon")
+                }
             }
         }
     )
