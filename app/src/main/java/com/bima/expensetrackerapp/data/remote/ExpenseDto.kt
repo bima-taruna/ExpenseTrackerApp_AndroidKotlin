@@ -24,7 +24,7 @@ data class ExpenseDto(
     val createdAt:String?
 )
 
-fun Expenses.toExpense() : Expenses {
+fun ExpenseDto.toExpenses() : Expenses {
     return Expenses(
         id = id,
         name = name,
