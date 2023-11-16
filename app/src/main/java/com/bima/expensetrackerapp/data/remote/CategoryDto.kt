@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.data.remote
 
+import com.bima.expensetrackerapp.domain.model.Category
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,3 +15,12 @@ data class CategoryDto(
     @SerialName("created_by")
     val createdBy:String?
 )
+
+fun CategoryDto.toCategory() : Category {
+    return Category(
+        id = id,
+        name = name,
+        type = type
+    )
+}
+
