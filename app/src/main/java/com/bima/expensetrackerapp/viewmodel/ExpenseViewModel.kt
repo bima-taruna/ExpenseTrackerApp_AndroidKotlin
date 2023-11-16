@@ -56,4 +56,5 @@ class ExpenseViewModel @Inject constructor(
             }.collect()
         }
     }
+
 }
