@@ -54,7 +54,7 @@ fun Navigation(
         composable(
             route = Screen.ExpenseFormScreen.route
         ) {
-            ExpenseForm()
+            ExpenseForm(navController = navController)
         }
         composable(
             route = Screen.IncomeFormScreen.route
