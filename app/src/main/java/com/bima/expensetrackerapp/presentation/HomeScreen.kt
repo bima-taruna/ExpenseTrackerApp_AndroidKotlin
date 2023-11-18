@@ -28,6 +28,7 @@ import com.bima.expensetrackerapp.presentation.component.tabs.TransactionTabs
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.bima.expensetrackerapp.viewmodel.UserViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun HomeScreen(
@@ -47,10 +48,15 @@ fun HomeScreen(
             }
         }
     }
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(
+        color = MaterialTheme.colorScheme.secondaryContainer
+    )
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         ConstraintLayout {
             val (container, totalBalance, space) = createRefs()
             RoundedCornerShapeContainer(
