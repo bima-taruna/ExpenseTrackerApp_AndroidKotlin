@@ -14,8 +14,6 @@ data class ExpenseDto(
     val description:String?,
     @SerialName("category_id")
     val categoryId:String?,
-    @SerialName("images")
-    val images:String?,
     @SerialName("user_id")
     val userId:String?,
     @SerialName("amount")

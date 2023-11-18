@@ -46,6 +46,12 @@ fun ExpenseTrackerApp(
         Screen.Login.route -> {
             bottomBarState.value = false
         }
+        Screen.ExpenseFormScreen.route -> {
+            bottomBarState.value = false
+        }
+        Screen.IncomeFormScreen.route -> {
+            bottomBarState.value = false
+        }
         else -> bottomBarState.value = true
     }
 

@@ -7,10 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toCategory
-import com.bima.expensetrackerapp.data.remote.toExpenses
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetIncomeCategoryUseCase
-import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
 import com.bima.expensetrackerapp.viewmodel.state.CategoryState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

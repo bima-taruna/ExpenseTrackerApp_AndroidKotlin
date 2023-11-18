@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.BalanceCard
+import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.tabs.TransactionTabs
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
@@ -52,13 +53,8 @@ fun HomeScreen(
     ) {
         ConstraintLayout {
             val (container, totalBalance, space) = createRefs()
-            Box(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.30f)
-                    .clip(shape = RoundedCornerShape(bottomEnd = 30.dp, bottomStart = 30.dp))
-                    .background(MaterialTheme.colorScheme.secondaryContainer)
-                    .constrainAs(container) {}
+            RoundedCornerShapeContainer(
+                modifier = modifier.constrainAs(container) {}
             ) {
                 Text(
                     modifier = modifier
