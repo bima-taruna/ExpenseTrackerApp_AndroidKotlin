@@ -1,13 +1,10 @@
 package com.bima.expensetrackerapp.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -25,7 +21,7 @@ import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.BalanceCard
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.tabs.TransactionTabs
-import com.bima.expensetrackerapp.presentation.navigation.Screen
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.bima.expensetrackerapp.viewmodel.UserViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -41,7 +37,7 @@ fun HomeScreen(
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
-            navController.navigate(Screen.Title.route) {
+            navController.navigate(Graph.AUTH) {
                 popUpTo(0) {
                     inclusive = true
                 }

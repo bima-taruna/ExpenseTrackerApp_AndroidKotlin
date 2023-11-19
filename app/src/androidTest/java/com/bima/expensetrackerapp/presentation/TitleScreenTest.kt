@@ -10,7 +10,9 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.bima.expensetrackerapp.MainActivity
 import com.bima.expensetrackerapp.di.SupabaseModule
-import com.bima.expensetrackerapp.presentation.navigation.Navigation
+import com.bima.expensetrackerapp.presentation.navigation.AuthScreen
+import com.bima.expensetrackerapp.presentation.navigation.Graph
+import com.bima.expensetrackerapp.presentation.navigation.NavigationTest
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -53,7 +55,7 @@ class TitleScreenTest {
 //                }
 //            }
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            Navigation(navController = navController)
+            NavigationTest(navController = navController)
         }
     }
 
@@ -65,11 +67,11 @@ class TitleScreenTest {
     @Test
     fun moodTrackerNavHost_verifyStartDestination() {
         composeRule.onNodeWithText("SignUp").assertDoesNotExist()
-        navController.assertCurrentRouteName(Screen.Title.route)
+        navController.assertCurrentRouteName(Graph.AUTH)
     }
     @Test
     fun loginButtonIsNavigateTo_login_screen() {
         composeRule.onNodeWithText("Login").performClick()
-        navController.assertCurrentRouteName(Screen.Login.route)
+        navController.assertCurrentRouteName(AuthScreen.Login.route)
     }
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.bima.expensetrackerapp.presentation.navigation.Screen
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,7 @@ fun ProfileScreen(
     val sessionState by authViewModel.session.collectAsStateWithLifecycle()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
-            navController.navigate(Screen.Title.route) {
+            navController.navigate(Graph.AUTH) {
                 popUpTo(0) {
                     inclusive = true
                 }

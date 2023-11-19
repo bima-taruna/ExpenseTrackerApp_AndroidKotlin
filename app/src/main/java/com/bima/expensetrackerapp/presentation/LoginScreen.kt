@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
-import com.bima.expensetrackerapp.presentation.navigation.Screen
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
@@ -62,11 +62,8 @@ fun SignInScreen(
     val context = LocalContext.current
     LaunchedEffect(sessionState?.user) {
         if (sessionState?.user != null) {
-            navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(0) {
-                    inclusive = true
-                }
-            }
+            navController.popBackStack()
+            navController.navigate(Graph.MAIN)
             Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
         }
     }
@@ -100,7 +97,7 @@ fun SignInScreen(
             ) {
                 val email = viewModel.email.collectAsState(initial = "")
                 val password = viewModel.password.collectAsState()
-                var passwordVisible by rememberSaveable { mutableStateOf(false) }
+                val passwordVisible by rememberSaveable { mutableStateOf(false) }
                 Text(text = "Welcome Back!", style = MaterialTheme.typography.headlineLarge, modifier = modifier.padding(bottom = 12.dp))
                 OutlinedTextField(
                     label = {

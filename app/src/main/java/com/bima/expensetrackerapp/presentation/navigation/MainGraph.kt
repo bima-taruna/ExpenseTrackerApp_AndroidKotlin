@@ -7,30 +7,17 @@ import androidx.navigation.compose.composable
 import com.bima.expensetrackerapp.presentation.HomeScreen
 import com.bima.expensetrackerapp.presentation.ProfileScreen
 import com.bima.expensetrackerapp.presentation.SettingsScreen
-import com.bima.expensetrackerapp.presentation.SignInScreen
 import com.bima.expensetrackerapp.presentation.StatisticScreen
-import com.bima.expensetrackerapp.presentation.TitleScreen
 import com.bima.expensetrackerapp.presentation.component.expense.ExpenseForm
 import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
 
 @Composable
-fun Navigation(
-    navController: NavHostController,
-) {
+fun MainGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Title.route
+        route = Graph.MAIN,
+        startDestination = Screen.HomeScreen.route
     ) {
-        composable(
-            route = Screen.Title.route
-        ) {
-            TitleScreen(navController = navController)
-        }
-        composable(
-            route = Screen.Login.route
-        ) {
-            SignInScreen(navController = navController)
-        }
         composable(
             route = Screen.HomeScreen.route
         ) {

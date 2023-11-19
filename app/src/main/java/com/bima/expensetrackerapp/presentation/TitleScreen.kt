@@ -32,7 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
 import com.bima.expensetrackerapp.presentation.component.fadingEdge
-import com.bima.expensetrackerapp.presentation.navigation.Screen
+import com.bima.expensetrackerapp.presentation.navigation.AuthScreen
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
@@ -48,8 +49,8 @@ fun TitleScreen(
     val topBottomFade = Brush.verticalGradient( 0.7f to Color.Red, 0.9f to Color.Transparent)
     LaunchedEffect(sessionState?.user) {
         if (sessionState?.user != null) {
-            navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(Screen.Title.route) {
+            navController.navigate(Graph.MAIN) {
+                popUpTo(Graph.AUTH) {
                     inclusive = true
                 }
             }
@@ -85,7 +86,7 @@ fun TitleScreen(
         Spacer(modifier = modifier.height(20.dp))
         Column(modifier = modifier.padding(horizontal = 16.dp)) {
             Button(
-                onClick = { navController.navigate(Screen.Login.route) }, modifier = modifier
+                onClick = { navController.navigate(AuthScreen.Login.route) }, modifier = modifier
                     .fillMaxWidth()
                     .size(50.dp), shape = RoundedCornerShape(12.dp)
             ) {
