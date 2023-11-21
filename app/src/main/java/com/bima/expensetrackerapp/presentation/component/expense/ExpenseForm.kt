@@ -1,9 +1,16 @@
 package com.bima.expensetrackerapp.presentation.component.expense
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,7 +22,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,18 +42,42 @@ fun ExpenseForm(
                     IconButton(onClick = {
                         navController.popBackStack()
                     }) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                        Icon(Icons.Filled.ArrowBack, "bacIcon")
                     }
                 },
-                title = { Text(text = "Add Expense") },
+                title = { Text(text = "Add Expense", fontWeight = FontWeight.SemiBold) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )
             )
         },
         content = {paddingValues ->
-        Box(modifier = modifier.padding(paddingValues)) {
-            Text(text = "form")
+        Box(modifier = modifier
+            .padding(paddingValues)
+            .fillMaxSize()) {
+            ConstraintLayout {
+                val(container, form) = createRefs()
+                RoundedCornerShapeContainer(
+                    modifier = modifier.constrainAs(container) {}
+                ) {}
+                Card(
+                    modifier = modifier
+                        .fillMaxSize(0.90f)
+                        .constrainAs(form){
+                            top.linkTo(container.top, margin = 16.dp)
+                            start.linkTo(container.start)
+                            end.linkTo(container.end)
+                        },
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.onSecondary
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 10.dp
+                    ),
+                ) {
+                    Text(text = "sdasdasdasd")
+                }
+            }
         }
         }
     )
