@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.data.remote
 
+import com.bima.expensetrackerapp.domain.model.Expense
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import com.bima.expensetrackerapp.domain.model.Expenses
@@ -26,6 +27,18 @@ fun ExpenseDto.toExpenses() : Expenses {
     return Expenses(
         id = id,
         name = name,
+        amount = amount,
+        createdAt = createdAt
+    )
+}
+
+fun ExpenseDto.toExpense(): Expense {
+    return Expense(
+        id = id,
+        name = name,
+        description = description,
+        categoryId = categoryId,
+        userId = userId,
         amount = amount,
         createdAt = createdAt
     )

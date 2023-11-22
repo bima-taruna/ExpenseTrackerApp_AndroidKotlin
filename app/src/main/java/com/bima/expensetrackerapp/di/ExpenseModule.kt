@@ -2,6 +2,7 @@ package com.bima.expensetrackerapp.di
 
 import com.bima.expensetrackerapp.data.repositoryImpl.ExpensesRepositoryImpl
 import com.bima.expensetrackerapp.domain.repository.ExpensesRepository
+import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.ExpenseUseCases
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
 import dagger.Module
@@ -24,7 +25,8 @@ object ExpenseModule {
     @Provides
     fun provideExpenseUseCases(repository: ExpensesRepository): ExpenseUseCases {
         return ExpenseUseCases(
-            getExpenses = GetExpensesUseCase(repository)
+            getExpenses = GetExpensesUseCase(repository),
+            createExpense = CreateExpenseUseCase(repository)
         )
     }
 }

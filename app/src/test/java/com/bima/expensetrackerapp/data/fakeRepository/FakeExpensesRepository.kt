@@ -2,13 +2,14 @@ package com.bima.expensetrackerapp.data.fakeRepository
 
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.ExpenseDto
+import com.bima.expensetrackerapp.domain.model.Expense
 import com.bima.expensetrackerapp.domain.model.Expenses
 import com.bima.expensetrackerapp.domain.repository.ExpensesRepository
 import kotlinx.coroutines.flow.flow
 
 class FakeExpensesRepository:ExpensesRepository {
     val expenseResult1 = ExpenseDto(
-        id = 1,
+        id = "asdasdasdasd",
         name = "satu",
         description = null,
         categoryId = null,
@@ -17,7 +18,7 @@ class FakeExpensesRepository:ExpensesRepository {
         createdAt = "1231231"
     )
     val expenseResult2 = ExpenseDto(
-        id = 1,
+        id = "asdasdasd",
         name = "satu",
         description = null,
         categoryId = null,
@@ -26,7 +27,7 @@ class FakeExpensesRepository:ExpensesRepository {
         createdAt = "1231231"
     )
     val expenseResult3 = ExpenseDto(
-        id = 1,
+        id = "asdasdasd",
         name = "satu",
         description = null,
         categoryId = null,
@@ -35,7 +36,7 @@ class FakeExpensesRepository:ExpensesRepository {
         createdAt = "1231231"
     )
     val expenseResult4 = ExpenseDto(
-        id = 1,
+        id = "dasdasdas",
         name = "satu",
         description = null,
         categoryId = null,
@@ -48,7 +49,9 @@ class FakeExpensesRepository:ExpensesRepository {
         return listOfExpense
     }
 
-    override suspend fun createExpenses(expense: Expenses): Boolean {
-        return true
+    override suspend fun createExpenses(expense: Expense): Boolean {
+        TODO("Not yet implemented")
     }
+
+
 }
