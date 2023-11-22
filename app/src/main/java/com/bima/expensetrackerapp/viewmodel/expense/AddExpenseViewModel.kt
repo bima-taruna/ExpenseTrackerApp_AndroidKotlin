@@ -9,7 +9,6 @@ import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.domain.model.Expense
 import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
 import com.bima.expensetrackerapp.viewmodel.state.expense.AddExpenseState
-import com.bima.expensetrackerapp.viewmodel.state.expense.ExpensesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

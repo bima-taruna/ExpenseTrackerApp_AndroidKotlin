@@ -18,6 +18,7 @@ class ExpensesRepositoryImpl @Inject constructor(
         return try {
             val expenseDto = ExpenseDto(
                 name = expense.name,
+                description = expense.description,
                 amount = expense.amount,
                 categoryId = expense.categoryId,
             )
