@@ -14,12 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bima.expensetrackerapp.common.convert
 import com.bima.expensetrackerapp.common.toDate
-import com.bima.expensetrackerapp.viewmodel.state.ExpensesState
+import com.bima.expensetrackerapp.viewmodel.state.expense.ExpensesState
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TransactionList(
-    state:ExpensesState,
+    state: ExpensesState,
     modifier: Modifier = Modifier,
 ) {
     val lazyColumnListState = rememberLazyListState()
