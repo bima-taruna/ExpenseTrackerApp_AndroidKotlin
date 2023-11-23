@@ -6,10 +6,12 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
@@ -24,17 +26,20 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bima.expensetrackerapp.common.toDate
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
@@ -49,6 +54,7 @@ fun ExpenseForm(
     modifier: Modifier = Modifier,
     categoryViewModel: CategoryViewModel = hiltViewModel(),
 ) {
+
     val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
@@ -76,39 +82,49 @@ fun ExpenseForm(
     var category by rememberSaveable {
         mutableStateOf("")
     }
+    LaunchedEffect(expanded) {
+        if (expanded) {
+            categoryViewModel.getExpenseCategory()
+        }
+    }
 
-    Log.d("category", categoryState.category.toString())
+    Log.d("name", name)
+    Log.d("description", description)
+    Log.d("date", date)
+    Log.d("category", category)
 
 
     Column {
-        OutlinedTextField(value = name, onValueChange = {name=it})
-        OutlinedTextField(value = description, onValueChange = {description=it})
+        OutlinedTextField(value = name, onValueChange = { name = it })
+        OutlinedTextField(value = description, onValueChange = { description = it })
         Row {
-            Box(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(32.dp)
-            ) {
-                ExposedDropdownMenuBox(
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = {
+                    expanded = !expanded
+                }) {
+                TextField(
+                    value = selectedCategory,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    modifier = Modifier.menuAnchor()
+                )
+                ExposedDropdownMenu(
                     expanded = expanded,
-                    onExpandedChange = {
-                        categoryViewModel.getExpenseCategory()
-                        expanded = !expanded
-                    }) {
-                    TextField(
-                        value = selectedCategory,
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier.menuAnchor()
-                    )
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }) {
-                        categoryState.category?.forEach { item->
-
+                    onDismissRequest = { expanded = false }
+                ) {
+                    if (categoryState.isLoading) {
+                        Box(
+                            modifier = modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    } else {
+                        categoryState.category?.forEach { item ->
                             DropdownMenuItem(
-                                text = {  Text(text = item.name.toString())  },
+                                text = { Text(text = item.name.toString()) },
                                 onClick = {
                                     selectedCategory = item.name.toString()
                                     category = item.id.toString()
