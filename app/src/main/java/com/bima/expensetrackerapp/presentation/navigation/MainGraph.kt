@@ -8,7 +8,7 @@ import com.bima.expensetrackerapp.presentation.HomeScreen
 import com.bima.expensetrackerapp.presentation.ProfileScreen
 import com.bima.expensetrackerapp.presentation.SettingsScreen
 import com.bima.expensetrackerapp.presentation.StatisticScreen
-import com.bima.expensetrackerapp.presentation.component.expense.ExpenseForm
+import com.bima.expensetrackerapp.presentation.component.expense.AddExpense
 import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
 
 @Composable
@@ -41,7 +41,7 @@ fun MainGraph(navController: NavHostController) {
         composable(
             route = Screen.ExpenseFormScreen.route
         ) {
-            ExpenseForm(navController = navController)
+            AddExpense(navController = navController)
         }
         composable(
             route = Screen.IncomeFormScreen.route

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bima.expensetrackerapp.common.convert
+import com.bima.expensetrackerapp.common.formatIsoToString
 import com.bima.expensetrackerapp.common.toDate
 import com.bima.expensetrackerapp.viewmodel.state.expense.ExpensesState
 
@@ -34,7 +35,7 @@ fun TransactionList(
                     Row {
                         Text(text = "${expense.name}")
                         Text(text = "${expense.amount?.convert()}")
-                        Text(text = "${expense.createdAt?.toDate()}")
+                        Text(text = "${expense.date?.toDate()}")
                     }
                 }
             }

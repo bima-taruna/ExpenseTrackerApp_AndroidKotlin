@@ -10,7 +10,7 @@ class CategoryRepositoryImpl @Inject constructor(
    private val postgrest: Postgrest
 ):CategoryRepository {
     override suspend fun getExpenseCategory(): List<CategoryDto> {
-        return postgrest["category"].select(columns = Columns.list("type")) {
+        return postgrest["category"].select(columns = Columns.list("id","name","type","created_by")) {
             eq("type", "expense")
         }.decodeList()
     }

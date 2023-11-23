@@ -8,5 +8,6 @@ data class Expense(
     val categoryId:String?,
     val userId:String? = "",
     val amount:Double?,
+    val date:String?,
     val createdAt:String? = ""
 )

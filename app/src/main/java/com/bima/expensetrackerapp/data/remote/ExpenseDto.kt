@@ -4,6 +4,7 @@ import com.bima.expensetrackerapp.domain.model.Expense
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import com.bima.expensetrackerapp.domain.model.Expenses
+import java.util.Date
 
 @Serializable
 data class ExpenseDto(
@@ -19,6 +20,8 @@ data class ExpenseDto(
     val userId:String? = "",
     @SerialName("amount")
     val amount:Double?,
+    @SerialName("date")
+    val date: String?,
     @SerialName("created_at")
     val createdAt:String? = ""
 )
@@ -28,6 +31,7 @@ fun ExpenseDto.toExpenses() : Expenses {
         id = id,
         name = name,
         amount = amount,
+        date = date,
         createdAt = createdAt
     )
 }
@@ -40,6 +44,7 @@ fun ExpenseDto.toExpense(): Expense {
         categoryId = categoryId,
         userId = userId,
         amount = amount,
+        date = date,
         createdAt = createdAt
     )
 }

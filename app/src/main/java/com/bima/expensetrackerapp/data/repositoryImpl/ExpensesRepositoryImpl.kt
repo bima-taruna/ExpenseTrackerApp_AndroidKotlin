@@ -20,6 +20,7 @@ class ExpensesRepositoryImpl @Inject constructor(
                 name = expense.name,
                 description = expense.description,
                 amount = expense.amount,
+                date = expense.date,
                 categoryId = expense.categoryId,
             )
             postgrest["expense"].insert(expenseDto)
