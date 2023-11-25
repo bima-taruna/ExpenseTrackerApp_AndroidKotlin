@@ -1,5 +1,7 @@
 package com.bima.expensetrackerapp.presentation.component.expense
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpense(
@@ -69,7 +72,7 @@ fun AddExpense(
                         defaultElevation = 10.dp
                     ),
                 ) {
-                    ExpenseForm(modifier.fillMaxSize())
+                    ExpenseForm(modifier.fillMaxSize(), navController = navController)
                 }
             }
         }

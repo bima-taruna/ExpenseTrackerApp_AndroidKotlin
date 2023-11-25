@@ -18,7 +18,12 @@ fun String.formatIsoToString(): String? {
 //    return LocalDate.parse(this, DateTimeFormatter.ofPattern("dd-mm-yyyy")).toString()
 //}
 
+
 @RequiresApi(Build.VERSION_CODES.O)
-fun String.toDate(): LocalDate {
-    return LocalDate.parse(this, DateTimeFormatter.ofPattern("dd-mm-yyyy"))
+fun String.toDate(): String{
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+    val localDate = LocalDate.parse(this, inputFormatter)
+     return localDate.format(outputFormatter)
 }

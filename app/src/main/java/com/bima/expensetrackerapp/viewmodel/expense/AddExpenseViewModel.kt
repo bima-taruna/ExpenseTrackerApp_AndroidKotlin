@@ -34,7 +34,7 @@ class AddExpenseViewModel @Inject constructor(
                             isLoading = false,
                             expenses = true
                         )
-                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()

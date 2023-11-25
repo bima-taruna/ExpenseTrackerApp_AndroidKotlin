@@ -64,7 +64,7 @@ fun BalanceCard(
                     fontWeight = FontWeight.W600
                 )
                 Text(
-                    "${getSymbol()} ${totalBalance?.convert()}",
+                    "${getSymbol()} ${totalBalance?.toBigDecimal()}",
                     modifier = modifier
                         .padding(top = 12.dp)
                         .fillMaxWidth(),

@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -31,17 +30,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bima.expensetrackerapp.common.toDate
+import androidx.navigation.NavController
+import com.bima.expensetrackerapp.domain.model.Expense
+import com.bima.expensetrackerapp.presentation.component.CurrencyTextField
 import com.bima.expensetrackerapp.presentation.navigation.Graph
+import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
-import kotlinx.datetime.LocalDate
+import com.bima.expensetrackerapp.viewmodel.expense.AddExpenseViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -53,6 +57,8 @@ import java.util.Locale
 fun ExpenseForm(
     modifier: Modifier = Modifier,
     categoryViewModel: CategoryViewModel = hiltViewModel(),
+    addExpenseViewModel: AddExpenseViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
@@ -82,16 +88,41 @@ fun ExpenseForm(
     var category by rememberSaveable {
         mutableStateOf("")
     }
+    val currency = rememberSaveable {
+        mutableStateOf("")
+    }
+
+    val amount = rememberSaveable {
+        mutableStateOf(0.0)
+    }
+
     LaunchedEffect(expanded) {
         if (expanded) {
             categoryViewModel.getExpenseCategory()
         }
     }
 
+    val composableScope = rememberCoroutineScope()
+
+
+
+    val expense = Expense(
+        name = name,
+        description = description,
+        categoryId = category,
+        date = date,
+        amount = amount.value
+    )
+
+    fun addExpense(expense: Expense) {
+        addExpenseViewModel.createExpense(expense)
+    }
+
     Log.d("name", name)
     Log.d("description", description)
     Log.d("date", date)
     Log.d("category", category)
+    Log.d("amount", amount.toString())
 
 
     Column {
@@ -138,6 +169,20 @@ fun ExpenseForm(
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(imageVector = Icons.Filled.DateRange, contentDescription = "select date")
             }
+        }
+        CurrencyTextField(text = currency, amount = amount)
+        Button(onClick = {
+            composableScope.launch {
+                addExpense(expense)
+                delay(1000L)
+                navController.navigate(Graph.MAIN){
+                    popUpTo(Graph.MAIN) {
+                        inclusive = true
+                    }
+                }
+            }
+        }) {
+            Text(text = "Add")
         }
         if (showDatePicker) {
             DatePickerDialog(

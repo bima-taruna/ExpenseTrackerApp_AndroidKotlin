@@ -15,6 +15,7 @@ class FakeExpensesRepository:ExpensesRepository {
         categoryId = null,
         userId = null,
         amount = 23.000,
+        date = "2023-12-01",
         createdAt = "1231231"
     )
     val expenseResult2 = ExpenseDto(
@@ -24,6 +25,7 @@ class FakeExpensesRepository:ExpensesRepository {
         categoryId = null,
         userId = null,
         amount = 23.000,
+        date = "2023-12-01",
         createdAt = "1231231"
     )
     val expenseResult3 = ExpenseDto(
@@ -33,6 +35,7 @@ class FakeExpensesRepository:ExpensesRepository {
         categoryId = null,
         userId = null,
         amount = 23.000,
+        date = "2023-12-01",
         createdAt = "1231231"
     )
     val expenseResult4 = ExpenseDto(
@@ -42,6 +45,7 @@ class FakeExpensesRepository:ExpensesRepository {
         categoryId = null,
         userId = null,
         amount = 23.000,
+        date = "2023-12-01",
         createdAt = "1231231"
     )
     val listOfExpense = listOf(expenseResult1,expenseResult2,expenseResult3,expenseResult4)
