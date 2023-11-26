@@ -3,28 +3,25 @@ package com.bima.expensetrackerapp.presentation.component.expense
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,7 +65,7 @@ fun ExpenseForm(
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
     val context = LocalContext.current
-    var expanded = remember { mutableStateOf(false) }
+    val expanded = remember { mutableStateOf(false) }
     var name by rememberSaveable {
         mutableStateOf("")
     }
@@ -85,10 +82,10 @@ fun ExpenseForm(
     var date by rememberSaveable {
         mutableStateOf("")
     }
-    var selectedCategory = rememberSaveable {
+    val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
-    var category = rememberSaveable {
+    val category = rememberSaveable {
         mutableStateOf("")
     }
     val currency = rememberSaveable {
@@ -122,7 +119,7 @@ fun ExpenseForm(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize().padding(16.dp)
     ) {
         OutlinedTextField(
             label = {
@@ -149,18 +146,27 @@ fun ExpenseForm(
             singleLine = true,
             modifier = Modifier.height(100.dp)
         )
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Dropdown(
                 expanded = expanded,
                 selectedCategory = selectedCategory,
                 category = category,
-                categoryState = categoryState)
+                categoryState = categoryState,
+
+            )
             IconButton(onClick = { showDatePicker = true }) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "select date")
+                Icon(
+                    modifier = modifier.size(50.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                    imageVector = Icons.Filled.DateRange, contentDescription = "select date")
             }
         }
         CurrencyTextField(text = currency, amount = amount)
-        Button(onClick = {
+        Button(
+            modifier = Modifier.fillMaxWidth(0.80f),
+            onClick = {
             composableScope.launch {
                 addExpense(expense)
                 delay(1000L)
