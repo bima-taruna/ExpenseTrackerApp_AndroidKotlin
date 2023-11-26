@@ -1,12 +1,13 @@
 package com.bima.expensetrackerapp.presentation.component.expense
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
@@ -19,6 +20,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,12 +38,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.domain.model.Expense
-import com.bima.expensetrackerapp.presentation.component.CurrencyTextField
+import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
+import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.navigation.Graph
-import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
 import com.bima.expensetrackerapp.viewmodel.expense.AddExpenseViewModel
 import kotlinx.coroutines.delay
@@ -65,7 +68,7 @@ fun ExpenseForm(
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
     val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
+    var expanded = remember { mutableStateOf(false) }
     var name by rememberSaveable {
         mutableStateOf("")
     }
@@ -82,10 +85,10 @@ fun ExpenseForm(
     var date by rememberSaveable {
         mutableStateOf("")
     }
-    var selectedCategory by rememberSaveable {
+    var selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
-    var category by rememberSaveable {
+    var category = rememberSaveable {
         mutableStateOf("")
     }
     val currency = rememberSaveable {
@@ -96,20 +99,18 @@ fun ExpenseForm(
         mutableStateOf(0.0)
     }
 
-    LaunchedEffect(expanded) {
-        if (expanded) {
+    LaunchedEffect(expanded.value) {
+        if (expanded.value) {
             categoryViewModel.getExpenseCategory()
         }
     }
 
     val composableScope = rememberCoroutineScope()
 
-
-
     val expense = Expense(
         name = name,
         description = description,
-        categoryId = category,
+        categoryId = category.value,
         date = date,
         amount = amount.value
     )
@@ -118,54 +119,42 @@ fun ExpenseForm(
         addExpenseViewModel.createExpense(expense)
     }
 
-    Log.d("name", name)
-    Log.d("description", description)
-    Log.d("date", date)
-    Log.d("category", category)
-    Log.d("amount", amount.toString())
-
-
-    Column {
-        OutlinedTextField(value = name, onValueChange = { name = it })
-        OutlinedTextField(value = description, onValueChange = { description = it })
-        Row {
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = {
-                    expanded = !expanded
-                }) {
-                TextField(
-                    value = selectedCategory,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier.menuAnchor()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = modifier.fillMaxSize()
+    ) {
+        OutlinedTextField(
+            label = {
+                Text(
+                    text = "Name",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium
                 )
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    if (categoryState.isLoading) {
-                        Box(
-                            modifier = modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    } else {
-                        categoryState.category?.forEach { item ->
-                            DropdownMenuItem(
-                                text = { Text(text = item.name.toString()) },
-                                onClick = {
-                                    selectedCategory = item.name.toString()
-                                    category = item.id.toString()
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
+            },
+            value = name,
+            onValueChange = { name = it },
+            singleLine = true
+        )
+        OutlinedTextField(
+            label = {
+                Text(
+                    text = "Description",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            },
+            value = description,
+            onValueChange = { description = it },
+            singleLine = true,
+            modifier = Modifier.height(100.dp)
+        )
+        Row {
+            Dropdown(
+                expanded = expanded,
+                selectedCategory = selectedCategory,
+                category = category,
+                categoryState = categoryState)
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(imageVector = Icons.Filled.DateRange, contentDescription = "select date")
             }
