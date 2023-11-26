@@ -15,11 +15,12 @@ fun CurrencyTextField(
     TextField(
         value = text.value,
         onValueChange = {
-            if (it.startsWith("0")) {
+            if (it == "") {
                 text.value = ""
                 amount.value = 0.0
             } else {
                 text.value = it
+                println(it)
                 amount.value = it.toDouble()
             }
         },
