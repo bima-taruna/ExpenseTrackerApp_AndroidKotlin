@@ -1,11 +1,13 @@
 package com.bima.expensetrackerapp.presentation.component.form
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import com.bima.expensetrackerapp.common.CurrencyVisualTransformation
 
@@ -43,7 +45,8 @@ fun CurrencyTextField(
         visualTransformation = CurrencyVisualTransformation(),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.NumberPassword
-        )
+        ),
+        modifier = Modifier.fillMaxWidth()
     )
 
 

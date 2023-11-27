@@ -3,6 +3,7 @@ package com.bima.expensetrackerapp.presentation.component.form
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,7 +44,7 @@ fun Dropdown(
             onValueChange = {},
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
-            modifier = Modifier.menuAnchor().fillMaxWidth(0.70f)
+            modifier = Modifier.menuAnchor().fillMaxWidth(0.80f)
         )
         ExposedDropdownMenu(
             expanded = expanded.value,

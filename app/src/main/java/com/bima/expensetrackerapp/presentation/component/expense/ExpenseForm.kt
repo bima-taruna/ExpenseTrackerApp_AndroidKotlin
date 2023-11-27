@@ -64,7 +64,6 @@ fun ExpenseForm(
     val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
-    val context = LocalContext.current
     val expanded = remember { mutableStateOf(false) }
     var name by rememberSaveable {
         mutableStateOf("")
@@ -119,7 +118,7 @@ fun ExpenseForm(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = modifier.fillMaxSize().padding(16.dp)
+        modifier = modifier.fillMaxSize().padding(32.dp)
     ) {
         OutlinedTextField(
             label = {
@@ -131,7 +130,9 @@ fun ExpenseForm(
             },
             value = name,
             onValueChange = { name = it },
-            singleLine = true
+            singleLine = true,
+            isError = name.isEmpty(),
+            modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             label = {
@@ -143,18 +144,19 @@ fun ExpenseForm(
             },
             value = description,
             onValueChange = { description = it },
-            singleLine = true,
-            modifier = Modifier.height(100.dp)
+            singleLine = false,
+            maxLines = 5,
+            modifier = Modifier.height(100.dp).fillMaxWidth()
         )
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Dropdown(
                 expanded = expanded,
                 selectedCategory = selectedCategory,
                 category = category,
                 categoryState = categoryState,
-
             )
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(
@@ -165,7 +167,7 @@ fun ExpenseForm(
         }
         CurrencyTextField(text = currency, amount = amount)
         Button(
-            modifier = Modifier.fillMaxWidth(0.80f),
+            modifier = Modifier.fillMaxWidth(),
             onClick = {
             composableScope.launch {
                 addExpense(expense)
