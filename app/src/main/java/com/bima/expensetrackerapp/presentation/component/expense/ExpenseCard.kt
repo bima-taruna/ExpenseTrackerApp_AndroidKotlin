@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,17 +28,31 @@ fun ExpenseCard(
     state: Expenses,
     modifier: Modifier = Modifier
 ) {
-        Card(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth().height(90.dp).padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Card(
+            onClick = { /*TODO*/ },
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            ),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxWidth().fillMaxHeight().padding(16.dp)
+                modifier = modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(16.dp)
             ) {
                 Column {
                     Text(text = "${state.name}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     Text(text = "${state.date}", style = MaterialTheme.typography.titleSmall)
                 }
-                Text(text = "Rp ${state.amount?.convert()}", style= MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = Color.Red)
+                Text(text = "Rp ${state.amount?.convert()}", style= MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color.Red)
             }
         }
 

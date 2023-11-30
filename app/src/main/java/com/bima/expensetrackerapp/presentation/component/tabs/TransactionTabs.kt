@@ -4,6 +4,7 @@ package com.bima.expensetrackerapp.presentation.component.tabs
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bima.expensetrackerapp.viewmodel.TabIndexViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +29,7 @@ fun TransactionTabs(
     Column(
         modifier = modifier
     ) {
-        TabRow(selectedTabIndex = pagerState.currentPage) {
+        TabRow(selectedTabIndex = pagerState.currentPage, modifier.padding(bottom = 8.dp)) {
             tabsItem().forEachIndexed { index, tabItem ->
                 Tab(
                     selected = index == pagerState.currentPage,
@@ -46,7 +48,8 @@ fun TransactionTabs(
         }
         HorizontalPager(
             pageCount = tabsItem().size,
-            state = pagerState
+            state = pagerState,
+            userScrollEnabled = false
         ) {
             tabsItem()[pagerState.currentPage].screen()
         }
