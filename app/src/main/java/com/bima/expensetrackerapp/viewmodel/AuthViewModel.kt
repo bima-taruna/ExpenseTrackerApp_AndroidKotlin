@@ -10,6 +10,7 @@ import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
+import com.bima.expensetrackerapp.viewmodel.state.form.LoginFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
 import kotlinx.coroutines.flow.Flow
@@ -36,6 +37,8 @@ class AuthViewModel @Inject constructor(
     val session = _session.asStateFlow()
     private val _authState = MutableStateFlow(AuthState())
     val authState = _authState.asStateFlow()
+    private val _loginFormState = MutableStateFlow(LoginFormState())
+    val loginFormState = _loginFormState.asStateFlow()
 
     init {
         getSession()

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ExpenseTrackerApp</string>
+    <string name="email_blank_message">Email can\'t be blank</string>
+    <string name="email_not_valid">That\'s not a valid email</string>
 </resources>
