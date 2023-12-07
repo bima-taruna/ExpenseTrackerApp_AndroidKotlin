@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.presentation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -34,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,6 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
+import com.bima.expensetrackerapp.common.LoginFormEvent
+import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
@@ -59,12 +63,23 @@ fun SignInScreen(
 ) {
     val sessionState by viewModel.session.collectAsState()
     val state by viewModel.authState.collectAsState()
+    val formState by viewModel.loginFormState.collectAsState()
     val context = LocalContext.current
+
     LaunchedEffect(sessionState?.user) {
         if (sessionState?.user != null) {
             navController.popBackStack()
             navController.navigate(Graph.MAIN)
             Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
+        }
+    }
+    LaunchedEffect(key1 = context) {
+        viewModel.validationEvents.collect {event->
+            when(event) {
+                is ValidationEvent.Success -> {
+                    viewModel.onLogin()
+                }
+            }
         }
     }
     Scaffold(
@@ -95,7 +110,7 @@ fun SignInScreen(
                 modifier = modifier
                     .padding(20.dp)
             ) {
-                val email = viewModel.email.collectAsState(initial = "")
+//                val email = viewModel.email.collectAsState(initial = "")
                 val password = viewModel.password.collectAsState()
                 val passwordVisible by rememberSaveable { mutableStateOf(false) }
                 Text(text = "Welcome Back!", style = MaterialTheme.typography.headlineLarge, modifier = modifier.padding(bottom = 12.dp))
@@ -110,14 +125,18 @@ fun SignInScreen(
                     maxLines = 1,
                     shape = RoundedCornerShape(32),
                     modifier = modifier.fillMaxWidth(),
-                    value = email.value,
+                    value = formState.email,
                     onValueChange = {
-                        viewModel.onEmailChange(it)
+                        viewModel.onEvent(LoginFormEvent.EmailChanged(it))
                     },
+                    isError = formState.emailError != null,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     )
                 )
+                if (formState.emailError != null) {
+                    Text(text = formState.emailError!!.asString(context), color = Color.Red)
+                }
                 OutlinedTextField(
                     label = {
                         Text(
@@ -152,14 +171,24 @@ fun SignInScreen(
                     .padding(top = 12.dp, bottom = 8.dp),
                     onClick = {
                         localSoftwareKeyboardController?.hide()
-                            viewModel.onLogin()
-
+//                            viewModel.onLogin()
+                        viewModel.onEvent(LoginFormEvent.Submit)
+                        Log.d("formstate", formState.emailError.toString())
                     }) {
                     Text("Sign in")
                 }
-                Text(text = "Or login with", textAlign = TextAlign.Center, style = MaterialTheme.typography.labelLarge, modifier = modifier.fillMaxWidth().padding(bottom = 16.dp))
+                Text(text = "Or login with", textAlign = TextAlign.Center, style = MaterialTheme.typography.labelLarge, modifier = modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp))
                 Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    IconButton(onClick = { /*TODO*/ }, modifier.size(60.dp).border(1.dp, color = MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(10.dp))) {
+                    IconButton(onClick = { /*TODO*/ },
+                        modifier
+                            .size(60.dp)
+                            .border(
+                                1.dp,
+                                color = MaterialTheme.colorScheme.outline,
+                                shape = RoundedCornerShape(10.dp)
+                            )) {
                             GlideImage(
                                 imageModel = { R.drawable.icons8_google_48 },
                                 imageOptions = ImageOptions(

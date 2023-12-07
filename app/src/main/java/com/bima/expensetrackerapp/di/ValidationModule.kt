@@ -1,6 +1,6 @@
 package com.bima.expensetrackerapp.di
 
-import com.bima.expensetrackerapp.domain.use_case.validation.ValidateEmailUseCase
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
 import com.bima.expensetrackerapp.domain.use_case.validation.ValidationUseCases
 import dagger.Module
 import dagger.Provides
@@ -15,7 +15,7 @@ object ValidationModule {
     @Provides
     fun provideValidationUseCases(): ValidationUseCases {
         return ValidationUseCases(
-            validateEmail = ValidateEmailUseCase()
+            validateEmail = ValidateEmail()
         )
     }
 }

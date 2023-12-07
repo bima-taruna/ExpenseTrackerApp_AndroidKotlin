@@ -4,8 +4,9 @@ import android.util.Patterns
 import com.bima.expensetrackerapp.R
 import com.bima.expensetrackerapp.common.UiText
 import com.bima.expensetrackerapp.common.ValidationResult
+import javax.inject.Inject
 
-class ValidateEmail {
+class ValidateEmail @Inject constructor() {
     fun execute(email:String):ValidationResult{
         if (email.isBlank()) {
             return ValidationResult(

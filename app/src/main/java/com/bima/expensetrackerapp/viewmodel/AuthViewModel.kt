@@ -5,19 +5,24 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
+import com.bima.expensetrackerapp.common.LoginFormEvent
 import com.bima.expensetrackerapp.common.Resource
+import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
 import com.bima.expensetrackerapp.viewmodel.state.form.LoginFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +31,8 @@ class AuthViewModel @Inject constructor(
     private val context : ExpenseTrackerApp,
     private val signInUseCase: SignInUseCase,
     private val getSessionUseCase: GetSessionUseCase,
-    private val signOutUseCase: SignOutUseCase
+    private val signOutUseCase: SignOutUseCase,
+    private val validateEmail: ValidateEmail
 ) : ViewModel() {
 
     private val _email = MutableStateFlow("")
@@ -40,6 +46,10 @@ class AuthViewModel @Inject constructor(
     private val _loginFormState = MutableStateFlow(LoginFormState())
     val loginFormState = _loginFormState.asStateFlow()
 
+    private val validationEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
+
+
     init {
         getSession()
     }
@@ -51,10 +61,22 @@ class AuthViewModel @Inject constructor(
     fun onPasswordChange(password: String) {
         _password.value = password
     }
+    fun onEvent(event:LoginFormEvent) {
+        when (event) {
+            is LoginFormEvent.EmailChanged -> {
+                _loginFormState.value = _loginFormState.value.copy(
+                    email = event.email
+                )
+            }
+            is LoginFormEvent.Submit -> {
+               submitData()
+            }
 
+        }
+    }
   fun onLogin() {
         viewModelScope.launch {
-            signInUseCase.execute(email = _email.value,password = _password.value)
+            signInUseCase.execute(email = _loginFormState.value.email,password = _password.value)
                 .onEach {result ->
                 when(result) {
                     is Resource.Success -> {
@@ -91,6 +113,25 @@ class AuthViewModel @Inject constructor(
             _session.value = null
         } catch (e: Exception) {
             Log.d("Error", e.message.toString())
+        }
+    }
+
+    private fun submitData() {
+        val emailResult = validateEmail.execute(_loginFormState.value.email)
+        val hasError = listOf(
+            emailResult
+        ).any {
+            !it.successful
+        }
+        Log.d("enailResult", emailResult.toString())
+        if (hasError) {
+            _loginFormState.value = _loginFormState.value.copy(
+                emailError = emailResult.errorMessage
+            )
+            return
+        }
+        viewModelScope.launch {
+            validationEventChannel.send(ValidationEvent.Success)
         }
     }
 
