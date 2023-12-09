@@ -1,5 +1,7 @@
 package com.bima.expensetrackerapp.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -11,17 +13,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bima.expensetrackerapp.presentation.navigation.BottomNavigation
 import com.bima.expensetrackerapp.presentation.navigation.MainGraph
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ExpenseTrackerApp(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController:NavHostController = rememberNavController(),
+    rootNavController: NavHostController
 ) {
-    val navController = rememberNavController()
     val bottomNavigationItems = listOf(
         Screen.HomeScreen,
         Screen.StatScreen,
@@ -56,7 +61,7 @@ fun ExpenseTrackerApp(
         },
         content = {innerPadding ->
             Box(modifier = modifier.padding(innerPadding)){
-                MainGraph(navController = navController)
+                MainGraph(navController = navController, rootNavController = rootNavController)
             }
         }
     )

@@ -1,5 +1,7 @@
 package com.bima.expensetrackerapp.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +13,7 @@ import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.component.expense.AddExpense
 import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationTest(
     navController: NavHostController,
@@ -32,7 +35,7 @@ fun NavigationTest(
         composable(
             route = Screen.ProfileScreen.route
         ) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, onNavigateToAuth = {})
         }
         composable(
             route = Screen.SettingScreen.route

@@ -10,9 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.bima.expensetrackerapp.presentation.navigation.AuthScreen
-import com.bima.expensetrackerapp.presentation.navigation.Graph
-import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
@@ -20,13 +17,14 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    onNavigateToAuth : () -> Unit,
     authViewModel: AuthViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sessionState by authViewModel.session.collectAsStateWithLifecycle()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
-
+           onNavigateToAuth()
         }
     }
     Text(text = "Profile Screen")

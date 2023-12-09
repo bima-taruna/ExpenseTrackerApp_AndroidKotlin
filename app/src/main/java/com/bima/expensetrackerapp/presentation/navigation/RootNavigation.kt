@@ -1,11 +1,14 @@
 package com.bima.expensetrackerapp.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.bima.expensetrackerapp.presentation.ExpenseTrackerApp
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RootNavigation(navHostController: NavHostController) {
     NavHost(
@@ -15,7 +18,7 @@ fun RootNavigation(navHostController: NavHostController) {
     ) {
         authNavGraph(navHostController)
         composable(route = Graph.MAIN) {
-            ExpenseTrackerApp()
+            ExpenseTrackerApp(rootNavController = navHostController)
         }
     }
 }
