@@ -1,7 +1,8 @@
 package com.bima.expensetrackerapp.di
 
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
-import com.bima.expensetrackerapp.domain.use_case.validation.ValidationUseCases
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateLoginPassword
+import com.bima.expensetrackerapp.domain.use_case.validation.ValidationLoginUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,9 +14,10 @@ import javax.inject.Singleton
 object ValidationModule {
     @Singleton
     @Provides
-    fun provideValidationUseCases(): ValidationUseCases {
-        return ValidationUseCases(
-            validateEmail = ValidateEmail()
+    fun provideLoginValidationUseCases(): ValidationLoginUseCases {
+        return ValidationLoginUseCases(
+            validateEmail = ValidateEmail(),
+            validatePasswordLogin = ValidateLoginPassword()
         )
     }
 }

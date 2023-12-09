@@ -111,7 +111,7 @@ fun SignInScreen(
                     .padding(20.dp)
             ) {
 //                val email = viewModel.email.collectAsState(initial = "")
-                val password = viewModel.password.collectAsState()
+//                val password = viewModel.password.collectAsState()
                 val passwordVisible by rememberSaveable { mutableStateOf(false) }
                 Text(text = "Welcome Back!", style = MaterialTheme.typography.headlineLarge, modifier = modifier.padding(bottom = 12.dp))
                 OutlinedTextField(
@@ -135,7 +135,7 @@ fun SignInScreen(
                     )
                 )
                 if (formState.emailError != null) {
-                    Text(text = formState.emailError!!.asString(context), color = Color.Red)
+                    Text(text = formState.emailError!!.asString(context), color = MaterialTheme.colorScheme.error)
                 }
                 OutlinedTextField(
                     label = {
@@ -150,16 +150,19 @@ fun SignInScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp),
-                    value = password.value,
+                    value = formState.password,
                     onValueChange = {
-                        viewModel.onPasswordChange(it)
+                        viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
                     },
+                    isError = formState.passwordError != null,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-
                 )
+                if (formState.passwordError != null) {
+                    Text(text = formState.passwordError!!.asString(context), color = MaterialTheme.colorScheme.error)
+                }
                 Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                     TextButton(onClick = { /*TODO*/ }) {
                         Text(text = "Forgot password?")

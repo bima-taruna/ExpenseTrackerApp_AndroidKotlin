@@ -12,12 +12,12 @@ import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateLoginPassword
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
 import com.bima.expensetrackerapp.viewmodel.state.form.LoginFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -32,13 +32,10 @@ class AuthViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
     private val getSessionUseCase: GetSessionUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val validateEmail: ValidateEmail
+    private val validateEmail: ValidateEmail,
+    private val validateLoginPassword: ValidateLoginPassword
 ) : ViewModel() {
 
-    private val _email = MutableStateFlow("")
-    val email: Flow<String> = _email
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
     private val _session = MutableStateFlow<UserSession?>(null)
     val session = _session.asStateFlow()
     private val _authState = MutableStateFlow(AuthState())
@@ -54,13 +51,6 @@ class AuthViewModel @Inject constructor(
         getSession()
     }
 
-    fun onEmailChange(email: String) {
-        _email.value = email
-    }
-
-    fun onPasswordChange(password: String) {
-        _password.value = password
-    }
     fun onEvent(event:LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
@@ -68,6 +58,12 @@ class AuthViewModel @Inject constructor(
                     email = event.email
                 )
             }
+            is LoginFormEvent.PasswordChanged -> {
+                _loginFormState.value = _loginFormState.value.copy(
+                    password = event.password
+                )
+            }
+
             is LoginFormEvent.Submit -> {
                submitData()
             }
@@ -76,7 +72,7 @@ class AuthViewModel @Inject constructor(
     }
   fun onLogin() {
         viewModelScope.launch {
-            signInUseCase.execute(email = _loginFormState.value.email,password = _password.value)
+            signInUseCase.execute(email = _loginFormState.value.email,password = _loginFormState.value.password)
                 .onEach {result ->
                 when(result) {
                     is Resource.Success -> {
@@ -118,15 +114,18 @@ class AuthViewModel @Inject constructor(
 
     private fun submitData() {
         val emailResult = validateEmail.execute(_loginFormState.value.email)
+        val passwordResult = validateLoginPassword.execute(_loginFormState.value.password)
         val hasError = listOf(
-            emailResult
+            emailResult,
+            passwordResult
         ).any {
             !it.successful
         }
         Log.d("enailResult", emailResult.toString())
         if (hasError) {
             _loginFormState.value = _loginFormState.value.copy(
-                emailError = emailResult.errorMessage
+                emailError = emailResult.errorMessage,
+                passwordError = passwordResult.errorMessage
             )
             return
         }

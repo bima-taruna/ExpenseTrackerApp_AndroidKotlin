@@ -4,5 +4,7 @@ import com.bima.expensetrackerapp.common.UiText
 
 data class LoginFormState(
     val email:String = "",
-    val emailError: UiText? = null
+    val emailError: UiText? = null,
+    val password:String = "",
+    val passwordError:UiText? = null
 )
