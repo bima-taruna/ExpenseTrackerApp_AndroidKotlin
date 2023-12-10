@@ -63,11 +63,9 @@ class AuthViewModel @Inject constructor(
                     password = event.password
                 )
             }
-
             is LoginFormEvent.Submit -> {
                submitData()
             }
-
         }
     }
   fun onLogin() {

@@ -41,6 +41,7 @@ import androidx.navigation.NavController
 import com.bima.expensetrackerapp.domain.model.Expense
 import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
 import com.bima.expensetrackerapp.presentation.component.form.Dropdown
+import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
 import com.bima.expensetrackerapp.viewmodel.expense.AddExpenseViewModel
@@ -68,7 +69,7 @@ fun ExpenseForm(
     var name by rememberSaveable {
         mutableStateOf("")
     }
-    var description by rememberSaveable {
+    var description = rememberSaveable {
         mutableStateOf("")
     }
     val datePickerState = rememberDatePickerState()
@@ -105,7 +106,7 @@ fun ExpenseForm(
 
     val expense = Expense(
         name = name,
-        description = description,
+        description = description.value,
         categoryId = category.value,
         date = date,
         amount = amount.value
@@ -118,7 +119,9 @@ fun ExpenseForm(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = modifier.fillMaxSize().padding(32.dp)
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp)
     ) {
         OutlinedTextField(
             label = {
@@ -134,20 +137,7 @@ fun ExpenseForm(
             isError = name.isEmpty(),
             modifier = Modifier.fillMaxWidth()
         )
-        OutlinedTextField(
-            label = {
-                Text(
-                    text = "Description",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            },
-            value = description,
-            onValueChange = { description = it },
-            singleLine = false,
-            maxLines = 5,
-            modifier = Modifier.height(100.dp).fillMaxWidth()
-        )
+        TextArea(description = description)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween

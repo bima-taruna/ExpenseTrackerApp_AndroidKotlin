@@ -110,8 +110,6 @@ fun SignInScreen(
                 modifier = modifier
                     .padding(20.dp)
             ) {
-//                val email = viewModel.email.collectAsState(initial = "")
-//                val password = viewModel.password.collectAsState()
                 val passwordVisible by rememberSaveable { mutableStateOf(false) }
                 Text(text = "Welcome Back!", style = MaterialTheme.typography.headlineLarge, modifier = modifier.padding(bottom = 12.dp))
                 OutlinedTextField(
@@ -174,9 +172,7 @@ fun SignInScreen(
                     .padding(top = 12.dp, bottom = 8.dp),
                     onClick = {
                         localSoftwareKeyboardController?.hide()
-//                            viewModel.onLogin()
                         viewModel.onEvent(LoginFormEvent.Submit)
-                        Log.d("formstate", formState.emailError.toString())
                     }) {
                     Text("Sign in")
                 }
