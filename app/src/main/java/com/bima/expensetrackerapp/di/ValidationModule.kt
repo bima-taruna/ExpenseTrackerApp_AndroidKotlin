@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.di
 
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateLoginPassword
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
@@ -27,7 +28,8 @@ object ValidationModule {
     @Provides
     fun provideTransactionValidationUseCases(): ValidationTransactionUseCases {
         return ValidationTransactionUseCases(
-            validateName = ValidateName()
+            validateName = ValidateName(),
+            validateDate = ValidateDate()
         )
     }
 }
