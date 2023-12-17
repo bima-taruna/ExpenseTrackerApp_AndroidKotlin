@@ -24,7 +24,7 @@ class ValidateAmount @Inject constructor() {
         )
     }
 
-    fun isNumber(value: String): Boolean {
+    private fun isNumber(value: String): Boolean {
         return value.isEmpty() || Regex("^\\d+\$").matches(value)
     }
 }

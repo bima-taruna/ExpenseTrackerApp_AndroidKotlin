@@ -90,6 +90,8 @@ class AuthViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
+
+                    else -> {}
                 }
             }.collect()
         }
