@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.di
 
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
@@ -31,7 +32,8 @@ object ValidationModule {
         return ValidationTransactionUseCases(
             validateName = ValidateName(),
             validateDate = ValidateDate(),
-            validateCategory = ValidateCategory()
+            validateCategory = ValidateCategory(),
+            validateAmount = ValidateAmount()
         )
     }
 }

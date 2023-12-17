@@ -8,4 +8,7 @@
     <string name="name_not_valid">Name is not valid, please make sure there is no numbers or symbol</string>
     <string name="date_blank_message">Please select the date</string>
     <string name="category_blank_message">Please select the category</string>
+    <string name="amount_blank_message">Amount can\'t be blank</string>
+    <string name="amount_not_valid">Amount is not valid</string>
+
 </resources>

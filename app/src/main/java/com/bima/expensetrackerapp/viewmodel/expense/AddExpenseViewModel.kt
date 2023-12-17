@@ -8,6 +8,9 @@ import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.domain.model.Expense
 import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
 import com.bima.expensetrackerapp.viewmodel.state.expense.AddExpenseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +24,9 @@ import javax.inject.Inject
 class AddExpenseViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
     private val createExpenseUseCase: CreateExpenseUseCase,
+    private val validateName: ValidateName,
+    private val validateDate: ValidateDate,
+    private val validateCategory: ValidateCategory
 ) : ViewModel() {
     private val _addExpenseState = MutableStateFlow(AddExpenseState())
     val addExpenseState = _addExpenseState.asStateFlow()
