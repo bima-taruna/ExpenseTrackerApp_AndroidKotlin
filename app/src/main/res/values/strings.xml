@@ -7,4 +7,5 @@
     <string name="name_too_short_message">Name is too short, please put at least 3 character</string>
     <string name="name_not_valid">Name is not valid, please make sure there is no numbers or symbol</string>
     <string name="date_blank_message">Please select the date</string>
+    <string name="category_blank_message">Please select the category</string>
 </resources>
