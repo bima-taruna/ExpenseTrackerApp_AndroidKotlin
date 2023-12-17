@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
-import com.bima.expensetrackerapp.common.LoginFormEvent
+import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
@@ -51,7 +51,7 @@ class AuthViewModel @Inject constructor(
         getSession()
     }
 
-    fun onEvent(event:LoginFormEvent) {
+    fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
                 _loginFormState.value = _loginFormState.value.copy(
@@ -119,7 +119,6 @@ class AuthViewModel @Inject constructor(
         ).any {
             !it.successful
         }
-        Log.d("enailResult", emailResult.toString())
         if (hasError) {
             _loginFormState.value = _loginFormState.value.copy(
                 emailError = emailResult.errorMessage,
