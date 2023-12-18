@@ -17,6 +17,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bima.expensetrackerapp.viewmodel.state.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +26,8 @@ fun Dropdown(
     expanded: MutableState<Boolean>,
     selectedCategory:MutableState<String>,
     category:MutableState<String>,
-    categoryState:CategoryState
+    categoryState:CategoryState,
+    changeValue:() -> Unit
 ) {
     ExposedDropdownMenuBox(
         expanded = expanded.value,
@@ -65,6 +67,7 @@ fun Dropdown(
                             selectedCategory.value = item.name.toString()
                             category.value = item.id.toString()
                             expanded.value = false
+                            changeValue()
                         }
                     )
                 }

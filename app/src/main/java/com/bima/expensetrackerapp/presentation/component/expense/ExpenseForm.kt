@@ -38,6 +38,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.bima.expensetrackerapp.common.ValidationEvent
+import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
 import com.bima.expensetrackerapp.domain.model.Expense
 import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
 import com.bima.expensetrackerapp.presentation.component.form.Dropdown
@@ -63,13 +65,14 @@ fun ExpenseForm(
 ) {
 
     val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
+    val formState by addExpenseViewModel.transactionFormState.collectAsState()
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
     val expanded = remember { mutableStateOf(false) }
-    var name by rememberSaveable {
-        mutableStateOf("")
-    }
-    var description = rememberSaveable {
+    val context = LocalContext.current
+    val addExpenseState by addExpenseViewModel.addExpenseState.collectAsState()
+
+    val description = rememberSaveable {
         mutableStateOf("")
     }
     val datePickerState = rememberDatePickerState()
@@ -79,9 +82,7 @@ fun ExpenseForm(
     var selectedDate by remember {
         mutableStateOf(calendar.timeInMillis)
     }
-    var date by rememberSaveable {
-        mutableStateOf("")
-    }
+
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
@@ -104,16 +105,36 @@ fun ExpenseForm(
 
     val composableScope = rememberCoroutineScope()
 
-    val expense = Expense(
-        name = name,
-        description = description.value,
-        categoryId = category.value,
-        date = date,
-        amount = amount.value
-    )
 
     fun addExpense(expense: Expense) {
         addExpenseViewModel.createExpense(expense)
+    }
+
+    LaunchedEffect(context) {
+       addExpenseViewModel.validationEvents.collect {event->
+           when(event) {
+               is ValidationEvent.Success -> {
+                   addExpense(
+                       Expense(
+                           name = formState.name,
+                           description = description.value,
+                           categoryId = formState.category,
+                           date = formState.date,
+                           amount = amount.value
+                   )
+                   )
+                   if (addExpenseState.expenses == true) {
+                       delay(1000L)
+                    navController.navigate(Graph.MAIN){
+                        popUpTo(Graph.MAIN) {
+                            inclusive = true
+                        }
+                    }
+                   }
+
+               }
+           }
+       }
     }
 
     Column(
@@ -131,12 +152,17 @@ fun ExpenseForm(
                     style = MaterialTheme.typography.titleMedium
                 )
             },
-            value = name,
-            onValueChange = { name = it },
+            value = formState.name,
+            onValueChange = {
+                            addExpenseViewModel.onEvent(TransactionFormEvent.NameChanged(it))
+            },
             singleLine = true,
-            isError = name.isEmpty(),
+            isError = formState.nameError != null,
             modifier = Modifier.fillMaxWidth()
         )
+        if (formState.nameError !=null) {
+            Text(text = formState.nameError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        }
         TextArea(description = description)
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -147,6 +173,9 @@ fun ExpenseForm(
                 selectedCategory = selectedCategory,
                 category = category,
                 categoryState = categoryState,
+                changeValue = {
+                    addExpenseViewModel.onEvent(TransactionFormEvent.CategoryChanged(category.value))
+                }
             )
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(
@@ -155,18 +184,23 @@ fun ExpenseForm(
                     imageVector = Icons.Filled.DateRange, contentDescription = "select date")
             }
         }
-        CurrencyTextField(text = currency, amount = amount)
+        if (formState.categoryError !=null) {
+            Text(text = formState.categoryError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        }
+        if (formState.dateError !=null) {
+            Text(text = formState.dateError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        }
+        CurrencyTextField(text = currency, amount = amount, onValueChange = {
+            addExpenseViewModel.onEvent(TransactionFormEvent.AmountChanged(currency.value))
+        })
+        if (formState.amountError !=null) {
+            Text(text = formState.amountError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        }
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
             composableScope.launch {
-                addExpense(expense)
-                delay(1000L)
-                navController.navigate(Graph.MAIN){
-                    popUpTo(Graph.MAIN) {
-                        inclusive = true
-                    }
-                }
+                addExpenseViewModel.onEvent(TransactionFormEvent.Submit)
             }
         }) {
             Text(text = "Add")
@@ -178,7 +212,7 @@ fun ExpenseForm(
                     TextButton(onClick = {
                         showDatePicker = false
                         selectedDate = datePickerState.selectedDateMillis!!
-                        date = formatter.format(Date(selectedDate))
+                        addExpenseViewModel.onEvent(TransactionFormEvent.DateChanged(formatter.format(Date(selectedDate))))
                     }) {
                         Text(text = "Confirm")
                     }
