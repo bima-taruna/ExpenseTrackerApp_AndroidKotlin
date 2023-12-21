@@ -4,6 +4,6 @@ import com.bima.expensetrackerapp.domain.model.Expenses
 
 data class AddExpenseState(
     val isLoading:Boolean = false,
-    val expenses: Boolean? = null,
+    val expenses: Boolean = false,
     val error:String = ""
 )

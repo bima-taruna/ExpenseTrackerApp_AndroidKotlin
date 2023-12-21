@@ -27,7 +27,8 @@ fun Dropdown(
     selectedCategory:MutableState<String>,
     category:MutableState<String>,
     categoryState:CategoryState,
-    changeValue:() -> Unit
+    changeValue:() -> Unit,
+    isError:Boolean
 ) {
     ExposedDropdownMenuBox(
         expanded = expanded.value,
@@ -45,6 +46,7 @@ fun Dropdown(
             value = selectedCategory.value,
             onValueChange = {},
             readOnly = true,
+            isError = isError,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
             modifier = Modifier.menuAnchor().fillMaxWidth(0.80f)
         )

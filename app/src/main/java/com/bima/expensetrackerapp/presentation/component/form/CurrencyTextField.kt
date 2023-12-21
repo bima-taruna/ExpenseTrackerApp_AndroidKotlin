@@ -15,7 +15,8 @@ import com.bima.expensetrackerapp.common.CurrencyVisualTransformation
 fun CurrencyTextField(
     text: MutableState<String>,
     amount:MutableState<Double>,
-    onValueChange : () -> Unit
+    onValueChange : () -> Unit,
+    isError:Boolean
 ) {
     OutlinedTextField(
         label = {
@@ -25,6 +26,7 @@ fun CurrencyTextField(
                 style = MaterialTheme.typography.titleMedium
             )
         },
+        isError = isError,
         prefix = {
             Text(
                 text = "Rp",

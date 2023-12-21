@@ -79,8 +79,8 @@ class AddExpenseViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _addExpenseState.value = _addExpenseState.value.copy(
-                            isLoading = false,
-                            expenses = true
+                            expenses = true,
+                            isLoading = false
                         )
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }

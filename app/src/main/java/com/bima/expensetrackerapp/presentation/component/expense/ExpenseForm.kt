@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -47,7 +46,6 @@ import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
 import com.bima.expensetrackerapp.viewmodel.expense.AddExpenseViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -61,7 +59,7 @@ fun ExpenseForm(
     modifier: Modifier = Modifier,
     categoryViewModel: CategoryViewModel = hiltViewModel(),
     addExpenseViewModel: AddExpenseViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
 
     val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
@@ -110,31 +108,34 @@ fun ExpenseForm(
         addExpenseViewModel.createExpense(expense)
     }
 
-    LaunchedEffect(context) {
-       addExpenseViewModel.validationEvents.collect {event->
-           when(event) {
-               is ValidationEvent.Success -> {
-                   addExpense(
-                       Expense(
-                           name = formState.name,
-                           description = description.value,
-                           categoryId = formState.category,
-                           date = formState.date,
-                           amount = amount.value
-                   )
-                   )
-                   if (addExpenseState.expenses == true) {
-                       delay(1000L)
-                    navController.navigate(Graph.MAIN){
-                        popUpTo(Graph.MAIN) {
-                            inclusive = true
-                        }
-                    }
-                   }
+    LaunchedEffect(context, addExpenseState) {
+        addExpenseViewModel.validationEvents.collect { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    addExpense(
+                        Expense(
+                            name = formState.name,
+                            description = description.value,
+                            categoryId = formState.category,
+                            date = formState.date,
+                            amount = amount.value
+                        )
+                    )
+                }
+            }
+        }
+    }
 
-               }
-           }
-       }
+
+
+    LaunchedEffect(addExpenseState.expenses) {
+        if (addExpenseState.expenses) {
+            navController.navigate(Graph.MAIN) {
+                popUpTo(Graph.MAIN) {
+                    inclusive = true
+                }
+            }
+        }
     }
 
     Column(
@@ -154,14 +155,17 @@ fun ExpenseForm(
             },
             value = formState.name,
             onValueChange = {
-                            addExpenseViewModel.onEvent(TransactionFormEvent.NameChanged(it))
+                addExpenseViewModel.onEvent(TransactionFormEvent.NameChanged(it))
             },
             singleLine = true,
             isError = formState.nameError != null,
             modifier = Modifier.fillMaxWidth()
         )
-        if (formState.nameError !=null) {
-            Text(text = formState.nameError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        if (formState.nameError != null) {
+            Text(
+                text = formState.nameError!!.asString(context),
+                color = MaterialTheme.colorScheme.error
+            )
         }
         TextArea(description = description)
         Row(
@@ -175,34 +179,49 @@ fun ExpenseForm(
                 categoryState = categoryState,
                 changeValue = {
                     addExpenseViewModel.onEvent(TransactionFormEvent.CategoryChanged(category.value))
-                }
+                },
+                isError = formState.categoryError != null,
             )
             IconButton(onClick = { showDatePicker = true }) {
                 Icon(
                     modifier = modifier.size(50.dp),
                     tint = MaterialTheme.colorScheme.primary,
-                    imageVector = Icons.Filled.DateRange, contentDescription = "select date")
+                    imageVector = Icons.Filled.DateRange, contentDescription = "select date"
+                )
             }
         }
-        if (formState.categoryError !=null) {
-            Text(text = formState.categoryError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        if (formState.categoryError != null) {
+            Text(
+                text = formState.categoryError!!.asString(context),
+                color = MaterialTheme.colorScheme.error
+            )
         }
-        if (formState.dateError !=null) {
-            Text(text = formState.dateError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        if (formState.dateError != null) {
+            Text(
+                text = formState.dateError!!.asString(context),
+                color = MaterialTheme.colorScheme.error
+            )
         }
-        CurrencyTextField(text = currency, amount = amount, onValueChange = {
-            addExpenseViewModel.onEvent(TransactionFormEvent.AmountChanged(currency.value))
-        })
-        if (formState.amountError !=null) {
-            Text(text = formState.amountError!!.asString(context), color = MaterialTheme.colorScheme.error)
+        CurrencyTextField(
+            text = currency,
+            isError = formState.amountError != null,
+            amount = amount,
+            onValueChange = {
+                addExpenseViewModel.onEvent(TransactionFormEvent.AmountChanged(currency.value))
+            })
+        if (formState.amountError != null) {
+            Text(
+                text = formState.amountError!!.asString(context),
+                color = MaterialTheme.colorScheme.error
+            )
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-            composableScope.launch {
-                addExpenseViewModel.onEvent(TransactionFormEvent.Submit)
-            }
-        }) {
+                composableScope.launch {
+                    addExpenseViewModel.onEvent(TransactionFormEvent.Submit)
+                }
+            }) {
             Text(text = "Add")
         }
         if (showDatePicker) {
@@ -212,7 +231,13 @@ fun ExpenseForm(
                     TextButton(onClick = {
                         showDatePicker = false
                         selectedDate = datePickerState.selectedDateMillis!!
-                        addExpenseViewModel.onEvent(TransactionFormEvent.DateChanged(formatter.format(Date(selectedDate))))
+                        addExpenseViewModel.onEvent(
+                            TransactionFormEvent.DateChanged(
+                                formatter.format(
+                                    Date(selectedDate)
+                                )
+                            )
+                        )
                     }) {
                         Text(text = "Confirm")
                     }
