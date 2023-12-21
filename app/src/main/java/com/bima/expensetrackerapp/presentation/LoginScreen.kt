@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.presentation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -58,13 +59,12 @@ fun SignInScreen(
     navController: NavController,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val sessionState by viewModel.session.collectAsState()
     val state by viewModel.authState.collectAsState()
     val formState by viewModel.loginFormState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(sessionState?.user) {
-        if (sessionState?.user != null) {
+    LaunchedEffect(state.isSuccess) {
+        if (state.isSuccess) {
             navController.popBackStack()
             navController.navigate(Graph.MAIN)
             Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
