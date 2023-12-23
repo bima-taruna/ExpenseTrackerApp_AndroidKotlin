@@ -26,7 +26,8 @@ import com.bima.expensetrackerapp.domain.model.Expenses
 @Composable
 fun ExpenseCard(
     state: Expenses,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isIncome:Boolean
 ) {
         Card(
             onClick = { /*TODO*/ },
@@ -48,11 +49,16 @@ fun ExpenseCard(
                     .fillMaxHeight()
                     .padding(16.dp)
             ) {
-                Column {
-                    Text(text = "${state.name}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Text(text = "${state.date}", style = MaterialTheme.typography.titleSmall)
-                }
-                Text(text = "Rp ${state.amount?.convert()}", style= MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color.Red)
+                    Column {
+                        Text(text = "${state.name}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text(text = "${state.date}", style = MaterialTheme.typography.titleSmall)
+                    }
+                    Text(
+                        text = "Rp ${state.amount?.convert()}",
+                        style= MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = if(isIncome) Color.Green else Color.Red
+                    )
             }
         }
 

@@ -10,8 +10,8 @@ import javax.inject.Inject
 class ExpensesRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
 ) : ExpensesRepository {
-    override suspend fun getExpenses(): List<ExpenseDto> {
-        return postgrest["expense"].select(Columns.ALL).decodeList()
+    override suspend fun getTransactions(type:String): List<ExpenseDto> {
+        return postgrest[type].select(Columns.ALL).decodeList()
     }
 
     override suspend fun createExpenses(expense: Expense): Boolean {

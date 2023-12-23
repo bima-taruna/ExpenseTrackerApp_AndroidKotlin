@@ -2,9 +2,6 @@ package com.bima.expensetrackerapp.domain.use_case.expense
 
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.ExpenseDto
-import com.bima.expensetrackerapp.data.remote.toBalance
-import com.bima.expensetrackerapp.domain.model.Balance
-import com.bima.expensetrackerapp.domain.model.Expenses
 import com.bima.expensetrackerapp.domain.repository.ExpensesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +17,7 @@ class GetExpensesUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
             val result = withContext(Dispatchers.IO) {
-                expenseRepository.getExpenses()
+                expenseRepository.getTransactions("expense")
             }
             emit(Resource.Success(result))
 

@@ -17,7 +17,8 @@ import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
 @Composable
 fun MainGraph(
     navController: NavHostController,
-    rootNavController: NavHostController) {
+    rootNavController: NavHostController,
+) {
     NavHost(
         navController = navController,
         route = Graph.MAIN,
@@ -26,7 +27,14 @@ fun MainGraph(
         composable(
             route = Screen.HomeScreen.route
         ) {
-            HomeScreen(navController = navController)
+            HomeScreen(
+                navController = navController,
+                onNavigateToAuth = {
+                    rootNavController.navigate(route = Graph.AUTH) {
+                        popUpTo(Graph.ROOT)
+                    }
+                }
+            )
         }
         composable(
             route = Screen.StatScreen.route
@@ -39,10 +47,10 @@ fun MainGraph(
             ProfileScreen(
                 navController = navController,
                 onNavigateToAuth = {
-                rootNavController.navigate(route = Graph.AUTH) {
-                    popUpTo(Graph.ROOT)
-                }
-            })
+                    rootNavController.navigate(route = Graph.AUTH) {
+                        popUpTo(Graph.ROOT)
+                    }
+                })
         }
         composable(
             route = Screen.SettingScreen.route

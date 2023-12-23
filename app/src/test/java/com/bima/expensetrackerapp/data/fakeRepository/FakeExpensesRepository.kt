@@ -49,7 +49,7 @@ class FakeExpensesRepository:ExpensesRepository {
         createdAt = "1231231"
     )
     val listOfExpense = listOf(expenseResult1,expenseResult2,expenseResult3,expenseResult4)
-    override suspend fun getExpenses(): List<ExpenseDto> {
+    override suspend fun getTransactions(): List<ExpenseDto> {
         return listOfExpense
     }
 

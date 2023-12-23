@@ -29,7 +29,7 @@ fun TransactionList(
             state.expenses?.size?.let {
                 items(it) { i->
                     val expense = state.expenses[i]
-                    ExpenseCard(state = expense)
+                    ExpenseCard(state = expense, isIncome = false)
                 }
             }
         }

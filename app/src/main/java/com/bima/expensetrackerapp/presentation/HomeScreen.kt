@@ -32,16 +32,13 @@ fun HomeScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel(),
+    onNavigateToAuth : () -> Unit,
 ) {
     val sessionState by authViewModel.session.collectAsStateWithLifecycle()
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
     LaunchedEffect(sessionState?.user) {
         if (sessionState == null) {
-            navController.navigate(Graph.AUTH) {
-                popUpTo(0) {
-                    inclusive = true
-                }
-            }
+                onNavigateToAuth()
         }
     }
     val systemUiController = rememberSystemUiController()
