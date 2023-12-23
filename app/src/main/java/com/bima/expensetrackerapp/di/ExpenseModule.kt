@@ -1,10 +1,12 @@
 package com.bima.expensetrackerapp.di
 
-import com.bima.expensetrackerapp.data.repositoryImpl.ExpensesRepositoryImpl
-import com.bima.expensetrackerapp.domain.repository.ExpensesRepository
+import com.bima.expensetrackerapp.data.repositoryImpl.TransactionRepositoryImpl
+import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.ExpenseUseCases
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
+import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
+import com.bima.expensetrackerapp.domain.use_case.income.IncomeUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,16 +19,24 @@ import javax.inject.Singleton
 object ExpenseModule {
     @Provides
     @Singleton
-    fun provideExpensesRepository(postgrest: Postgrest): ExpensesRepository {
-        return ExpensesRepositoryImpl(postgrest)
+    fun provideExpensesRepository(postgrest: Postgrest): TransactionRepository {
+        return TransactionRepositoryImpl(postgrest)
     }
 
     @Singleton
     @Provides
-    fun provideExpenseUseCases(repository: ExpensesRepository): ExpenseUseCases {
+    fun provideExpenseUseCases(repository: TransactionRepository): ExpenseUseCases {
         return ExpenseUseCases(
             getExpenses = GetExpensesUseCase(repository),
             createExpense = CreateExpenseUseCase(repository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideIncomeUseCases(repository: TransactionRepository): IncomeUseCases {
+        return IncomeUseCases(
+            getIncomes = GetIncomesUseCase(repository)
         )
     }
 }

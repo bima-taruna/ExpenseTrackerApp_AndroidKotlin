@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.domain.use_case.expense
+package com.bima.expensetrackerapp.domain.use_case.income
 
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.ExpenseDto
@@ -10,14 +10,14 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
-class GetExpensesUseCase @Inject constructor(
-    private val expenseRepository: TransactionRepository
+class GetIncomesUseCase @Inject constructor(
+    private val transactionRepository: TransactionRepository
 ) {
     suspend fun execute(): Flow<Resource<List<ExpenseDto>>> = flow {
         try {
             emit(Resource.Loading())
             val result = withContext(Dispatchers.IO) {
-                expenseRepository.getTransactions("expense")
+                transactionRepository.getTransactions("income")
             }
             emit(Resource.Success(result))
 

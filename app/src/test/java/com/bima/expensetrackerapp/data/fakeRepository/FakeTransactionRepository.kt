@@ -1,13 +1,10 @@
 package com.bima.expensetrackerapp.data.fakeRepository
 
-import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.ExpenseDto
 import com.bima.expensetrackerapp.domain.model.Expense
-import com.bima.expensetrackerapp.domain.model.Expenses
-import com.bima.expensetrackerapp.domain.repository.ExpensesRepository
-import kotlinx.coroutines.flow.flow
+import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 
-class FakeExpensesRepository:ExpensesRepository {
+class FakeTransactionRepository:TransactionRepository {
     val expenseResult1 = ExpenseDto(
         id = "asdasdasdasd",
         name = "satu",
@@ -49,8 +46,10 @@ class FakeExpensesRepository:ExpensesRepository {
         createdAt = "1231231"
     )
     val listOfExpense = listOf(expenseResult1,expenseResult2,expenseResult3,expenseResult4)
-    override suspend fun getTransactions(): List<ExpenseDto> {
-        return listOfExpense
+
+
+    override suspend fun getTransactions(type: String): List<ExpenseDto> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun createExpenses(expense: Expense): Boolean {

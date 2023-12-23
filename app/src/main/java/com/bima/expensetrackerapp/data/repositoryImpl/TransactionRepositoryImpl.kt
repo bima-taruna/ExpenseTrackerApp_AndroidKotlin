@@ -2,14 +2,14 @@ package com.bima.expensetrackerapp.data.repositoryImpl
 
 import com.bima.expensetrackerapp.data.remote.ExpenseDto
 import com.bima.expensetrackerapp.domain.model.Expense
-import com.bima.expensetrackerapp.domain.repository.ExpensesRepository
+import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.query.Columns
 import javax.inject.Inject
 
-class ExpensesRepositoryImpl @Inject constructor(
+class TransactionRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
-) : ExpensesRepository {
+) : TransactionRepository {
     override suspend fun getTransactions(type:String): List<ExpenseDto> {
         return postgrest[type].select(Columns.ALL).decodeList()
     }
