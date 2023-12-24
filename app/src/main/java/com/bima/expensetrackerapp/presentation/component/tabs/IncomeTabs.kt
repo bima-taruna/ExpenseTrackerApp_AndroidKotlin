@@ -1,9 +1,20 @@
 package com.bima.expensetrackerapp.presentation.component.tabs
 
-import androidx.compose.material3.Text
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bima.expensetrackerapp.presentation.component.TransactionList
+import com.bima.expensetrackerapp.viewmodel.income.IncomeViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun IncomeTabs() {
-    Text(text = "Income")
+fun IncomeTabs(
+    incomeViewModel: IncomeViewModel = hiltViewModel(),
+) {
+    val state by incomeViewModel.incomesState.collectAsStateWithLifecycle()
+    println(state.expens?.toString())
+    TransactionList(state = state, isIncome = true)
 }

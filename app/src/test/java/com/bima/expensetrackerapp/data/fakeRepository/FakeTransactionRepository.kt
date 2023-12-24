@@ -1,11 +1,11 @@
 package com.bima.expensetrackerapp.data.fakeRepository
 
-import com.bima.expensetrackerapp.data.remote.ExpenseDto
+import com.bima.expensetrackerapp.data.remote.TransactionDto
 import com.bima.expensetrackerapp.domain.model.Expense
 import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 
 class FakeTransactionRepository:TransactionRepository {
-    val expenseResult1 = ExpenseDto(
+    val expenseResult1 = TransactionDto(
         id = "asdasdasdasd",
         name = "satu",
         description = null,
@@ -15,7 +15,7 @@ class FakeTransactionRepository:TransactionRepository {
         date = "2023-12-01",
         createdAt = "1231231"
     )
-    val expenseResult2 = ExpenseDto(
+    val expenseResult2 = TransactionDto(
         id = "asdasdasd",
         name = "satu",
         description = null,
@@ -25,7 +25,7 @@ class FakeTransactionRepository:TransactionRepository {
         date = "2023-12-01",
         createdAt = "1231231"
     )
-    val expenseResult3 = ExpenseDto(
+    val expenseResult3 = TransactionDto(
         id = "asdasdasd",
         name = "satu",
         description = null,
@@ -35,7 +35,7 @@ class FakeTransactionRepository:TransactionRepository {
         date = "2023-12-01",
         createdAt = "1231231"
     )
-    val expenseResult4 = ExpenseDto(
+    val expenseResult4 = TransactionDto(
         id = "dasdasdas",
         name = "satu",
         description = null,
@@ -48,11 +48,11 @@ class FakeTransactionRepository:TransactionRepository {
     val listOfExpense = listOf(expenseResult1,expenseResult2,expenseResult3,expenseResult4)
 
 
-    override suspend fun getTransactions(type: String): List<ExpenseDto> {
+    override suspend fun getTransactions(type: String): List<TransactionDto> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createExpenses(expense: Expense): Boolean {
+    override suspend fun createExpenses(transaction: Expense, type: String): Boolean {
         TODO("Not yet implemented")
     }
 

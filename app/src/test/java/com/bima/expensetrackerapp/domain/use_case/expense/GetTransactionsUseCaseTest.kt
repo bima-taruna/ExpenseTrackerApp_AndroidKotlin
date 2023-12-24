@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class GetExpensesUseCaseTest {
+class GetTransactionsUseCaseTest {
     private lateinit var getExpensesUseCase: GetExpensesUseCase
     private lateinit var fakeExpensesRepository: FakeTransactionRepository
 
@@ -19,7 +19,7 @@ class GetExpensesUseCaseTest {
 
     @Test
     fun `Get Expense List`() = runBlocking {
-        val result = fakeExpensesRepository.getTransactions()
+        val result = fakeExpensesRepository.getTransactions("income")
         assertThat(result).isEqualTo(FakeTransactionRepository().listOfExpense)
     }
 }

@@ -1,7 +1,7 @@
 package com.bima.expensetrackerapp.domain.model
 
 
-data class Expenses(
+data class Transactions(
     val id: String?,
     val name:String?,
     val amount: Double?,

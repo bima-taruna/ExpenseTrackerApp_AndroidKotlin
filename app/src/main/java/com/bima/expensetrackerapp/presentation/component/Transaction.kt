@@ -19,6 +19,7 @@ import com.bima.expensetrackerapp.viewmodel.state.expense.ExpensesState
 fun TransactionList(
     state: ExpensesState,
     modifier: Modifier = Modifier,
+    isIncome:Boolean
 ) {
     val lazyColumnListState = rememberLazyListState()
     Box {
@@ -26,10 +27,10 @@ fun TransactionList(
             modifier = modifier.fillMaxSize(),
             state=lazyColumnListState
         ) {
-            state.expenses?.size?.let {
+            state.expens?.size?.let {
                 items(it) { i->
-                    val expense = state.expenses[i]
-                    ExpenseCard(state = expense, isIncome = false)
+                    val expense = state.expens[i]
+                    ExpenseCard(state = expense, isIncome = isIncome)
                 }
             }
         }
@@ -41,7 +42,7 @@ fun TransactionList(
                 CircularProgressIndicator()
             }
         }
-        if (state.expenses?.size?.equals(0) == true) {
+        if (state.expens?.size?.equals(0) == true) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center

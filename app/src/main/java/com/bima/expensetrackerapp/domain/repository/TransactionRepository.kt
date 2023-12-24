@@ -1,9 +1,9 @@
 package com.bima.expensetrackerapp.domain.repository
 
-import com.bima.expensetrackerapp.data.remote.ExpenseDto
+import com.bima.expensetrackerapp.data.remote.TransactionDto
 import com.bima.expensetrackerapp.domain.model.Expense
 
 interface TransactionRepository {
-    suspend fun getTransactions(type:String): List<ExpenseDto>
-    suspend fun createExpenses(expense: Expense):Boolean
+    suspend fun getTransactions(type:String): List<TransactionDto>
+    suspend fun createExpenses(transaction: Expense, type:String):Boolean
 }

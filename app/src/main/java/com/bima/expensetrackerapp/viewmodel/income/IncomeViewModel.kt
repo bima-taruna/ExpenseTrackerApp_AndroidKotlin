@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.viewmodel.expense
+package com.bima.expensetrackerapp.viewmodel.income
 
 import android.util.Log
 import android.widget.Toast
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toTransactions
-import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
+import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
 import com.bima.expensetrackerapp.viewmodel.state.expense.ExpensesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,23 +18,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExpenseViewModel @Inject constructor(
+class IncomeViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
-    private val getExpensesUseCase: GetExpensesUseCase,
+    private val getIncomeUseCase: GetIncomesUseCase,
 ) : ViewModel() {
-    private val _expensesState = MutableStateFlow(ExpensesState())
-    val expensesState = _expensesState.asStateFlow()
+    private val _incomesState = MutableStateFlow(ExpensesState())
+    val incomesState = _incomesState.asStateFlow()
 
     init {
-        getExpenses()
+        getIncomes()
     }
 
-    private fun getExpenses() {
+    private fun getIncomes() {
         viewModelScope.launch {
-            getExpensesUseCase.execute().onEach { result ->
+            getIncomeUseCase.execute().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _expensesState.value = _expensesState.value.copy(
+                        _incomesState.value = _incomesState.value.copy(
                             isLoading = false,
                             expens = result.data?.map {
                                 it.toTransactions()
@@ -45,13 +45,13 @@ class ExpenseViewModel @Inject constructor(
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _expensesState.value = _expensesState.value.copy(
+                        _incomesState.value = _incomesState.value.copy(
                             isLoading = false
                         )
                     }
 
                     is Resource.Loading -> {
-                        _expensesState.value = _expensesState.value.copy(
+                        _incomesState.value = _incomesState.value.copy(
                             isLoading = true
                         )
                     }

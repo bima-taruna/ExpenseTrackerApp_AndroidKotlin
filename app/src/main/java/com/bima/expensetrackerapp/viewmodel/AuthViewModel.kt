@@ -81,8 +81,10 @@ class AuthViewModel @Inject constructor(
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        Log.d("result", result.message.toString())
                         _authState.value = _authState.value.copy(
-                            isLoading = false
+                            isLoading = false,
+                            isSuccess = false
                         )
                     }
                     is Resource.Loading -> {
@@ -90,8 +92,6 @@ class AuthViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
-
-                    else -> {}
                 }
             }.collect()
         }

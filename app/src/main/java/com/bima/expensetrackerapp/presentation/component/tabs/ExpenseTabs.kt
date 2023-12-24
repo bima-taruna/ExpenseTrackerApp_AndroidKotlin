@@ -15,6 +15,6 @@ fun ExpenseTabs(
     expenseViewModel: ExpenseViewModel = hiltViewModel(),
 ) {
     val state by expenseViewModel.expensesState.collectAsStateWithLifecycle()
-    println(state.expenses?.toString())
-    TransactionList(state = state)
+    println(state.expens?.toString())
+    TransactionList(state = state, isIncome = false)
 }

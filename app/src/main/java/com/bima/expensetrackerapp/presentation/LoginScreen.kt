@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
 import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
@@ -61,9 +62,10 @@ fun SignInScreen(
 ) {
     val state by viewModel.authState.collectAsState()
     val formState by viewModel.loginFormState.collectAsState()
+    val sessionState by viewModel.session.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    LaunchedEffect(state.isSuccess) {
+    Log.d("session", sessionState.toString())
+    LaunchedEffect(state.isSuccess || sessionState?.accessToken != null) {
         if (state.isSuccess) {
             navController.popBackStack()
             navController.navigate(Graph.MAIN)

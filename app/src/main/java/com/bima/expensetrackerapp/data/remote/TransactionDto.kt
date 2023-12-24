@@ -3,11 +3,10 @@ package com.bima.expensetrackerapp.data.remote
 import com.bima.expensetrackerapp.domain.model.Expense
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import com.bima.expensetrackerapp.domain.model.Expenses
-import java.util.Date
+import com.bima.expensetrackerapp.domain.model.Transactions
 
 @Serializable
-data class ExpenseDto(
+data class TransactionDto(
     @SerialName("id")
     val id:String? = "",
     @SerialName("name")
@@ -26,8 +25,8 @@ data class ExpenseDto(
     val createdAt:String? = ""
 )
 
-fun ExpenseDto.toExpenses() : Expenses {
-    return Expenses(
+fun TransactionDto.toTransactions() : Transactions {
+    return Transactions(
         id = id,
         name = name,
         amount = amount,
@@ -36,7 +35,7 @@ fun ExpenseDto.toExpenses() : Expenses {
     )
 }
 
-fun ExpenseDto.toExpense(): Expense {
+fun TransactionDto.toExpense(): Expense {
     return Expense(
         id = id,
         name = name,
