@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.viewmodel.expense
+package com.bima.expensetrackerapp.viewmodel.income
 
 import android.util.Log
 import android.widget.Toast
@@ -9,11 +9,11 @@ import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
 import com.bima.expensetrackerapp.domain.model.Expense
-import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
+import com.bima.expensetrackerapp.domain.use_case.income.CreateIncomeUseCase
 import com.bima.expensetrackerapp.viewmodel.state.expense.AddTransactionState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,19 +27,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddExpenseViewModel @Inject constructor(
+class AddIncomeViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
-    private val createExpenseUseCase: CreateExpenseUseCase,
+    private val createIncomeUseCase: CreateIncomeUseCase,
     private val validateName: ValidateName,
     private val validateDate: ValidateDate,
     private val validateCategory: ValidateCategory,
     private val validateAmount: ValidateAmount
 ) : ViewModel() {
-    private val _addExpenseState = MutableStateFlow(AddTransactionState())
-    val addExpenseState = _addExpenseState.asStateFlow()
+    private val _addIncomeState = MutableStateFlow(AddTransactionState())
+    val addIncomeState = _addIncomeState.asStateFlow()
 
-    private val _expenseFormState = MutableStateFlow(TransactionFormState())
-    val expenseFormState = _expenseFormState.asStateFlow()
+    private val _incomeFormState = MutableStateFlow(TransactionFormState())
+    val incomeFormState = _incomeFormState.asStateFlow()
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -47,22 +47,22 @@ class AddExpenseViewModel @Inject constructor(
     fun onEvent(event:TransactionFormEvent) {
         when (event) {
             is TransactionFormEvent.NameChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
+                _incomeFormState.value = _incomeFormState.value.copy(
                     name = event.name
                 )
             }
             is TransactionFormEvent.AmountChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
+                _incomeFormState.value = _incomeFormState.value.copy(
                     amount = event.amount
                 )
             }
             is TransactionFormEvent.CategoryChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
+                _incomeFormState.value = _incomeFormState.value.copy(
                     category = event.category
                 )
             }
             is TransactionFormEvent.DateChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
+                _incomeFormState.value = _incomeFormState.value.copy(
                     date = event.date
                 )
             }
@@ -73,12 +73,12 @@ class AddExpenseViewModel @Inject constructor(
     }
 
 
-    fun createExpense(input:Expense) {
+    fun createIncome(input:Expense) {
         viewModelScope.launch {
-            createExpenseUseCase.execute(input).onEach {result->
+            createIncomeUseCase.execute(input).onEach { result->
                 when(result) {
                     is Resource.Success -> {
-                        _addExpenseState.value = _addExpenseState.value.copy(
+                        _addIncomeState.value = _addIncomeState.value.copy(
                             transaction = true,
                             isLoading = false
                         )
@@ -87,12 +87,12 @@ class AddExpenseViewModel @Inject constructor(
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _addExpenseState.value = _addExpenseState.value.copy(
+                        _addIncomeState.value = _addIncomeState.value.copy(
                             isLoading = false
                         )
                     }
                     is Resource.Loading -> {
-                        _addExpenseState.value = _addExpenseState.value.copy(
+                        _addIncomeState.value = _addIncomeState.value.copy(
                             isLoading = true
                         )
                     }
@@ -102,10 +102,10 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     private fun submitData() {
-        val nameResult = validateName.execute(_expenseFormState.value.name)
-        val dateResult = validateDate.execute(_expenseFormState.value.date)
-        val categoryResult = validateCategory.execute(_expenseFormState.value.category)
-        val amountResult = validateAmount.execute(_expenseFormState.value.amount)
+        val nameResult = validateName.execute(_incomeFormState.value.name)
+        val dateResult = validateDate.execute(_incomeFormState.value.date)
+        val categoryResult = validateCategory.execute(_incomeFormState.value.category)
+        val amountResult = validateAmount.execute(_incomeFormState.value.amount)
         val hasError = listOf(
             nameResult,
             dateResult,
@@ -115,7 +115,7 @@ class AddExpenseViewModel @Inject constructor(
             !it.successful
         }
         if (hasError) {
-            _expenseFormState.value = _expenseFormState.value.copy(
+            _incomeFormState.value = _incomeFormState.value.copy(
                 nameError = nameResult.errorMessage,
                 dateError = dateResult.errorMessage,
                 categoryError = categoryResult.errorMessage,

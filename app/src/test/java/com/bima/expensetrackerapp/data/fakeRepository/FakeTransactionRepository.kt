@@ -52,7 +52,7 @@ class FakeTransactionRepository:TransactionRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createExpenses(transaction: Expense, type: String): Boolean {
+    override suspend fun createTransaction(transaction: Expense, type: String): Boolean {
         TODO("Not yet implemented")
     }
 

@@ -5,6 +5,7 @@ import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.ExpenseUseCases
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
+import com.bima.expensetrackerapp.domain.use_case.income.CreateIncomeUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.IncomeUseCases
 import dagger.Module
@@ -16,7 +17,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object ExpenseModule {
+object TransactionModule {
     @Provides
     @Singleton
     fun provideExpensesRepository(postgrest: Postgrest): TransactionRepository {
@@ -36,7 +37,8 @@ object ExpenseModule {
     @Provides
     fun provideIncomeUseCases(repository: TransactionRepository): IncomeUseCases {
         return IncomeUseCases(
-            getIncomes = GetIncomesUseCase(repository)
+            getIncomes = GetIncomesUseCase(repository),
+            createIncome = CreateIncomeUseCase(repository)
         )
     }
 }

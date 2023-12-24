@@ -8,7 +8,7 @@ import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toTransactions
 import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
-import com.bima.expensetrackerapp.viewmodel.state.expense.ExpensesState
+import com.bima.expensetrackerapp.viewmodel.state.expense.TransactionsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +22,7 @@ class IncomeViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
     private val getIncomeUseCase: GetIncomesUseCase,
 ) : ViewModel() {
-    private val _incomesState = MutableStateFlow(ExpensesState())
+    private val _incomesState = MutableStateFlow(TransactionsState())
     val incomesState = _incomesState.asStateFlow()
 
     init {
@@ -36,7 +36,7 @@ class IncomeViewModel @Inject constructor(
                     is Resource.Success -> {
                         _incomesState.value = _incomesState.value.copy(
                             isLoading = false,
-                            expens = result.data?.map {
+                            transactions = result.data?.map {
                                 it.toTransactions()
                             }
                         )

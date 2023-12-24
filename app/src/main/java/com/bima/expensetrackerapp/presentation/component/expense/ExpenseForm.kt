@@ -63,7 +63,7 @@ fun ExpenseForm(
 ) {
 
     val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
-    val formState by addExpenseViewModel.transactionFormState.collectAsState()
+    val formState by addExpenseViewModel.expenseFormState.collectAsState()
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
     val expanded = remember { mutableStateOf(false) }
@@ -128,8 +128,8 @@ fun ExpenseForm(
 
 
 
-    LaunchedEffect(addExpenseState.expenses) {
-        if (addExpenseState.expenses) {
+    LaunchedEffect(addExpenseState.transaction) {
+        if (addExpenseState.transaction) {
             navController.navigate(Graph.MAIN) {
                 popUpTo(Graph.MAIN) {
                     inclusive = true

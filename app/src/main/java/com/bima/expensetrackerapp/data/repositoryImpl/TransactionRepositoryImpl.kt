@@ -14,7 +14,7 @@ class TransactionRepositoryImpl @Inject constructor(
         return postgrest[type].select(Columns.ALL).decodeList()
     }
 
-    override suspend fun createExpenses(transaction: Expense, type: String): Boolean {
+    override suspend fun createTransaction(transaction: Expense, type: String): Boolean {
         return try {
             val transactionDto = TransactionDto(
                 name = transaction.name,
@@ -23,7 +23,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 date = transaction.date,
                 categoryId = transaction.categoryId,
             )
-            postgrest["expense"].insert(transactionDto)
+            postgrest[type].insert(transactionDto)
             true
         } catch (e:java.lang.Exception) {
             throw e
