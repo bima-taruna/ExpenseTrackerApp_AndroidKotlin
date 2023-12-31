@@ -11,6 +11,7 @@ import com.bima.expensetrackerapp.presentation.ProfileScreen
 import com.bima.expensetrackerapp.presentation.SettingsScreen
 import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.component.expense.AddExpense
+import com.bima.expensetrackerapp.presentation.component.income.AddIncome
 import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -64,7 +65,7 @@ fun MainGraph(
         composable(
             route = Screen.IncomeFormScreen.route
         ) {
-            IncomeForm()
+            AddIncome(navController = navController)
         }
     }
 }
