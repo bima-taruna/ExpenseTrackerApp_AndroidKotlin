@@ -20,7 +20,7 @@ import javax.inject.Singleton
 object TransactionModule {
     @Provides
     @Singleton
-    fun provideExpensesRepository(postgrest: Postgrest): TransactionRepository {
+    fun provideTransactionRepository(postgrest: Postgrest): TransactionRepository {
         return TransactionRepositoryImpl(postgrest)
     }
 

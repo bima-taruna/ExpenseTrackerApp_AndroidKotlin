@@ -24,7 +24,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
@@ -44,8 +42,10 @@ import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
 import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.navigation.Graph
-import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
-import com.bima.expensetrackerapp.viewmodel.expense.AddExpenseViewModel
+import com.bima.expensetrackerapp.viewmodel.state.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.expense.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -55,20 +55,22 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpenseForm(
+fun TransactionForm(
     modifier: Modifier = Modifier,
-    categoryViewModel: CategoryViewModel = hiltViewModel(),
-    addExpenseViewModel: AddExpenseViewModel = hiltViewModel(),
+    categoryState:CategoryState,
+    formState:TransactionFormState,
+    addExpenseState:AddTransactionState,
+    getCategory:() -> Unit,
+    createExpense:(expense:Expense) -> Unit,
+    validationEvent: Flow<ValidationEvent>,
+    onEvent:(event:TransactionFormEvent)->Unit,
     navController: NavController,
 ) {
 
-    val categoryState by categoryViewModel.categoryExpenseState.collectAsState()
-    val formState by addExpenseViewModel.expenseFormState.collectAsState()
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
     val expanded = remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val addExpenseState by addExpenseViewModel.addExpenseState.collectAsState()
 
     val description = rememberSaveable {
         mutableStateOf("")
@@ -97,7 +99,7 @@ fun ExpenseForm(
 
     LaunchedEffect(expanded.value) {
         if (expanded.value) {
-            categoryViewModel.getExpenseCategory()
+            getCategory()
         }
     }
 
@@ -105,11 +107,11 @@ fun ExpenseForm(
 
 
     fun addExpense(expense: Expense) {
-        addExpenseViewModel.createExpense(expense)
+       createExpense(expense)
     }
 
     LaunchedEffect(context, addExpenseState) {
-        addExpenseViewModel.validationEvents.collect { event ->
+        validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
                     addExpense(
@@ -155,7 +157,7 @@ fun ExpenseForm(
             },
             value = formState.name,
             onValueChange = {
-                addExpenseViewModel.onEvent(TransactionFormEvent.NameChanged(it))
+                onEvent(TransactionFormEvent.NameChanged(it))
             },
             singleLine = true,
             isError = formState.nameError != null,
@@ -163,7 +165,7 @@ fun ExpenseForm(
         )
         if (formState.nameError != null) {
             Text(
-                text = formState.nameError!!.asString(context),
+                text = formState.nameError.asString(context),
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -178,7 +180,7 @@ fun ExpenseForm(
                 category = category,
                 categoryState = categoryState,
                 changeValue = {
-                    addExpenseViewModel.onEvent(TransactionFormEvent.CategoryChanged(category.value))
+                    onEvent(TransactionFormEvent.CategoryChanged(category.value))
                 },
                 isError = formState.categoryError != null,
             )
@@ -192,13 +194,13 @@ fun ExpenseForm(
         }
         if (formState.categoryError != null) {
             Text(
-                text = formState.categoryError!!.asString(context),
+                text = formState.categoryError.asString(context),
                 color = MaterialTheme.colorScheme.error
             )
         }
         if (formState.dateError != null) {
             Text(
-                text = formState.dateError!!.asString(context),
+                text = formState.dateError.asString(context),
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -207,11 +209,11 @@ fun ExpenseForm(
             isError = formState.amountError != null,
             amount = amount,
             onValueChange = {
-                addExpenseViewModel.onEvent(TransactionFormEvent.AmountChanged(currency.value))
+                onEvent(TransactionFormEvent.AmountChanged(currency.value))
             })
         if (formState.amountError != null) {
             Text(
-                text = formState.amountError!!.asString(context),
+                text = formState.amountError.asString(context),
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -219,7 +221,7 @@ fun ExpenseForm(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 composableScope.launch {
-                    addExpenseViewModel.onEvent(TransactionFormEvent.Submit)
+                    onEvent(TransactionFormEvent.Submit)
                 }
             }) {
             Text(text = "Add")
@@ -231,7 +233,7 @@ fun ExpenseForm(
                     TextButton(onClick = {
                         showDatePicker = false
                         selectedDate = datePickerState.selectedDateMillis!!
-                        addExpenseViewModel.onEvent(
+                        onEvent(
                             TransactionFormEvent.DateChanged(
                                 formatter.format(
                                     Date(selectedDate)
