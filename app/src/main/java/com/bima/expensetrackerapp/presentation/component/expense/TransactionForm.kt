@@ -83,6 +83,12 @@ fun TransactionForm(
         mutableStateOf(calendar.timeInMillis)
     }
 
+    var date by remember {
+        mutableStateOf("")
+    }
+
+
+
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
@@ -118,8 +124,8 @@ fun TransactionForm(
                         Expense(
                             name = formState.name,
                             description = description.value,
-                            categoryId = formState.category,
-                            date = formState.date,
+                            categoryId = category.value,
+                            date = date,
                             amount = amount.value
                         )
                     )
@@ -233,6 +239,9 @@ fun TransactionForm(
                     TextButton(onClick = {
                         showDatePicker = false
                         selectedDate = datePickerState.selectedDateMillis!!
+                        date =  formatter.format(
+                            Date(selectedDate)
+                        )
                         onEvent(
                             TransactionFormEvent.DateChanged(
                                 formatter.format(

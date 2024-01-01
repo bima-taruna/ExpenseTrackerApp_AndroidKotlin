@@ -41,7 +41,7 @@ fun AddIncome(
     addIncomeViewModel: AddIncomeViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val categoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
+    val categoryState by categoryViewModel.categoryIncomeState.collectAsStateWithLifecycle()
     val formState by addIncomeViewModel.incomeFormState.collectAsStateWithLifecycle()
     val addExpenseState by addIncomeViewModel.addIncomeState.collectAsStateWithLifecycle()
 
