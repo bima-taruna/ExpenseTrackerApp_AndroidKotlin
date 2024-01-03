@@ -238,7 +238,7 @@ fun TransactionForm(
                 confirmButton = {
                     TextButton(onClick = {
                         showDatePicker = false
-                        selectedDate = datePickerState.selectedDateMillis!!
+                        selectedDate = (datePickerState.selectedDateMillis ?: formatter.format(Date())) as Long
                         date =  formatter.format(
                             Date(selectedDate)
                         )

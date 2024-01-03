@@ -30,4 +30,15 @@ class TransactionRepositoryImpl @Inject constructor(
         }
 
     }
+
+    override suspend fun deleteTransaction(id: String, type: String): Boolean {
+        return try {
+            postgrest.from(type).delete {
+                eq("id", id)
+            }
+            true
+        } catch (e:java.lang.Exception) {
+            throw e
+        }
+    }
 }

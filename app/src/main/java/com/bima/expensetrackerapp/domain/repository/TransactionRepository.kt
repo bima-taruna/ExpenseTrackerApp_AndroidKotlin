@@ -6,4 +6,5 @@ import com.bima.expensetrackerapp.domain.model.Expense
 interface TransactionRepository {
     suspend fun getTransactions(type:String): List<TransactionDto>
     suspend fun createTransaction(transaction: Expense, type:String):Boolean
+    suspend fun deleteTransaction(id:String, type: String):Boolean
 }
