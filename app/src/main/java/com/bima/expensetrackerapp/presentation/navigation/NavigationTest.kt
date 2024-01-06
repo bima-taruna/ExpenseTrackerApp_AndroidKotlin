@@ -25,7 +25,7 @@ fun NavigationTest(
         composable(
             route = Screen.HomeScreen.route
         ) {
-            HomeScreen( onNavigateToAuth = {})
+            HomeScreen( onNavigateToAuth = {}, navController = navController)
         }
         composable(
             route = Screen.StatScreen.route

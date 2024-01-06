@@ -28,7 +28,7 @@ class BalanceViewModel @Inject constructor(
        getBalance()
     }
 
-    private fun getBalance() {
+    fun getBalance() {
         viewModelScope.launch {
             getBalanceUseCase.execute().onEach { result->
                 when(result) {

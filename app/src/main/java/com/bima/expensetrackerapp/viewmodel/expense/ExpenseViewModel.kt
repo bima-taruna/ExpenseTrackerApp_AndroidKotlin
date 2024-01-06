@@ -23,7 +23,7 @@ import javax.inject.Inject
 class ExpenseViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
     private val getExpensesUseCase: GetExpensesUseCase,
-    private val deleteExpenseUseCase: DeleteExpenseUseCase
+    private val deleteExpenseUseCase: DeleteExpenseUseCase,
 ) : ViewModel() {
     private val _transactionsState = MutableStateFlow(TransactionsState())
     val expensesState = _transactionsState.asStateFlow()
@@ -66,15 +66,17 @@ class ExpenseViewModel @Inject constructor(
         }
     }
 
-    fun deleteExpense(id:String) {
+    fun deleteExpense(id: String) {
         viewModelScope.launch {
-            deleteExpenseUseCase.execute(id).onEach { result->
+            deleteExpenseUseCase.execute(id).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                      _deleteExpenseState.value = _deleteExpenseState.value.copy(
-                          isLoading = false,
-                          transaction = true
-                      )
+                        _deleteExpenseState.value = _deleteExpenseState.value.copy(
+                            isLoading = false,
+                            transaction = true
+                        )
+                        getExpenses()
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
 
                     is Resource.Error -> {

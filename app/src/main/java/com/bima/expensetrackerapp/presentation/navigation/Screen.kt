@@ -13,4 +13,5 @@ sealed class Screen(val route:String,val name:String ,val icon: ImageVector?) {
     object SettingScreen: Screen("setting_screen","Setting", Icons.Filled.Settings)
     object ExpenseFormScreen: Screen("expense_form","Expense", null)
     object IncomeFormScreen: Screen("income_form","Income", null)
+    object TransactionDetailScreen: Screen("detail_screen/", "detail", icon = null)
 }

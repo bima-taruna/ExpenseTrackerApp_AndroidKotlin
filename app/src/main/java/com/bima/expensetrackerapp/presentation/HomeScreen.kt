@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.BalanceCard
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.tabs.TransactionTabs
@@ -30,6 +31,7 @@ fun HomeScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel(),
     onNavigateToAuth : () -> Unit,
+    navController: NavController
 ) {
     val sessionState by authViewModel.session.collectAsStateWithLifecycle()
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
@@ -81,6 +83,6 @@ fun HomeScreen(
             }
         }
         Spacer(modifier = modifier.padding(10.dp))
-        TransactionTabs()
+        TransactionTabs(navController = navController)
     }
 }

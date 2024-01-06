@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.bima.expensetrackerapp.viewmodel.TabIndexViewModel
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 fun TransactionTabs(
     modifier: Modifier = Modifier,
     tabIndexViewModel: TabIndexViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
@@ -30,7 +32,7 @@ fun TransactionTabs(
         modifier = modifier
     ) {
         TabRow(selectedTabIndex = pagerState.currentPage, modifier.padding(bottom = 8.dp)) {
-            tabsItem().forEachIndexed { index, tabItem ->
+            tabsItem(navController = navController).forEachIndexed { index, tabItem ->
                 Tab(
                     selected = index == pagerState.currentPage,
                     text = {
@@ -47,11 +49,11 @@ fun TransactionTabs(
             }
         }
         HorizontalPager(
-            pageCount = tabsItem().size,
+            pageCount = tabsItem(navController = navController).size,
             state = pagerState,
             userScrollEnabled = false
         ) {
-            tabsItem()[pagerState.currentPage].screen()
+            tabsItem(navController = navController)[pagerState.currentPage].screen()
         }
     }
 }

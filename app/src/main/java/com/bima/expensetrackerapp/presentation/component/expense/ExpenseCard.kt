@@ -25,10 +25,13 @@ import com.bima.expensetrackerapp.domain.model.Transactions
 fun ExpenseCard(
     state: Transactions,
     modifier: Modifier = Modifier,
-    isIncome:Boolean
+    isIncome:Boolean,
+    navigateToDetail:()->Unit
 ) {
         Card(
-            onClick = { /*TODO*/ },
+            onClick = {
+                      navigateToDetail()
+            },
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 10.dp
             ),

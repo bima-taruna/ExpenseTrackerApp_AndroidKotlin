@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.presentation.component.expense
+package com.bima.expensetrackerapp.presentation.component.transaction
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -87,6 +87,10 @@ fun TransactionForm(
         mutableStateOf("")
     }
 
+    var name by remember {
+        mutableStateOf("")
+    }
+
 
 
     val selectedCategory = rememberSaveable {
@@ -122,7 +126,7 @@ fun TransactionForm(
                 is ValidationEvent.Success -> {
                     addExpense(
                         Expense(
-                            name = formState.name,
+                            name = name,
                             description = description.value,
                             categoryId = category.value,
                             date = date,
@@ -161,9 +165,10 @@ fun TransactionForm(
                     style = MaterialTheme.typography.titleMedium
                 )
             },
-            value = formState.name,
+            value = name,
             onValueChange = {
                 onEvent(TransactionFormEvent.NameChanged(it))
+                name = it
             },
             singleLine = true,
             isError = formState.nameError != null,

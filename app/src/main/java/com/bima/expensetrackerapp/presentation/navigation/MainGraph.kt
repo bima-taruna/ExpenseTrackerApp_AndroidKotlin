@@ -13,6 +13,7 @@ import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.component.expense.AddExpense
 import com.bima.expensetrackerapp.presentation.component.income.AddIncome
 import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
+import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -33,8 +34,9 @@ fun MainGraph(
                     rootNavController.navigate(route = Graph.AUTH) {
                         popUpTo(Graph.ROOT)
                     }
-                }
-            )
+                },
+                navController = navController
+                )
         }
         composable(
             route = Screen.StatScreen.route
@@ -66,6 +68,14 @@ fun MainGraph(
             route = Screen.IncomeFormScreen.route
         ) {
             AddIncome(navController = navController)
+        }
+        composable(
+            route = Screen.TransactionDetailScreen.route + "{id}"
+        ) {navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("id")
+            id?.let {
+                TransactionDetail(id = it)
+            }
         }
     }
 }
