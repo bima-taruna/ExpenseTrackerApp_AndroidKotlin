@@ -78,7 +78,6 @@ class ExpenseViewModel @Inject constructor(
                         getExpenses()
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
-
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
@@ -86,7 +85,6 @@ class ExpenseViewModel @Inject constructor(
                             isLoading = false
                         )
                     }
-
                     is Resource.Loading -> {
                         _deleteExpenseState.value = _deleteExpenseState.value.copy(
                             isLoading = true
