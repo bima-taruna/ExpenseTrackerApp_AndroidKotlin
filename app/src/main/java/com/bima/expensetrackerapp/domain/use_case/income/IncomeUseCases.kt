@@ -5,5 +5,6 @@ import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
 
 data class IncomeUseCases(
     val getIncomes: GetIncomesUseCase,
-    val createIncome:CreateIncomeUseCase
+    val createIncome:CreateIncomeUseCase,
+    val deleteIncome:DeleteIncomeUseCase
 )
