@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.presentation.component.transaction
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -91,7 +92,8 @@ fun TransactionForm(
         mutableStateOf("")
     }
 
-
+    Log.d("datestate",datePickerState.selectedDateMillis.toString())
+    Log.d("date",date)
 
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
@@ -243,7 +245,7 @@ fun TransactionForm(
                 confirmButton = {
                     TextButton(onClick = {
                         showDatePicker = false
-                        selectedDate = (datePickerState.selectedDateMillis ?: formatter.format(Date())) as Long
+                        selectedDate = (datePickerState.selectedDateMillis ?: System.currentTimeMillis()) as Long
                         date =  formatter.format(
                             Date(selectedDate)
                         )

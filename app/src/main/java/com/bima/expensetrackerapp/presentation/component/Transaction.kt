@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.expense.ExpenseCard
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.state.expense.TransactionsState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -49,6 +50,7 @@ fun TransactionList(
                         onSwipe = {
                             coroutineScope.launch {
                                 expense.id?.let { it -> swipeToDelete(it) }
+                                delay(1000)
                                 updateData()
                             }
                         },
