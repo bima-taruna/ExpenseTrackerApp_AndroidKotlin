@@ -1,7 +1,6 @@
 package com.bima.expensetrackerapp.presentation.component.transaction
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
-import com.bima.expensetrackerapp.domain.model.Expense
+import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
 import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
@@ -62,7 +61,7 @@ fun TransactionForm(
     formState:TransactionFormState,
     addExpenseState:AddTransactionState,
     getCategory:() -> Unit,
-    createExpense:(expense:Expense) -> Unit,
+    createExpense:(transaction:Transaction) -> Unit,
     validationEvent: Flow<ValidationEvent>,
     onEvent:(event:TransactionFormEvent)->Unit,
     navController: NavController,
@@ -91,10 +90,7 @@ fun TransactionForm(
     var name by remember {
         mutableStateOf("")
     }
-
-    Log.d("datestate",datePickerState.selectedDateMillis.toString())
-    Log.d("date",date)
-
+    
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
@@ -118,8 +114,8 @@ fun TransactionForm(
     val composableScope = rememberCoroutineScope()
 
 
-    fun addExpense(expense: Expense) {
-       createExpense(expense)
+    fun addExpense(transaction: Transaction) {
+       createExpense(transaction)
     }
 
     LaunchedEffect(context, addExpenseState) {
@@ -127,7 +123,7 @@ fun TransactionForm(
             when (event) {
                 is ValidationEvent.Success -> {
                     addExpense(
-                        Expense(
+                        Transaction(
                             name = name,
                             description = description.value,
                             categoryId = category.value,

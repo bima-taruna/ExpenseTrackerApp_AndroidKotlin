@@ -1,7 +1,7 @@
 package com.bima.expensetrackerapp.data.fakeRepository
 
 import com.bima.expensetrackerapp.data.remote.TransactionDto
-import com.bima.expensetrackerapp.domain.model.Expense
+import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 
 class FakeTransactionRepository:TransactionRepository {
@@ -52,7 +52,7 @@ class FakeTransactionRepository:TransactionRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createTransaction(transaction: Expense, type: String): Boolean {
+    override suspend fun createTransaction(transaction: Transaction, type: String): Boolean {
         TODO("Not yet implemented")
     }
 

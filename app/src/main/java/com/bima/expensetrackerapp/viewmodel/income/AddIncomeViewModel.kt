@@ -8,7 +8,7 @@ import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
-import com.bima.expensetrackerapp.domain.model.Expense
+import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
@@ -73,7 +73,7 @@ class AddIncomeViewModel @Inject constructor(
     }
 
 
-    fun createIncome(input:Expense) {
+    fun createIncome(input:Transaction) {
         viewModelScope.launch {
             createIncomeUseCase.execute(input).onEach { result->
                 when(result) {

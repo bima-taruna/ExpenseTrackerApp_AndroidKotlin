@@ -1,6 +1,6 @@
 package com.bima.expensetrackerapp.data.remote
 
-import com.bima.expensetrackerapp.domain.model.Expense
+import com.bima.expensetrackerapp.domain.model.Transaction
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import com.bima.expensetrackerapp.domain.model.Transactions
@@ -35,8 +35,8 @@ fun TransactionDto.toTransactions() : Transactions {
     )
 }
 
-fun TransactionDto.toExpense(): Expense {
-    return Expense(
+fun TransactionDto.toExpense(): Transaction {
+    return Transaction(
         id = id,
         name = name,
         description = description,

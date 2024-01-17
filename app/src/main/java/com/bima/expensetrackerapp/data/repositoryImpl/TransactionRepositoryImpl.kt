@@ -1,20 +1,20 @@
 package com.bima.expensetrackerapp.data.repositoryImpl
 
 import com.bima.expensetrackerapp.data.remote.TransactionDto
-import com.bima.expensetrackerapp.domain.model.Expense
+import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.query.Columns
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
-    private val postgrest: Postgrest
+    private val postgrest: Postgrest,
 ) : TransactionRepository {
-    override suspend fun getTransactions(type:String): List<TransactionDto> {
+    override suspend fun getTransactions(type: String): List<TransactionDto> {
         return postgrest[type].select(Columns.ALL).decodeList()
     }
 
-    override suspend fun createTransaction(transaction: Expense, type: String): Boolean {
+    override suspend fun createTransaction(transaction: Transaction, type: String): Boolean {
         return try {
             val transactionDto = TransactionDto(
                 name = transaction.name,
@@ -25,7 +25,7 @@ class TransactionRepositoryImpl @Inject constructor(
             )
             postgrest[type].insert(transactionDto)
             true
-        } catch (e:java.lang.Exception) {
+        } catch (e: java.lang.Exception) {
             throw e
         }
 
@@ -37,8 +37,35 @@ class TransactionRepositoryImpl @Inject constructor(
                 eq("id", id)
             }
             true
-        } catch (e:java.lang.Exception) {
+        } catch (e: java.lang.Exception) {
             throw e
         }
     }
+
+    override suspend fun updateTransaction(
+        id: String,
+        name: String,
+        description: String,
+        categoryId: String,
+        amount: Double,
+        date: String,
+        type: String,
+    ): Boolean {
+        return try {
+            postgrest.from(type).update({
+                set("name", name)
+                set("description", description)
+                set("categoryId", categoryId)
+                set("amount", amount)
+                set("date", date)
+            }) {
+                eq("id", id)
+            }
+            true
+        } catch (e: java.lang.Exception) {
+            throw e
+        }
+    }
+
+
 }
