@@ -5,6 +5,7 @@ import com.bima.expensetrackerapp.domain.repository.TransactionRepository
 import com.bima.expensetrackerapp.domain.use_case.expense.CreateExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.DeleteExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.ExpenseUseCases
+import com.bima.expensetrackerapp.domain.use_case.expense.GetExpenseByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.CreateIncomeUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.DeleteIncomeUseCase
@@ -31,6 +32,7 @@ object TransactionModule {
     fun provideExpenseUseCases(repository: TransactionRepository): ExpenseUseCases {
         return ExpenseUseCases(
             getExpenses = GetExpensesUseCase(repository),
+            getExpenseById = GetExpenseByIdUseCase(repository),
             createExpense = CreateExpenseUseCase(repository),
             deleteExpense = DeleteExpenseUseCase(repository)
         )
