@@ -9,6 +9,7 @@ import com.bima.expensetrackerapp.domain.use_case.expense.GetExpenseByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.CreateIncomeUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.DeleteIncomeUseCase
+import com.bima.expensetrackerapp.domain.use_case.income.GetIncomeByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.IncomeUseCases
 import dagger.Module
@@ -43,6 +44,7 @@ object TransactionModule {
     fun provideIncomeUseCases(repository: TransactionRepository): IncomeUseCases {
         return IncomeUseCases(
             getIncomes = GetIncomesUseCase(repository),
+            getIncomeById = GetIncomeByIdUseCase(repository),
             createIncome = CreateIncomeUseCase(repository),
             deleteIncome = DeleteIncomeUseCase(repository)
         )
