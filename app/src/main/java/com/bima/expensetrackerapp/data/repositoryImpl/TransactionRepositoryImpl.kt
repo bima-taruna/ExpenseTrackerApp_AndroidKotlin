@@ -14,6 +14,12 @@ class TransactionRepositoryImpl @Inject constructor(
         return postgrest[type].select(Columns.ALL).decodeList()
     }
 
+    override suspend fun getTransactionById(type: String, id: String): TransactionDto {
+        return postgrest[type].select(Columns.ALL) {
+            eq("id", id)
+        }.decodeSingle()
+    }
+
     override suspend fun createTransaction(transaction: Transaction, type: String): Boolean {
         return try {
             val transactionDto = TransactionDto(

@@ -35,7 +35,7 @@ fun TransactionDto.toTransactions() : Transactions {
     )
 }
 
-fun TransactionDto.toExpense(): Transaction {
+fun TransactionDto.toTransaction(): Transaction {
     return Transaction(
         id = id,
         name = name,

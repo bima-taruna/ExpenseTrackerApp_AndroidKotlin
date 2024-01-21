@@ -5,6 +5,7 @@ import com.bima.expensetrackerapp.domain.model.Transaction
 
 interface TransactionRepository {
     suspend fun getTransactions(type:String): List<TransactionDto>
+    suspend fun getTransactionById(type: String, id: String):TransactionDto
     suspend fun createTransaction(transaction: Transaction, type:String):Boolean
     suspend fun deleteTransaction(id:String, type: String):Boolean
     suspend fun updateTransaction(
