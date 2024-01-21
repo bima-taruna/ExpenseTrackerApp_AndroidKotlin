@@ -8,8 +8,10 @@ import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toTransactions
 import com.bima.expensetrackerapp.domain.use_case.income.DeleteIncomeUseCase
+import com.bima.expensetrackerapp.domain.use_case.income.GetIncomeByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
 import com.bima.expensetrackerapp.viewmodel.state.transaction.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,10 +25,14 @@ import javax.inject.Inject
 class IncomeViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
     private val getIncomeUseCase: GetIncomesUseCase,
-    private val deleteIncomeUseCase: DeleteIncomeUseCase
+    private val deleteIncomeUseCase: DeleteIncomeUseCase,
+    private val getIncomeByIdUseCase: GetIncomeByIdUseCase
 ) : ViewModel() {
     private val _incomesState = MutableStateFlow(TransactionsState())
     val incomesState = _incomesState.asStateFlow()
+
+    private val _incomeState = MutableStateFlow(TransactionState())
+    val incomeState = _incomeState.asStateFlow()
 
     private val _deleteIncomeState = MutableStateFlow(AddTransactionState())
     val deleteIncomeState = _deleteIncomeState.asStateFlow();
@@ -59,6 +65,34 @@ class IncomeViewModel @Inject constructor(
                     }
                 }
             }.collect()
+        }
+    }
+
+    fun getIncomeById(id: String) {
+        viewModelScope.launch {
+            getIncomeByIdUseCase.execute(id).onEach { result->
+                when(result){
+                    is Resource.Success -> {
+                        _incomeState.value = _incomeState.value.copy(
+                            isLoading = false,
+                            transaction = result.data
+                        )
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                        Log.d("error", result.message.toString())
+                        _incomeState.value = _incomeState.value.copy(
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _incomeState.value = _incomeState.value.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+            }
         }
     }
 
