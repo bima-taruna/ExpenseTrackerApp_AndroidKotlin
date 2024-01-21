@@ -56,5 +56,19 @@ class FakeTransactionRepository:TransactionRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun deleteTransaction(id: String, type: String): Boolean {
+        TODO("Not yet implemented")
+    }
 
+    override suspend fun updateTransaction(
+        id: String,
+        name: String,
+        description: String,
+        categoryId: String,
+        amount: Double,
+        date: String,
+        type: String,
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
 }

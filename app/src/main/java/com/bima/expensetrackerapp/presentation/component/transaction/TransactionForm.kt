@@ -113,16 +113,15 @@ fun TransactionForm(
 
     val composableScope = rememberCoroutineScope()
 
-
-    fun addExpense(transaction: Transaction) {
-       createExpense(transaction)
+    val addTransaction = { transaction:Transaction ->
+        createExpense(transaction)
     }
 
     LaunchedEffect(context, addExpenseState) {
         validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    addExpense(
+                    addTransaction(
                         Transaction(
                             name = name,
                             description = description.value,
