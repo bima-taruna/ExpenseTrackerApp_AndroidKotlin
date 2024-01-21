@@ -9,8 +9,8 @@ import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toTransactions
 import com.bima.expensetrackerapp.domain.use_case.income.DeleteIncomeUseCase
 import com.bima.expensetrackerapp.domain.use_case.income.GetIncomesUseCase
-import com.bima.expensetrackerapp.viewmodel.state.expense.AddTransactionState
-import com.bima.expensetrackerapp.viewmodel.state.expense.TransactionsState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,11 +31,7 @@ class IncomeViewModel @Inject constructor(
     private val _deleteIncomeState = MutableStateFlow(AddTransactionState())
     val deleteIncomeState = _deleteIncomeState.asStateFlow();
 
-    init {
-        getIncomes()
-    }
-
-    private fun getIncomes() {
+    fun getIncomes() {
         viewModelScope.launch {
             getIncomeUseCase.execute().onEach { result ->
                 when (result) {

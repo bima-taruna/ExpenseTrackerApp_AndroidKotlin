@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.viewmodel.state.expense
+package com.bima.expensetrackerapp.viewmodel.state.transaction
 
 import com.bima.expensetrackerapp.domain.model.Transactions
 

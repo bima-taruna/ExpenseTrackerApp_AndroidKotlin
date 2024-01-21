@@ -3,11 +3,12 @@ package com.bima.expensetrackerapp.presentation.component.tabs
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.bima.expensetrackerapp.presentation.component.TransactionList
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
 import com.bima.expensetrackerapp.viewmodel.income.IncomeViewModel
@@ -20,6 +21,10 @@ fun IncomeTabs(
     navController: NavController,
 ) {
     val state by incomeViewModel.incomesState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    LaunchedEffect(context) {
+        incomeViewModel.getIncomes()
+    }
     println(state.transactions?.toString())
     TransactionList(
         state = state,
@@ -28,7 +33,7 @@ fun IncomeTabs(
         swipeToDelete = {
             incomeViewModel.deleteIncome(it)
         },
-        updateData = {
+        updateBalance = {
             balanceViewModel.getBalance()
         })
 }

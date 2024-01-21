@@ -14,7 +14,7 @@ import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
-import com.bima.expensetrackerapp.viewmodel.state.expense.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.AddTransactionState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

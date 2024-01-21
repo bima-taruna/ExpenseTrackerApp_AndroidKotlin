@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.expense.ExpenseCard
 import com.bima.expensetrackerapp.presentation.navigation.Screen
-import com.bima.expensetrackerapp.viewmodel.state.expense.TransactionsState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionsState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
@@ -34,7 +34,7 @@ fun TransactionList(
     isIncome:Boolean,
     navController: NavController,
     swipeToDelete:(id:String)->Unit,
-    updateData:()->Unit
+    updateBalance:()->Unit
 ) {
     val lazyColumnListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -51,7 +51,7 @@ fun TransactionList(
                             coroutineScope.launch {
                                 expense.id?.let { it -> swipeToDelete(it) }
                                 delay(1000)
-                                updateData()
+                                updateBalance()
                             }
                         },
                         icon = {

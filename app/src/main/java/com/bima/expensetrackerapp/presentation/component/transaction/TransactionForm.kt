@@ -43,7 +43,7 @@ import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.state.CategoryState
-import com.bima.expensetrackerapp.viewmodel.state.expense.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.AddTransactionState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
