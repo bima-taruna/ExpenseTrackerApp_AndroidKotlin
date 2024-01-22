@@ -52,6 +52,10 @@ class FakeTransactionRepository:TransactionRepository {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getTransactionById(type: String, id: String): TransactionDto {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun createTransaction(transaction: Transaction, type: String): Boolean {
         TODO("Not yet implemented")
     }

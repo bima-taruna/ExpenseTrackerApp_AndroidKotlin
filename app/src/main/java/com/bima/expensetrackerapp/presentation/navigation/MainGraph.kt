@@ -70,11 +70,14 @@ fun MainGraph(
             AddIncome(navController = navController)
         }
         composable(
-            route = Screen.TransactionDetailScreen.route + "{id}"
+            route = Screen.TransactionDetailScreen.route + "{type}" + "/" + "{id}"
         ) {navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getString("id")
+            val type = navBackStackEntry.arguments?.getString("type")
             id?.let {
-                TransactionDetail(id = it)
+                if (type != null) {
+                    TransactionDetail(id = it, type = type)
+                }
             }
         }
     }

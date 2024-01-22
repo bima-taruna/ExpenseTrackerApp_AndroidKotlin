@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.presentation.component
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +39,13 @@ fun TransactionList(
 ) {
     val lazyColumnListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    val isThisIncome: () -> String = {
+        if (isIncome) {
+            "income"
+        } else {
+            "expense"
+        }
+    }
     Box {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
@@ -45,11 +53,12 @@ fun TransactionList(
         ) {
             state.transactions?.size?.let {
                 items(it) { i->
-                    val expense = state.transactions[i]
+                    val transactions = state.transactions[i]
+                    Log.d("id", transactions.id.toString())
                     val delete = SwipeAction(
                         onSwipe = {
                             coroutineScope.launch {
-                                expense.id?.let { it -> swipeToDelete(it) }
+                                transactions.id?.let { id -> swipeToDelete(id) }
                                 delay(1000)
                                 updateBalance()
                             }
@@ -63,8 +72,9 @@ fun TransactionList(
                         swipeThreshold = 200.dp,
                         endActions = listOf(delete)
                     ) {
-                        ExpenseCard(state = expense, isIncome = isIncome, navigateToDetail = {
-                            navController.navigate(Screen.TransactionDetailScreen.route + expense.id)
+                        ExpenseCard(state = transactions, isIncome = isIncome, navigateToDetail = {
+                            navController.navigate(
+                                Screen.TransactionDetailScreen.route + isThisIncome() + "/" + transactions.id)
                         })
                     }
                 }

@@ -7,11 +7,11 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route:String,val name:String ,val icon: ImageVector?) {
-    object HomeScreen: Screen("home_screen","Home", Icons.Filled.Home)
-    object StatScreen: Screen("stat_screen","Statistic", Icons.Default.AccountCircle)
-    object ProfileScreen: Screen("profile_screen","Profile", Icons.Filled.AccountCircle)
-    object SettingScreen: Screen("setting_screen","Setting", Icons.Filled.Settings)
-    object ExpenseFormScreen: Screen("expense_form","Expense", null)
-    object IncomeFormScreen: Screen("income_form","Income", null)
-    object TransactionDetailScreen: Screen("detail_screen/", "detail", icon = null)
+    data object HomeScreen: Screen("home_screen","Home", Icons.Filled.Home)
+    data object StatScreen: Screen("stat_screen","Statistic", Icons.Default.AccountCircle)
+    data object ProfileScreen: Screen("profile_screen","Profile", Icons.Filled.AccountCircle)
+    data object SettingScreen: Screen("setting_screen","Setting", Icons.Filled.Settings)
+    data object ExpenseFormScreen: Screen("expense_form","Expense", null)
+    data object IncomeFormScreen: Screen("income_form","Income", null)
+    data object TransactionDetailScreen: Screen("detail_screen/", "detail", icon = null)
 }

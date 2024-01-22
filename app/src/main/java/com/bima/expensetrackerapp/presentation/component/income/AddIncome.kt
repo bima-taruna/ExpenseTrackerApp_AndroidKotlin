@@ -43,7 +43,6 @@ fun AddIncome(
     val categoryState by categoryViewModel.categoryIncomeState.collectAsStateWithLifecycle()
     val formState by addIncomeViewModel.incomeFormState.collectAsStateWithLifecycle()
     val addExpenseState by addIncomeViewModel.addIncomeState.collectAsStateWithLifecycle()
-
     val validationEvent = addIncomeViewModel.validationEvents
 
     Scaffold(

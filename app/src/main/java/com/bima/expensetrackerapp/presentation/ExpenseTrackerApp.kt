@@ -37,13 +37,19 @@ fun ExpenseTrackerApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     when (navBackStackEntry?.destination?.route) {
-        Screen.ExpenseFormScreen.route -> {
-            bottomBarState.value = false
+        Screen.ProfileScreen.route -> {
+            bottomBarState.value = true
         }
-        Screen.IncomeFormScreen.route -> {
-            bottomBarState.value = false
+        Screen.SettingScreen.route -> {
+            bottomBarState.value = true
         }
-        else -> bottomBarState.value = true
+        Screen.HomeScreen.route -> {
+            bottomBarState.value = true
+        }
+        Screen.StatScreen.route -> {
+            bottomBarState.value = true
+        }
+        else -> bottomBarState.value = false
     }
 
     Scaffold(
