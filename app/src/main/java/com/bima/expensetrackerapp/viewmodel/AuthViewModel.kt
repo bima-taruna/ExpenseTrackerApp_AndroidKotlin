@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,14 +55,18 @@ class AuthViewModel @Inject constructor(
     fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
-                _loginFormState.value = _loginFormState.value.copy(
-                    email = event.email
-                )
+                    _loginFormState.update {
+                        it.copy(
+                            email = event.email
+                        )
+                    }
             }
             is LoginFormEvent.PasswordChanged -> {
-                _loginFormState.value = _loginFormState.value.copy(
-                    password = event.password
-                )
+                _loginFormState.update {
+                    it.copy(
+                        password = event.password
+                    )
+                }
             }
             is LoginFormEvent.Submit -> {
                submitData()
@@ -75,22 +80,28 @@ class AuthViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _session.value = getSessionUseCase.execute()
-                        _authState.value = _authState.value.copy(
-                            isSuccess = true
-                        )
+                        _authState.update {
+                            it.copy(
+                                isSuccess = true
+                            )
+                        }
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
                         Log.d("result", result.message.toString())
-                        _authState.value = _authState.value.copy(
-                            isLoading = false,
-                            isSuccess = false
-                        )
+                        _authState.update {
+                            it.copy(
+                                isLoading = false,
+                                isSuccess = false
+                            )
+                        }
                     }
                     is Resource.Loading -> {
-                        _authState.value = _authState.value.copy(
-                            isLoading = true
-                        )
+                        _authState.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
                     }
                 }
             }.collect()
@@ -122,10 +133,12 @@ class AuthViewModel @Inject constructor(
             !it.successful
         }
         if (hasError) {
-            _loginFormState.value = _loginFormState.value.copy(
-                emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage
-            )
+            _loginFormState.update {
+                it.copy(
+                    emailError = emailResult.errorMessage,
+                    passwordError = passwordResult.errorMessage
+                )
+            }
             return
         }
         viewModelScope.launch {

@@ -73,6 +73,7 @@ class ExpenseViewModel @Inject constructor(
             getExpenseByIdUseCase.execute(id).onEach { result->
                 when(result){
                     is Resource.Success -> {
+                        Log.d("from id", "Successs")
                         _transactionState.value = _transactionState.value.copy(
                             isLoading = false,
                             transaction = result.data
@@ -82,7 +83,7 @@ class ExpenseViewModel @Inject constructor(
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
                         _transactionState.value = _transactionState.value.copy(
-                            isLoading = false
+                            isLoading = false,
                         )
                     }
 
@@ -92,7 +93,7 @@ class ExpenseViewModel @Inject constructor(
                         )
                     }
                 }
-            }
+            }.collect()
         }
     }
 

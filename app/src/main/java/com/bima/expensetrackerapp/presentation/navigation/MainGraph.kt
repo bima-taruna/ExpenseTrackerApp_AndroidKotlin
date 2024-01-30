@@ -11,9 +11,9 @@ import com.bima.expensetrackerapp.presentation.ProfileScreen
 import com.bima.expensetrackerapp.presentation.SettingsScreen
 import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.component.expense.AddExpense
+import com.bima.expensetrackerapp.presentation.component.expense.ExpenseDetail
 import com.bima.expensetrackerapp.presentation.component.income.AddIncome
-import com.bima.expensetrackerapp.presentation.component.income.IncomeForm
-import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
+import com.bima.expensetrackerapp.presentation.component.income.IncomeDetail
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -70,15 +70,36 @@ fun MainGraph(
             AddIncome(navController = navController)
         }
         composable(
-            route = Screen.TransactionDetailScreen.route + "{type}" + "/" + "{id}"
+            route = Screen.IncomeFormScreen.route
+        ) {
+            AddIncome(navController = navController)
+        }
+        composable(
+            route = Screen.IncomeDetailScreen.route + "{id}"
         ) {navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getString("id")
-            val type = navBackStackEntry.arguments?.getString("type")
-            id?.let {
-                if (type != null) {
-                    TransactionDetail(id = it, type = type)
-                }
+            if (id != null) {
+                IncomeDetail(id = id)
             }
         }
+        composable(
+            route = Screen.ExpenseDetailScreen.route + "{id}"
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("id")
+            if (id != null) {
+                ExpenseDetail(id = id)
+            }
+        }
+//        composable(
+//            route = Screen.TransactionDetailScreen.route + "{type}" + "/" + "{id}"
+//        ) {navBackStackEntry ->
+//            val id = navBackStackEntry.arguments?.getString("id")
+//            val type = navBackStackEntry.arguments?.getString("type")
+//            id?.let {
+//                if (type != null) {
+//                    TransactionDetail(id = it, type = type)
+//                }
+//            }
+//        }
     }
 }

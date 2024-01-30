@@ -39,11 +39,11 @@ fun TransactionList(
 ) {
     val lazyColumnListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    val isThisIncome: () -> String = {
+    val isThisIncome: (String) -> String = {id->
         if (isIncome) {
-            "income"
+            Screen.IncomeDetailScreen.route + id
         } else {
-            "expense"
+            Screen.ExpenseDetailScreen.route + id
         }
     }
     Box {
@@ -74,7 +74,9 @@ fun TransactionList(
                     ) {
                         ExpenseCard(state = transactions, isIncome = isIncome, navigateToDetail = {
                             navController.navigate(
-                                Screen.TransactionDetailScreen.route + isThisIncome() + "/" + transactions.id)
+//                                Screen.TransactionDetailScreen.route + isThisIncome() + "/" + transactions.id
+                                isThisIncome(transactions.id ?: "")
+                            )
                         })
                     }
                 }

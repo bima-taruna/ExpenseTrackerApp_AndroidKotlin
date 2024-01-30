@@ -92,7 +92,7 @@ class IncomeViewModel @Inject constructor(
                         )
                     }
                 }
-            }
+            }.collect()
         }
     }
 
