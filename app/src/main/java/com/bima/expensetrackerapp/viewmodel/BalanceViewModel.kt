@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,22 +34,24 @@ class BalanceViewModel @Inject constructor(
             getBalanceUseCase.execute().onEach { result->
                 when(result) {
                     is Resource.Success -> {
-                        _balanceState.value = _balanceState.value.copy(
-                            isLoading = false,
-                            balance = result.data
-                        )
+                        _balanceState.update {
+                            it.copy(
+                                isLoading = false,
+                                balance = result.data
+                            )
+                        }
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _balanceState.value = _balanceState.value.copy(
-                            isLoading = false
-                        )
+                        _balanceState.update {
+                            it.copy(isLoading = false)
+                        }
                     }
                     is Resource.Loading -> {
-                        _balanceState.value = _balanceState.value.copy(
-                            isLoading = true
-                        )
+                        _balanceState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()

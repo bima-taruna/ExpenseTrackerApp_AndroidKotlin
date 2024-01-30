@@ -47,7 +47,7 @@ fun TitleScreen(
     val sessionState by viewModel.session.collectAsState()
     val context = LocalContext.current
     val topBottomFade = Brush.verticalGradient( 0.7f to Color.Red, 0.9f to Color.Transparent)
-    LaunchedEffect(sessionState?.user) {
+    LaunchedEffect(context) {
         if (sessionState?.user != null) {
             navController.navigate(Graph.MAIN) {
                 popUpTo(Graph.AUTH) {
