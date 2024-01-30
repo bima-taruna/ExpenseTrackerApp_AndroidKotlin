@@ -3,7 +3,6 @@
 package com.bima.expensetrackerapp.presentation.component.income
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,7 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
-import com.bima.expensetrackerapp.viewmodel.expense.ExpenseViewModel
+import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
 import com.bima.expensetrackerapp.viewmodel.income.IncomeViewModel
 
 @Composable
@@ -74,7 +73,7 @@ fun IncomeDetail(
                     ) {}
                     Card(
                         modifier = modifier
-                            .fillMaxSize(0.90f)
+                            .fillMaxSize()
                             .constrainAs(form) {
                                 top.linkTo(container.top, margin = 16.dp)
                                 start.linkTo(container.start)
@@ -87,7 +86,7 @@ fun IncomeDetail(
                             defaultElevation = 10.dp
                         ),
                     ) {
-
+                        TransactionDetail(state = state)
                     }
                 }
             }

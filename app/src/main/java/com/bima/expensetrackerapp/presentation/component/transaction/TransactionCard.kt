@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.presentation.component.expense
+package com.bima.expensetrackerapp.presentation.component.transaction
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import com.bima.expensetrackerapp.domain.model.Transactions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpenseCard(
+fun TransactionCard(
     state: Transactions,
     modifier: Modifier = Modifier,
     isIncome:Boolean,

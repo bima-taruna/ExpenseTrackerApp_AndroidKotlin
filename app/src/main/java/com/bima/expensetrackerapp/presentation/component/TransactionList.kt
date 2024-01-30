@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.bima.expensetrackerapp.presentation.component.expense.ExpenseCard
+import com.bima.expensetrackerapp.presentation.component.transaction.TransactionCard
 import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionsState
 import kotlinx.coroutines.delay
@@ -72,7 +72,7 @@ fun TransactionList(
                         swipeThreshold = 200.dp,
                         endActions = listOf(delete)
                     ) {
-                        ExpenseCard(state = transactions, isIncome = isIncome, navigateToDetail = {
+                        TransactionCard(state = transactions, isIncome = isIncome, navigateToDetail = {
                             navController.navigate(
 //                                Screen.TransactionDetailScreen.route + isThisIncome() + "/" + transactions.id
                                 isThisIncome(transactions.id ?: "")

@@ -114,6 +114,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+
     suspend fun signOut() {
         try {
             signOutUseCase.execute()
