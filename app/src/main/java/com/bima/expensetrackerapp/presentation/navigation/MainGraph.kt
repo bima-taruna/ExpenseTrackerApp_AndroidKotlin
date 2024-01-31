@@ -79,7 +79,7 @@ fun MainGraph(
         ) {navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getString("id")
             if (id != null) {
-                IncomeDetail(id = id)
+                IncomeDetail(id = id, navController = navController)
             }
         }
         composable(
@@ -87,7 +87,7 @@ fun MainGraph(
         ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getString("id")
             if (id != null) {
-                ExpenseDetail(id = id)
+                ExpenseDetail(id = id, navController = navController)
             }
         }
 //        composable(

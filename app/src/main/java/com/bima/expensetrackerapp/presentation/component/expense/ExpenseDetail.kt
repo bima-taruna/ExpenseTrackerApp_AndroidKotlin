@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
 import com.bima.expensetrackerapp.viewmodel.expense.ExpenseViewModel
@@ -37,6 +38,7 @@ fun ExpenseDetail(
     id: String,
     modifier: Modifier = Modifier,
     expenseViewModel: ExpenseViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val context = LocalContext.current
     val state by expenseViewModel.expenseState.collectAsStateWithLifecycle()
@@ -51,7 +53,7 @@ fun ExpenseDetail(
             CenterAlignedTopAppBar(
                 navigationIcon = {
                     IconButton(onClick = {
-//                        navController.popBackStack()
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.Filled.ArrowBack, "backIcon")
                     }
@@ -88,7 +90,7 @@ fun ExpenseDetail(
                             defaultElevation = 10.dp
                         ),
                     ) {
-                        TransactionDetail(state = state)
+                        TransactionDetail(state = state, isIncome = false)
                     }
                 }
             }
