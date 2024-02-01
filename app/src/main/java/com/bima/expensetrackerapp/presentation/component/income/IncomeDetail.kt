@@ -22,19 +22,24 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.income.IncomeViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun IncomeDetail(
@@ -45,6 +50,7 @@ fun IncomeDetail(
 ) {
     val context = LocalContext.current
     val state by incomeViewModel.incomeState.collectAsStateWithLifecycle()
+    val composableScope = rememberCoroutineScope()
     LaunchedEffect(
         context
     ) {
@@ -64,7 +70,17 @@ fun IncomeDetail(
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(imageVector = Icons.Filled.Edit, contentDescription = "edit")
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        composableScope.launch {
+                            incomeViewModel.deleteIncome(id)
+                            delay(1000)
+                            navController.navigate(Graph.MAIN) {
+                                popUpTo(Graph.MAIN) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }) {
                         Icon(imageVector = Icons.Filled.Delete, contentDescription = "delete")
                     }
                 },
