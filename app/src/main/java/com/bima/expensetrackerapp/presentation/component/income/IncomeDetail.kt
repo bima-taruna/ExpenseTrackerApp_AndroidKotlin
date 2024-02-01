@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -23,11 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
 import com.bima.expensetrackerapp.viewmodel.income.IncomeViewModel
@@ -37,7 +41,7 @@ fun IncomeDetail(
     id: String,
     modifier: Modifier = Modifier,
     incomeViewModel: IncomeViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
     val context = LocalContext.current
     val state by incomeViewModel.incomeState.collectAsStateWithLifecycle()
@@ -54,6 +58,14 @@ fun IncomeDetail(
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Filled.Edit, contentDescription = "edit")
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "delete")
                     }
                 },
                 title = { Text(text = "Income Detail", fontWeight = FontWeight.SemiBold) },
@@ -95,3 +107,4 @@ fun IncomeDetail(
         }
     )
 }
+
