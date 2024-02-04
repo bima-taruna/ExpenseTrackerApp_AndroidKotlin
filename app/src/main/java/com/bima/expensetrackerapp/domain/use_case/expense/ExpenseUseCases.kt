@@ -4,5 +4,6 @@ data class ExpenseUseCases(
     val getExpenses: GetExpensesUseCase,
     val getExpenseById: GetExpenseByIdUseCase,
     val createExpense: CreateExpenseUseCase,
-    val deleteExpense: DeleteExpenseUseCase
+    val deleteExpense: DeleteExpenseUseCase,
+    val updateExpense:UpdateExpenseUseCase
 )

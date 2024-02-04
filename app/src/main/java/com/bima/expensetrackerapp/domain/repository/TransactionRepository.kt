@@ -10,11 +10,7 @@ interface TransactionRepository {
     suspend fun deleteTransaction(id:String, type: String):Boolean
     suspend fun updateTransaction(
         id:String,
-        name:String,
-        description:String,
-        categoryId:String,
-        amount:Double,
-        date:String,
-        type: String
+        data:Transaction,
+        type:String
     ):Boolean
 }

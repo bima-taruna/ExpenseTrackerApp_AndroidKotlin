@@ -50,20 +50,16 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun updateTransaction(
         id: String,
-        name: String,
-        description: String,
-        categoryId: String,
-        amount: Double,
-        date: String,
+        data:Transaction,
         type: String,
     ): Boolean {
         return try {
             postgrest.from(type).update({
-                set("name", name)
-                set("description", description)
-                set("categoryId", categoryId)
-                set("amount", amount)
-                set("date", date)
+                set("name", data.name)
+                set("description", data.description)
+                set("categoryId", data.categoryId)
+                set("amount", data.amount)
+                set("date", data.date)
             }) {
                 eq("id", id)
             }
