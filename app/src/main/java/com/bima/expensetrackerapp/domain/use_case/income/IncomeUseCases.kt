@@ -7,5 +7,6 @@ data class IncomeUseCases(
     val getIncomes: GetIncomesUseCase,
     val getIncomeById: GetIncomeByIdUseCase,
     val createIncome:CreateIncomeUseCase,
-    val deleteIncome:DeleteIncomeUseCase
+    val deleteIncome:DeleteIncomeUseCase,
+    val updateIncome:UpdateIncomeUseCase
 )
