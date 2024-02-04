@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -21,6 +23,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +34,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
+import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.expense.ExpenseViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExpenseDetail(
@@ -42,6 +48,7 @@ fun ExpenseDetail(
 ) {
     val context = LocalContext.current
     val state by expenseViewModel.expenseState.collectAsStateWithLifecycle()
+    val composableScope = rememberCoroutineScope()
     LaunchedEffect(
         context
     ) {
@@ -56,6 +63,24 @@ fun ExpenseDetail(
                         navController.popBackStack()
                     }) {
                         Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Filled.Edit, contentDescription = "edit")
+                    }
+                    IconButton(onClick = {
+                        composableScope.launch {
+                            expenseViewModel.deleteExpense(id)
+                            delay(1000)
+                            navController.navigate(Graph.MAIN) {
+                                popUpTo(Graph.MAIN) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "delete")
                     }
                 },
                 title = { Text(text = "Expense Detail", fontWeight = FontWeight.SemiBold) },
