@@ -14,7 +14,7 @@ import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
-import com.bima.expensetrackerapp.viewmodel.state.transaction.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -35,7 +35,7 @@ class AddExpenseViewModel @Inject constructor(
     private val validateCategory: ValidateCategory,
     private val validateAmount: ValidateAmount
 ) : ViewModel() {
-    private val _addExpenseState = MutableStateFlow(AddTransactionState())
+    private val _addExpenseState = MutableStateFlow(EventTransactionState())
     val addExpenseState = _addExpenseState.asStateFlow()
 
     private val _expenseFormState = MutableStateFlow(TransactionFormState())

@@ -10,7 +10,7 @@ import com.bima.expensetrackerapp.data.remote.toTransactions
 import com.bima.expensetrackerapp.domain.use_case.expense.DeleteExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpenseByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.expense.GetExpensesUseCase
-import com.bima.expensetrackerapp.viewmodel.state.transaction.AddTransactionState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.TransactionsState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +34,7 @@ class ExpenseViewModel @Inject constructor(
     private val _transactionState = MutableStateFlow(TransactionState())
     val expenseState = _transactionState.asStateFlow()
 
-    private val _deleteExpenseState = MutableStateFlow(AddTransactionState())
+    private val _deleteExpenseState = MutableStateFlow(EventTransactionState())
     val deleteExpenseState = _deleteExpenseState.asStateFlow();
 
     fun getExpenses() {
