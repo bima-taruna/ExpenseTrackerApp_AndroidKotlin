@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionForm
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
+import com.bima.expensetrackerapp.presentation.component.transaction.TransactionScaffold
 import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
 import com.bima.expensetrackerapp.viewmodel.income.AddIncomeViewModel
 
@@ -45,68 +46,29 @@ fun AddIncome(
     val addExpenseState by addIncomeViewModel.addIncomeState.collectAsStateWithLifecycle()
     val validationEvent = addIncomeViewModel.validationEvents
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon")
-                    }
-                },
-                title = { Text(text = "Add Income", fontWeight = FontWeight.SemiBold) },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
-            )
-        },
-        content = { paddingValues ->
-            Box(
-                modifier = modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            ) {
-                ConstraintLayout {
-                    val (container, form) = createRefs()
-                    RoundedCornerShapeContainer(
-                        modifier = modifier.constrainAs(container) {}
-                    ) {}
-                    Card(
-                        modifier = modifier
-                            .fillMaxSize(0.90f)
-                            .constrainAs(form) {
-                                top.linkTo(container.top, margin = 16.dp)
-                                start.linkTo(container.start)
-                                end.linkTo(container.end)
-                            },
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.onSecondary
-                        ),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 10.dp
-                        ),
-                    ) {
-                        TransactionForm(
-                            modifier.fillMaxSize(),
-                            navController = navController,
-                            addExpenseState = addExpenseState,
-                            categoryState = categoryState,
-                            formState = formState,
-                            validationEvent = validationEvent,
-                            createExpense = {
-                                addIncomeViewModel.createIncome(it)
-                            },
-                            getCategory = {
-                                categoryViewModel.getIncomeCategory()
-                            },
-                            onEvent = {
-                                addIncomeViewModel.onEvent(it)
-                            }
-                        )
-                    }
-                }
-            }
+    TransactionScaffold(
+        title = "Add Income",
+        hasAction = false,
+        backNavigation = {
+            navController.popBackStack()
         }
-    )
+    ) {
+        TransactionForm(
+            modifier.fillMaxSize(),
+            navController = navController,
+            addExpenseState = addExpenseState,
+            categoryState = categoryState,
+            formState = formState,
+            validationEvent = validationEvent,
+            createExpense = {
+                addIncomeViewModel.createIncome(it)
+            },
+            getCategory = {
+                categoryViewModel.getIncomeCategory()
+            },
+            onEvent = {
+                addIncomeViewModel.onEvent(it)
+            }
+        )
+    }
 }
