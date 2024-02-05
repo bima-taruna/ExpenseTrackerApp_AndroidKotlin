@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
+import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
 import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.domain.use_case.expense.UpdateExpenseUseCase
@@ -15,10 +16,12 @@ import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,6 +40,9 @@ class UpdateExpenseViewModel @Inject constructor(
 
     private val _updateExpenseFormState = MutableStateFlow(TransactionFormState())
     val updateExpenseFormState = _updateExpenseFormState.asStateFlow()
+
+    private val validationEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun onEvent(event:TransactionFormEvent) {
         when(event) {
@@ -61,7 +67,7 @@ class UpdateExpenseViewModel @Inject constructor(
                 }
             }
             is TransactionFormEvent.Submit -> {
-
+                submitData()
             }
         }
     }
@@ -89,6 +95,34 @@ class UpdateExpenseViewModel @Inject constructor(
                     }
                 }
             }.collect()
+        }
+    }
+
+    private fun submitData() {
+        val nameResult = validateName.execute(_updateExpenseFormState.value.name)
+        val dateResult = validateDate.execute(_updateExpenseFormState.value.date)
+        val categoryResult = validateCategory.execute(_updateExpenseFormState.value.category)
+        val amountResult = validateAmount.execute(_updateExpenseFormState.value.amount)
+        val hasError = listOf(
+            nameResult,
+            dateResult,
+            categoryResult,
+            amountResult
+        ).any {
+            !it.successful
+        }
+        if (hasError) {
+            _updateExpenseFormState.value = _updateExpenseFormState.value.copy(
+                nameError = nameResult.errorMessage,
+                dateError = dateResult.errorMessage,
+                categoryError = categoryResult.errorMessage,
+                amountError = amountResult.errorMessage
+            )
+                return
+            }
+            viewModelScope.launch {
+                validationEventChannel.send(ValidationEvent.Success)
+            }
         }
     }
 }
