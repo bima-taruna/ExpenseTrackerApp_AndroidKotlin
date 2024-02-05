@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.RoundedCornerShapeContainer
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
+import com.bima.expensetrackerapp.presentation.component.transaction.TransactionScaffold
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.expense.ExpenseViewModel
 import kotlinx.coroutines.delay
@@ -44,7 +45,7 @@ fun ExpenseDetail(
     id: String,
     modifier: Modifier = Modifier,
     expenseViewModel: ExpenseViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
     val context = LocalContext.current
     val state by expenseViewModel.expenseState.collectAsStateWithLifecycle()
@@ -54,71 +55,24 @@ fun ExpenseDetail(
     ) {
         expenseViewModel.getExpenseById(id)
     }
-    Log.d("state", state.transaction.toString())
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Filled.Edit, contentDescription = "edit")
-                    }
-                    IconButton(onClick = {
-                        composableScope.launch {
-                            expenseViewModel.deleteExpense(id)
-                            delay(1000)
-                            navController.navigate(Graph.MAIN) {
-                                popUpTo(Graph.MAIN) {
-                                    inclusive = true
-                                }
-                            }
-                        }
-                    }) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "delete")
-                    }
-                },
-                title = { Text(text = "Expense Detail", fontWeight = FontWeight.SemiBold) },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
-            )
+    TransactionScaffold(
+        title = "Expense Detail",
+        hasAction = true,
+        backNavigation = {
+            navController.popBackStack()
         },
-        content = { paddingValues ->
-            Box(
-                modifier = modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            ) {
-                ConstraintLayout {
-                    val (container, form) = createRefs()
-                    RoundedCornerShapeContainer(
-                        modifier = modifier.constrainAs(container) {}
-                    ) {}
-                    Card(
-                        modifier = modifier
-                            .fillMaxSize()
-                            .constrainAs(form) {
-                                top.linkTo(container.top, margin = 16.dp)
-                                start.linkTo(container.start)
-                                end.linkTo(container.end)
-                            },
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.onSecondary
-                        ),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 10.dp
-                        ),
-                    ) {
-                        TransactionDetail(state = state, isIncome = false)
+        delete = {
+            composableScope.launch {
+                expenseViewModel.deleteExpense(id)
+                delay(1000)
+                navController.navigate(Graph.MAIN) {
+                    popUpTo(Graph.MAIN) {
+                        inclusive = true
                     }
                 }
             }
         }
-    )
+    ) {
+        TransactionDetail(state = state, isIncome = false)
+    }
 }

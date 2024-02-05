@@ -79,7 +79,7 @@ fun TransactionScaffold(
                     ) {}
                     Card(
                         modifier = modifier
-                            .fillMaxSize(0.90f)
+                            .fillMaxSize(if (hasAction) 0.90f else 1f)
                             .constrainAs(form) {
                                 top.linkTo(container.top, margin = 16.dp)
                                 start.linkTo(container.start)
