@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
+import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
 import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.domain.use_case.expense.UpdateExpenseUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateCategory
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateDate
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
+import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +34,37 @@ class UpdateExpenseViewModel @Inject constructor(
 ): ViewModel() {
     private val _updateExpenseState = MutableStateFlow(EventTransactionState())
     val updateExpenseState = _updateExpenseState.asStateFlow()
+
+    private val _updateExpenseFormState = MutableStateFlow(TransactionFormState())
+    val updateExpenseFormState = _updateExpenseFormState.asStateFlow()
+
+    fun onEvent(event:TransactionFormEvent) {
+        when(event) {
+            is TransactionFormEvent.NameChanged -> {
+                _updateExpenseFormState.update {
+                    it.copy(name = event.name)
+                }
+            }
+            is TransactionFormEvent.AmountChanged -> {
+                _updateExpenseFormState.update {
+                    it.copy(amount = event.amount)
+                }
+            }
+            is TransactionFormEvent.CategoryChanged -> {
+                _updateExpenseFormState.update {
+                    it.copy(category = event.category)
+                }
+            }
+            is TransactionFormEvent.DateChanged -> {
+                _updateExpenseFormState.update {
+                    it.copy(date = event.date)
+                }
+            }
+            is TransactionFormEvent.Submit -> {
+
+            }
+        }
+    }
 
     fun updateExpense(id:String, input:Transaction) {
         viewModelScope.launch {
