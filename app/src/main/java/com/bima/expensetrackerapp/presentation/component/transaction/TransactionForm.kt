@@ -60,20 +60,20 @@ fun TransactionForm(
     categoryState:CategoryState,
     formState:TransactionFormState,
     addExpenseState:EventTransactionState,
+    state:Transaction? = null,
     getCategory:() -> Unit,
     createExpense:(transaction:Transaction) -> Unit,
     validationEvent: Flow<ValidationEvent>,
     onEvent:(event:TransactionFormEvent)->Unit,
     navController: NavController,
 ) {
-
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
     val expanded = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     val description = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(state?.description ?: "")
     }
     val datePickerState = rememberDatePickerState()
     var showDatePicker by remember {
@@ -84,25 +84,25 @@ fun TransactionForm(
     }
 
     var date by remember {
-        mutableStateOf("")
+        mutableStateOf(state?.date ?: "")
     }
 
     var name by remember {
-        mutableStateOf("")
+        mutableStateOf(state?.name ?: "")
     }
     
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
     val category = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(state?.categoryId ?: "")
     }
     val currency = rememberSaveable {
         mutableStateOf("")
     }
 
     val amount = rememberSaveable {
-        mutableStateOf(0.0)
+        mutableStateOf(state?.amount ?: 0.0)
     }
 
     LaunchedEffect(expanded.value) {
@@ -246,9 +246,7 @@ fun TransactionForm(
                         )
                         onEvent(
                             TransactionFormEvent.DateChanged(
-                                formatter.format(
-                                    Date(selectedDate)
-                                )
+                               date
                             )
                         )
                     }) {

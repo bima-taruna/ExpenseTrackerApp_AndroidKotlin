@@ -12,6 +12,7 @@ import com.bima.expensetrackerapp.presentation.SettingsScreen
 import com.bima.expensetrackerapp.presentation.StatisticScreen
 import com.bima.expensetrackerapp.presentation.component.expense.AddExpense
 import com.bima.expensetrackerapp.presentation.component.expense.ExpenseDetail
+import com.bima.expensetrackerapp.presentation.component.expense.UpdateExpense
 import com.bima.expensetrackerapp.presentation.component.income.AddIncome
 import com.bima.expensetrackerapp.presentation.component.income.IncomeDetail
 
@@ -88,6 +89,14 @@ fun MainGraph(
             val id = navBackStackEntry.arguments?.getString("id")
             if (id != null) {
                 ExpenseDetail(id = id, navController = navController)
+            }
+        }
+        composable(
+            route = Screen.UpdateExpenseScreen.route + "{id}"
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("id")
+            if (id != null) {
+                UpdateExpense(id = id, navController = navController)
             }
         }
 //        composable(
