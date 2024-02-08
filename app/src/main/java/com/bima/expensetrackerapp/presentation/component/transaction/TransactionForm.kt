@@ -39,6 +39,7 @@ import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.form_event.TransactionFormEvent
 import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
+import com.bima.expensetrackerapp.presentation.component.form.DatePickerCustom
 import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.component.form.TextField
@@ -58,16 +59,16 @@ import java.util.Locale
 @Composable
 fun TransactionForm(
     modifier: Modifier = Modifier,
-    categoryState:CategoryState,
-    formState:TransactionFormState,
-    addExpenseState:EventTransactionState,
-    state:Transaction? = null,
-    isUpdate:Boolean = false,
-    getCategory:() -> Unit,
-    createExpense:(transaction:Transaction) -> Unit = {},
-    updateExpense:(id:String,transaction:Transaction) -> Unit = { s: String, transaction: Transaction -> },
+    categoryState: CategoryState,
+    formState: TransactionFormState,
+    addExpenseState: EventTransactionState,
+    state: Transaction? = null,
+    isUpdate: Boolean = false,
+    getCategory: () -> Unit,
+    createExpense: (transaction: Transaction) -> Unit = {},
+    updateExpense: (id: String, transaction: Transaction) -> Unit = { s: String, transaction: Transaction -> },
     validationEvent: Flow<ValidationEvent>,
-    onEvent:(event:TransactionFormEvent)->Unit,
+    onEvent: (event: TransactionFormEvent) -> Unit,
     navController: NavController,
 ) {
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
@@ -93,7 +94,7 @@ fun TransactionForm(
     var name by remember {
         mutableStateOf(state?.name ?: "")
     }
-    
+
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
@@ -116,19 +117,19 @@ fun TransactionForm(
 
     val composableScope = rememberCoroutineScope()
 
-    val addTransaction = { transaction:Transaction ->
+    val addTransaction = { transaction: Transaction ->
         createExpense(transaction)
     }
 
-    val updateTransaction = { id:String, transaction:Transaction ->
-        updateExpense(id,transaction)
+    val updateTransaction = { id: String, transaction: Transaction ->
+        updateExpense(id, transaction)
     }
 
     LaunchedEffect(context, addExpenseState) {
         validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    if(isUpdate) {
+                    if (isUpdate) {
                         state?.id?.let {
                             updateTransaction(
                                 it, Transaction(
@@ -155,8 +156,6 @@ fun TransactionForm(
             }
         }
     }
-
-
 
     LaunchedEffect(addExpenseState.transaction) {
         if (addExpenseState.transaction) {
@@ -248,36 +247,28 @@ fun TransactionForm(
             Text(text = if (isUpdate) "Update" else "Add")
         }
         if (showDatePicker) {
-            DatePickerDialog(
-                onDismissRequest = { showDatePicker = false },
-                confirmButton = {
-                    TextButton(onClick = {
-                        showDatePicker = false
-                        selectedDate = (datePickerState.selectedDateMillis ?: System.currentTimeMillis()) as Long
-                        date =  formatter.format(
-                            Date(selectedDate)
+            DatePickerCustom(
+                confirmDate = {
+                    showDatePicker = false
+                    selectedDate =
+                        (datePickerState.selectedDateMillis ?: System.currentTimeMillis()) as Long
+                    date = formatter.format(
+                        Date(selectedDate)
+                    )
+                    onEvent(
+                        TransactionFormEvent.DateChanged(
+                            date
                         )
-                        onEvent(
-                            TransactionFormEvent.DateChanged(
-                               date
-                            )
-                        )
-                    }) {
-                        Text(text = "Confirm")
-                    }
+                    )
                 },
-                dismissButton = {
-                    TextButton(onClick = {
-                        showDatePicker = false
-                    }) {
-                        Text(text = "Cancel")
-                    }
-                }
-            ) {
-                DatePicker(
-                    state = datePickerState,
-                )
-            }
+                dismissRequest = {
+                    showDatePicker = false
+                },
+                dismiss = {
+                    showDatePicker = false
+                },
+                state = datePickerState
+            )
         }
     }
 }
