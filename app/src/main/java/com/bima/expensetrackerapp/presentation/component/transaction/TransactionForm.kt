@@ -41,6 +41,7 @@ import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
 import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
+import com.bima.expensetrackerapp.presentation.component.form.TextField
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.state.CategoryState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
@@ -61,8 +62,10 @@ fun TransactionForm(
     formState:TransactionFormState,
     addExpenseState:EventTransactionState,
     state:Transaction? = null,
+    isUpdate:Boolean = false,
     getCategory:() -> Unit,
-    createExpense:(transaction:Transaction) -> Unit,
+    createExpense:(transaction:Transaction) -> Unit = {},
+    updateExpense:(id:String,transaction:Transaction) -> Unit = { s: String, transaction: Transaction -> },
     validationEvent: Flow<ValidationEvent>,
     onEvent:(event:TransactionFormEvent)->Unit,
     navController: NavController,
@@ -117,19 +120,37 @@ fun TransactionForm(
         createExpense(transaction)
     }
 
+    val updateTransaction = { id:String, transaction:Transaction ->
+        updateExpense(id,transaction)
+    }
+
     LaunchedEffect(context, addExpenseState) {
         validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    addTransaction(
-                        Transaction(
-                            name = name,
-                            description = description.value,
-                            categoryId = category.value,
-                            date = date,
-                            amount = amount.value
+                    if(isUpdate) {
+                        state?.id?.let {
+                            updateTransaction(
+                                it, Transaction(
+                                    name = name,
+                                    description = description.value,
+                                    categoryId = category.value,
+                                    date = date,
+                                    amount = amount.value
+                                )
+                            )
+                        }
+                    } else {
+                        addTransaction(
+                            Transaction(
+                                name = name,
+                                description = description.value,
+                                categoryId = category.value,
+                                date = date,
+                                amount = amount.value
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -154,22 +175,14 @@ fun TransactionForm(
             .fillMaxSize()
             .padding(32.dp)
     ) {
-        OutlinedTextField(
-            label = {
-                Text(
-                    text = "Name",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            },
-            value = name,
+        TextField(
+            label = "Name",
             onValueChange = {
                 onEvent(TransactionFormEvent.NameChanged(it))
                 name = it
             },
-            singleLine = true,
             isError = formState.nameError != null,
-            modifier = Modifier.fillMaxWidth()
+            value = name
         )
         if (formState.nameError != null) {
             Text(
@@ -232,7 +245,7 @@ fun TransactionForm(
                     onEvent(TransactionFormEvent.Submit)
                 }
             }) {
-            Text(text = "Add")
+            Text(text = if (isUpdate) "Update" else "Add")
         }
         if (showDatePicker) {
             DatePickerDialog(
