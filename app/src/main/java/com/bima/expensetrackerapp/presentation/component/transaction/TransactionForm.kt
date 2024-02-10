@@ -1,7 +1,6 @@
 package com.bima.expensetrackerapp.presentation.component.transaction
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,8 +41,8 @@ import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.component.form.TextField
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.state.CategoryState
-import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -64,7 +63,7 @@ fun TransactionForm(
     isUpdate: Boolean = false,
     getCategory: () -> Unit,
     createExpense: (transaction: Transaction) -> Unit = {},
-    updateExpense: (id: String, transaction: Transaction) -> Unit = { s: String, transaction: Transaction -> },
+    updateExpense: (id: String, transaction: Transaction) -> Unit = { _: String, _: Transaction -> },
     validationEvent: Flow<ValidationEvent>,
     onEvent: (event: TransactionFormEvent) -> Unit,
     navController: NavController,
@@ -107,9 +106,16 @@ fun TransactionForm(
         mutableStateOf(0.0)
     }
 
-    val updateNow = rememberSaveable {
-        mutableStateOf(false)
+    val composableScope = rememberCoroutineScope()
+
+    val addTransaction = { transaction: Transaction ->
+        createExpense(transaction)
     }
+
+    val updateTransaction = { s: String, transaction: Transaction ->
+        updateExpense(s, transaction)
+    }
+
     LaunchedEffect(state) {
         name = state?.name  ?: ""
         description.value = state?.description ?: ""
@@ -127,16 +133,6 @@ fun TransactionForm(
         if (expanded.value) {
             getCategory()
         }
-    }
-
-    val composableScope = rememberCoroutineScope()
-
-    val addTransaction = { transaction: Transaction ->
-        createExpense(transaction)
-    }
-
-    val updateTransaction = { s: String, transaction: Transaction ->
-        updateExpense(s, transaction)
     }
 
     LaunchedEffect(addExpenseState) {
@@ -236,7 +232,6 @@ fun TransactionForm(
         }
         CurrencyTextField(
             text = currency,
-            amountState = state?.amount,
             isError = formState.amountError != null,
             amount = amount,
             onValueChange = {
@@ -252,11 +247,7 @@ fun TransactionForm(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 composableScope.launch {
-                    if (isUpdate) {
-                        updateNow.value = true
-                    }
                     onEvent(TransactionFormEvent.Submit)
-                    Log.d("error", addExpenseState.error)
                 }
             }) {
             Text(text = if (isUpdate) "Update" else "Add")
