@@ -15,6 +15,7 @@ import com.bima.expensetrackerapp.presentation.component.expense.ExpenseDetail
 import com.bima.expensetrackerapp.presentation.component.expense.UpdateExpense
 import com.bima.expensetrackerapp.presentation.component.income.AddIncome
 import com.bima.expensetrackerapp.presentation.component.income.IncomeDetail
+import com.bima.expensetrackerapp.presentation.component.income.UpdateIncome
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -84,6 +85,14 @@ fun MainGraph(
             }
         }
         composable(
+            route = Screen.UpdateIncomeScreen.route + "{id}"
+        ) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("id")
+            if (id != null) {
+                UpdateIncome(id = id, navController = navController)
+            }
+        }
+        composable(
             route = Screen.ExpenseDetailScreen.route + "{id}"
         ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getString("id")
@@ -99,16 +108,5 @@ fun MainGraph(
                 UpdateExpense(id = id, navController = navController)
             }
         }
-//        composable(
-//            route = Screen.TransactionDetailScreen.route + "{type}" + "/" + "{id}"
-//        ) {navBackStackEntry ->
-//            val id = navBackStackEntry.arguments?.getString("id")
-//            val type = navBackStackEntry.arguments?.getString("type")
-//            id?.let {
-//                if (type != null) {
-//                    TransactionDetail(id = it, type = type)
-//                }
-//            }
-//        }
     }
 }

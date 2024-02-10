@@ -14,6 +14,7 @@ sealed class Screen(val route:String,val name:String ,val icon: ImageVector? = n
     data object ExpenseFormScreen: Screen("expense_form","Expense")
     data object IncomeFormScreen: Screen("income_form","Income")
     data object IncomeDetailScreen:Screen("income_detail_screen/", "income_detail")
+    data object UpdateIncomeScreen:Screen("update_income_screen/", "update_income")
     data object ExpenseDetailScreen:Screen("expense_detail_screen/", "expense_detail")
     data object UpdateExpenseScreen:Screen("update_expense_screen/", "update_expense")
 
