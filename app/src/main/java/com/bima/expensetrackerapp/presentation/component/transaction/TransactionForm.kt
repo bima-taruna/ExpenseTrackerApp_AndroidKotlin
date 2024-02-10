@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.presentation.component.transaction
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,15 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -63,6 +60,7 @@ fun TransactionForm(
     formState: TransactionFormState,
     addExpenseState: EventTransactionState,
     state: Transaction? = null,
+    id:String = "",
     isUpdate: Boolean = false,
     getCategory: () -> Unit,
     createExpense: (transaction: Transaction) -> Unit = {},
@@ -77,7 +75,7 @@ fun TransactionForm(
     val context = LocalContext.current
 
     val description = rememberSaveable {
-        mutableStateOf(state?.description ?: "")
+        mutableStateOf("")
     }
     val datePickerState = rememberDatePickerState()
     var showDatePicker by remember {
@@ -88,25 +86,41 @@ fun TransactionForm(
     }
 
     var date by remember {
-        mutableStateOf(state?.date ?: "")
+        mutableStateOf("")
     }
 
     var name by remember {
-        mutableStateOf(state?.name ?: "")
+        mutableStateOf("")
     }
 
     val selectedCategory = rememberSaveable {
         mutableStateOf("")
     }
     val category = rememberSaveable {
-        mutableStateOf(state?.categoryId ?: "")
+        mutableStateOf("")
     }
     val currency = rememberSaveable {
         mutableStateOf("")
     }
 
     val amount = rememberSaveable {
-        mutableStateOf(state?.amount ?: 0.0)
+        mutableStateOf(0.0)
+    }
+
+    val updateNow = rememberSaveable {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(state) {
+        name = state?.name  ?: ""
+        description.value = state?.description ?: ""
+        date = state?.date ?: ""
+        category.value = state?.categoryId ?: ""
+        amount.value = state?.amount ?: 0.0
+        currency.value = if (state?.amount != null) state.amount.toInt().toString() else ""
+        onEvent(TransactionFormEvent.NameChanged(state?.name ?: ""))
+        onEvent(TransactionFormEvent.DateChanged(state?.date ?: ""))
+        onEvent(TransactionFormEvent.CategoryChanged(state?.categoryId ?: ""))
+        onEvent(TransactionFormEvent.AmountChanged(state?.amount?.toInt().toString()))
     }
 
     LaunchedEffect(expanded.value) {
@@ -121,26 +135,22 @@ fun TransactionForm(
         createExpense(transaction)
     }
 
-    val updateTransaction = { id: String, transaction: Transaction ->
-        updateExpense(id, transaction)
+    val updateTransaction = { s: String, transaction: Transaction ->
+        updateExpense(s, transaction)
     }
 
-    LaunchedEffect(context, addExpenseState) {
+    LaunchedEffect(addExpenseState) {
         validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
                     if (isUpdate) {
-                        state?.id?.let {
-                            updateTransaction(
-                                it, Transaction(
-                                    name = name,
-                                    description = description.value,
-                                    categoryId = category.value,
-                                    date = date,
-                                    amount = amount.value
-                                )
-                            )
-                        }
+                        updateTransaction(id, Transaction(
+                            name = name,
+                            description = description.value,
+                            categoryId = category.value,
+                            date = date,
+                            amount = amount.value
+                        ))
                     } else {
                         addTransaction(
                             Transaction(
@@ -226,6 +236,7 @@ fun TransactionForm(
         }
         CurrencyTextField(
             text = currency,
+            amountState = state?.amount,
             isError = formState.amountError != null,
             amount = amount,
             onValueChange = {
@@ -241,7 +252,11 @@ fun TransactionForm(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 composableScope.launch {
+                    if (isUpdate) {
+                        updateNow.value = true
+                    }
                     onEvent(TransactionFormEvent.Submit)
+                    Log.d("error", addExpenseState.error)
                 }
             }) {
             Text(text = if (isUpdate) "Update" else "Add")
@@ -251,7 +266,7 @@ fun TransactionForm(
                 confirmDate = {
                     showDatePicker = false
                     selectedDate =
-                        (datePickerState.selectedDateMillis ?: System.currentTimeMillis()) as Long
+                        (datePickerState.selectedDateMillis ?: System.currentTimeMillis())
                     date = formatter.format(
                         Date(selectedDate)
                     )

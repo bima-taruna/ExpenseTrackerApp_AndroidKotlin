@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -78,10 +79,9 @@ class AddExpenseViewModel @Inject constructor(
             createExpenseUseCase.execute(input).onEach {result->
                 when(result) {
                     is Resource.Success -> {
-                        _addExpenseState.value = _addExpenseState.value.copy(
-                            transaction = true,
-                            isLoading = false
-                        )
+                        _addExpenseState.update {
+                            it.copy(isLoading = false, transaction = true)
+                        }
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {

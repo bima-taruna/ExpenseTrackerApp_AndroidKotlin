@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionScaffold
 import com.bima.expensetrackerapp.presentation.navigation.Graph
+import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.expense.ExpenseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,7 +23,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun ExpenseDetail(
     id: String,
-    modifier: Modifier = Modifier,
     expenseViewModel: ExpenseViewModel = hiltViewModel(),
     navController: NavController,
 ) {
@@ -39,6 +39,11 @@ fun ExpenseDetail(
         hasAction = true,
         backNavigation = {
             navController.popBackStack()
+        },
+        goToEdit = {
+                   navController.navigate(
+                       Screen.UpdateExpenseScreen.route + id
+                   )
         },
         delete = {
             composableScope.launch {

@@ -27,7 +27,6 @@ fun AddExpense(
     val categoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
     val formState by addExpenseViewModel.expenseFormState.collectAsStateWithLifecycle()
     val addExpenseState by addExpenseViewModel.addExpenseState.collectAsStateWithLifecycle()
-
     val validationEvent = addExpenseViewModel.validationEvents
 
     TransactionScaffold(
@@ -51,7 +50,8 @@ fun AddExpense(
             },
             onEvent = {
                 addExpenseViewModel.onEvent(it)
-            }
+            },
+
         )
     }
 }

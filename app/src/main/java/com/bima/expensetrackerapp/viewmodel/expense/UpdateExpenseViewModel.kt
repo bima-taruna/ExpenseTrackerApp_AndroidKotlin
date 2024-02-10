@@ -84,7 +84,9 @@ class UpdateExpenseViewModel @Inject constructor(
                     }
                     is Resource.Error -> {
                         _updateExpenseState.update {
-                            it.copy(isLoading = false)
+                            it.copy(isLoading = false,
+                                error = result.message.toString()
+                            )
                         }
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                     }
@@ -118,8 +120,8 @@ class UpdateExpenseViewModel @Inject constructor(
                 categoryError = categoryResult.errorMessage,
                 amountError = amountResult.errorMessage
             )
-                return
-            }
+            return
+        }
             viewModelScope.launch {
                 validationEventChannel.send(ValidationEvent.Success)
             }

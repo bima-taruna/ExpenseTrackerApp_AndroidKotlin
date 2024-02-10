@@ -57,7 +57,7 @@ class TransactionRepositoryImpl @Inject constructor(
             postgrest.from(type).update({
                 set("name", data.name)
                 set("description", data.description)
-                set("categoryId", data.categoryId)
+                set("category_id", data.categoryId)
                 set("amount", data.amount)
                 set("date", data.date)
             }) {

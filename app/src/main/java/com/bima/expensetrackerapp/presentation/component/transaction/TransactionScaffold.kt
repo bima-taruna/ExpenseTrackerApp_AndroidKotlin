@@ -30,7 +30,7 @@ import com.bima.expensetrackerapp.presentation.component.shapes_container.Rounde
 fun TransactionScaffold(
     modifier: Modifier = Modifier,
     title: String,
-    hasAction: Boolean,
+    hasAction: Boolean = false,
     delete: () -> Unit = {},
     goToEdit: () -> Unit = {},
     backNavigation: () -> Unit,
