@@ -57,7 +57,7 @@ fun TransactionForm(
     modifier: Modifier = Modifier,
     categoryState: CategoryState,
     formState: TransactionFormState,
-    addExpenseState: EventTransactionState,
+    transactionEventState: EventTransactionState,
     state: Transaction? = null,
     id:String = "",
     isUpdate: Boolean = false,
@@ -135,7 +135,7 @@ fun TransactionForm(
         }
     }
 
-    LaunchedEffect(addExpenseState) {
+    LaunchedEffect(transactionEventState) {
         validationEvent.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
@@ -163,8 +163,8 @@ fun TransactionForm(
         }
     }
 
-    LaunchedEffect(addExpenseState.transaction) {
-        if (addExpenseState.transaction) {
+    LaunchedEffect(transactionEventState.transaction) {
+        if (transactionEventState.transaction) {
             navController.navigate(Graph.MAIN) {
                 popUpTo(Graph.MAIN) {
                     inclusive = true

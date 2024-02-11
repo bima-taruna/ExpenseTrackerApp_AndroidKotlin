@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionDetail
 import com.bima.expensetrackerapp.presentation.component.transaction.TransactionScaffold
 import com.bima.expensetrackerapp.presentation.navigation.Graph
+import com.bima.expensetrackerapp.presentation.navigation.Screen
 import com.bima.expensetrackerapp.viewmodel.income.IncomeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,6 +40,11 @@ fun IncomeDetail(
         hasAction = true,
         backNavigation = {
             navController.popBackStack()
+        },
+        goToEdit = {
+            navController.navigate(
+                Screen.UpdateIncomeScreen.route + id
+            )
         },
         delete = {
             composableScope.launch {

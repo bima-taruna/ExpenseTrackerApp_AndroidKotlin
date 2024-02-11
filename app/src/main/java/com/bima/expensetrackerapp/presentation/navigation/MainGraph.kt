@@ -72,11 +72,6 @@ fun MainGraph(
             AddIncome(navController = navController)
         }
         composable(
-            route = Screen.IncomeFormScreen.route
-        ) {
-            AddIncome(navController = navController)
-        }
-        composable(
             route = Screen.IncomeDetailScreen.route + "{id}"
         ) {navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getString("id")

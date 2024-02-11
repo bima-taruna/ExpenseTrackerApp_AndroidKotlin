@@ -15,6 +15,7 @@ import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
 import com.bima.expensetrackerapp.domain.use_case.income.UpdateIncomeUseCase
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class UpdateIncomeViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
     private val updateIncomeUseCase: UpdateIncomeUseCase,
@@ -32,7 +34,7 @@ class UpdateIncomeViewModel @Inject constructor(
     private val validateDate: ValidateDate,
     private val validateCategory: ValidateCategory,
     private val validateAmount: ValidateAmount,
-) : ViewModel() {
+) :ViewModel() {
     private val _updateIncomeState = MutableStateFlow(EventTransactionState())
     val updateIncomeState = _updateIncomeState.asStateFlow()
 

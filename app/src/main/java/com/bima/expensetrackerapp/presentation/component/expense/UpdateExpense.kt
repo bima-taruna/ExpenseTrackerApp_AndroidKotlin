@@ -8,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,8 +31,8 @@ fun UpdateExpense(
     val expenseState by expenseViewModel.expenseState.collectAsStateWithLifecycle()
     val updateExpenseState by updateExpenseViewModel.updateExpenseState.collectAsStateWithLifecycle()
     val validationEvent = updateExpenseViewModel.validationEvents
-    val context = LocalContext.current
     val updateFormState by updateExpenseViewModel.updateExpenseFormState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     LaunchedEffect(context) {
         expenseViewModel.getExpenseById(id)
     }
@@ -45,7 +44,7 @@ fun UpdateExpense(
         TransactionForm(
             categoryState = categoryState,
             formState = updateFormState,
-            addExpenseState = updateExpenseState,
+            transactionEventState = updateExpenseState,
             id = id,
             isUpdate = true,
             state = expenseState.transaction,

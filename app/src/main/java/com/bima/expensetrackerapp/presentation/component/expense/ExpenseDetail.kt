@@ -41,9 +41,9 @@ fun ExpenseDetail(
             navController.popBackStack()
         },
         goToEdit = {
-                   navController.navigate(
-                       Screen.UpdateExpenseScreen.route + id
-                   )
+            navController.navigate(
+                Screen.UpdateExpenseScreen.route + id
+            )
         },
         delete = {
             composableScope.launch {

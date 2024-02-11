@@ -39,7 +39,7 @@ fun AddIncome(
         TransactionForm(
             modifier.fillMaxSize(),
             navController = navController,
-            addExpenseState = addExpenseState,
+            transactionEventState = addExpenseState,
             categoryState = categoryState,
             formState = formState,
             validationEvent = validationEvent,
