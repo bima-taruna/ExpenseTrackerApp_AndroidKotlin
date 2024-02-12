@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.viewmodel
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
+import com.bima.expensetrackerapp.domain.use_case.auth.IsUserLogInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
@@ -34,7 +36,8 @@ class AuthViewModel @Inject constructor(
     private val getSessionUseCase: GetSessionUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val validateEmail: ValidateEmail,
-    private val validateLoginPassword: ValidateLoginPassword
+    private val validateLoginPassword: ValidateLoginPassword,
+    private val isUserLogInUseCase: IsUserLogInUseCase
 ) : ViewModel() {
 
     private val _session = MutableStateFlow<UserSession?>(null)
@@ -73,9 +76,9 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
-  fun onLogin() {
+  fun onLogin(context: Context) {
         viewModelScope.launch {
-            signInUseCase.execute(email = _loginFormState.value.email,password = _loginFormState.value.password)
+            signInUseCase.execute(context = context,email = _loginFormState.value.email,password = _loginFormState.value.password)
                 .onEach {result ->
                 when(result) {
                     is Resource.Success -> {
@@ -121,6 +124,41 @@ class AuthViewModel @Inject constructor(
             _session.value = null
         } catch (e: Exception) {
             Log.d("Error", e.message.toString())
+        }
+    }
+
+    fun isUserLogin(
+        context: Context
+    ) {
+        viewModelScope.launch {
+            isUserLogInUseCase.execute(context).onEach {result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _authState.update {
+                            it.copy(
+                                isSuccess = true
+                            )
+                        }
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        Log.d("result", result.message.toString())
+                        _authState.update {
+                            it.copy(
+                                isLoading = false,
+                                isSuccess = false
+                            )
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _authState.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+                    }
+                }
+            }.collect()
         }
     }
 

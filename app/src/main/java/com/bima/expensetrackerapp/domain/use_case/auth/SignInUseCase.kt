@@ -1,5 +1,6 @@
 package com.bima.expensetrackerapp.domain.use_case.auth
 
+import android.content.Context
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import kotlinx.coroutines.Dispatchers
@@ -12,12 +13,13 @@ import javax.inject.Inject
 class SignInUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    suspend fun execute(email:String,password:String): Flow<Resource<Boolean>> = flow {
+    suspend fun execute(context:Context,email:String,password:String): Flow<Resource<Boolean>> = flow {
             try {
                 emit(Resource.Loading())
                 val result = withContext(Dispatchers.IO) {
-                    authenticationRepository.signIn(email, password)
+                    authenticationRepository.signIn(context,email, password)
                 }
+                authenticationRepository.getToken(context)
                 emit(Resource.Success(result))
             } catch (e:Exception) {
                 emit(Resource.Error(e.localizedMessage ?: "error occured"))

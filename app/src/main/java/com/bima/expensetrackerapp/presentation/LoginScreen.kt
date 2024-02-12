@@ -65,7 +65,7 @@ fun SignInScreen(
     val sessionState by viewModel.session.collectAsStateWithLifecycle()
     val context = LocalContext.current
     Log.d("session", sessionState.toString())
-    LaunchedEffect(state.isSuccess || sessionState?.accessToken != null) {
+    LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
             navController.popBackStack()
             navController.navigate(Graph.MAIN)
@@ -76,7 +76,7 @@ fun SignInScreen(
         viewModel.validationEvents.collect {event->
             when(event) {
                 is ValidationEvent.Success -> {
-                    viewModel.onLogin()
+                    viewModel.onLogin(context)
                 }
             }
         }

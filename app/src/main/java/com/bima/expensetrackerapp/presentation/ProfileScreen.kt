@@ -22,11 +22,11 @@ fun ProfileScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sessionState by authViewModel.session.collectAsStateWithLifecycle()
-    LaunchedEffect(sessionState?.user) {
-        if (sessionState == null) {
-           onNavigateToAuth()
-        }
-    }
+//    LaunchedEffect(sessionState?.user) {
+//        if (sessionState == null) {
+//           onNavigateToAuth()
+//        }
+//    }
     Text(text = "Profile Screen")
     Button(onClick = {
         coroutineScope.launch {

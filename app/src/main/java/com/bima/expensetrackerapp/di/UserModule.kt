@@ -5,6 +5,7 @@ import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import com.bima.expensetrackerapp.domain.repository.UserProfileRepository
 import com.bima.expensetrackerapp.domain.use_case.auth.AuthUseCases
 import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
+import com.bima.expensetrackerapp.domain.use_case.auth.IsUserLogInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
 import com.bima.expensetrackerapp.domain.use_case.user.GetProfileUseCase
@@ -25,7 +26,8 @@ object UserModule {
         return AuthUseCases(
             signIn = SignInUseCase(repository),
             getSession = GetSessionUseCase(repository),
-            signOut = SignOutUseCase(repository)
+            signOut = SignOutUseCase(repository),
+            isUserLogIn = IsUserLogInUseCase(repository)
         )
     }
 

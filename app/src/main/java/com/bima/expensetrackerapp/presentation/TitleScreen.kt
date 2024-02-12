@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
 import com.bima.expensetrackerapp.presentation.component.fadingEdge
@@ -37,6 +39,7 @@ import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.delay
 
 @Composable
 fun TitleScreen(
@@ -45,16 +48,18 @@ fun TitleScreen(
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val sessionState by viewModel.session.collectAsState()
+    val authState by viewModel.authState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val topBottomFade = Brush.verticalGradient( 0.7f to Color.Red, 0.9f to Color.Transparent)
-    LaunchedEffect(context) {
-        if (sessionState?.user != null) {
+    val topBottomFade = Brush.verticalGradient(0.7f to Color.Red, 0.9f to Color.Transparent)
+    LaunchedEffect(authState.isSuccess) {
+        viewModel.isUserLogin(context)
+        if (authState.isSuccess) {
             navController.navigate(Graph.MAIN) {
                 popUpTo(Graph.AUTH) {
                     inclusive = true
                 }
+                Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
             }
-            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
         }
     }
     Column(
@@ -101,6 +106,10 @@ fun TitleScreen(
                 Text(text = "Sign Up", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
-
+    }
+    if (authState.isLoading) {
+        Box {
+            CircularProgressIndicator()
+        }
     }
 }
