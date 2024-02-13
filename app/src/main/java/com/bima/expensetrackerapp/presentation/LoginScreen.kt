@@ -1,6 +1,5 @@
 package com.bima.expensetrackerapp.presentation
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -43,11 +42,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
-import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
 import com.bima.expensetrackerapp.common.ValidationEvent
+import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
@@ -62,9 +60,7 @@ fun SignInScreen(
 ) {
     val state by viewModel.authState.collectAsState()
     val formState by viewModel.loginFormState.collectAsState()
-    val sessionState by viewModel.session.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    Log.d("session", sessionState.toString())
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
             navController.popBackStack()

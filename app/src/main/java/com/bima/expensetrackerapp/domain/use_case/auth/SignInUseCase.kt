@@ -19,7 +19,6 @@ class SignInUseCase @Inject constructor(
                 val result = withContext(Dispatchers.IO) {
                     authenticationRepository.signIn(context,email, password)
                 }
-                authenticationRepository.getToken(context)
                 emit(Resource.Success(result))
             } catch (e:Exception) {
                 emit(Resource.Error(e.localizedMessage ?: "error occured"))

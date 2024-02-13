@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
-import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
+import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
 import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.IsUserLogInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
@@ -85,7 +85,8 @@ class AuthViewModel @Inject constructor(
                         _session.value = getSessionUseCase.execute()
                         _authState.update {
                             it.copy(
-                                isSuccess = true
+                                isSuccess = result.data!!,
+                                isLoading = false
                             )
                         }
                     }
@@ -118,12 +119,36 @@ class AuthViewModel @Inject constructor(
     }
 
 
-    suspend fun signOut() {
-        try {
-            signOutUseCase.execute()
-            _session.value = null
-        } catch (e: Exception) {
-            Log.d("Error", e.message.toString())
+    fun signOut(context: Context) {
+        viewModelScope.launch {
+            signOutUseCase.execute(context).onEach { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _authState.update {
+                            it.copy(
+                                isSuccess = result.data!!,
+                                isLoading = false
+                            )
+                        }
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        _authState.update {
+                            it.copy(
+                                isLoading = false,
+                                isSuccess = true
+                            )
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _authState.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+                    }
+                }
+            }.collect()
         }
     }
 
@@ -136,7 +161,8 @@ class AuthViewModel @Inject constructor(
                     is Resource.Success -> {
                         _authState.update {
                             it.copy(
-                                isSuccess = true
+                                isSuccess = result.data!!,
+                                isLoading = false
                             )
                         }
                     }
@@ -146,7 +172,6 @@ class AuthViewModel @Inject constructor(
                         _authState.update {
                             it.copy(
                                 isLoading = false,
-                                isSuccess = false
                             )
                         }
                     }

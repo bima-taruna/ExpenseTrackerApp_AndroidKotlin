@@ -30,14 +30,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     authViewModel: AuthViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel(),
-    onNavigateToAuth : () -> Unit,
-    navController: NavController
+    onNavigateToAuth: () -> Unit,
+    navController: NavController,
 ) {
-    val sessionState by authViewModel.session.collectAsStateWithLifecycle()
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
-    LaunchedEffect(sessionState?.user) {
-        if (sessionState == null) {
-                onNavigateToAuth()
+    val authState by authViewModel.authState.collectAsStateWithLifecycle()
+    LaunchedEffect(authState.isSuccess) {
+        if (!authState.isSuccess) {
+            onNavigateToAuth()
         }
     }
     val systemUiController = rememberSystemUiController()
@@ -48,7 +48,6 @@ fun HomeScreen(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         ConstraintLayout {
             val (container, totalBalance, space) = createRefs()
             RoundedCornerShapeContainer(
@@ -79,7 +78,7 @@ fun HomeScreen(
                     bottom.linkTo(container.bottom)
                 }
             ) {
-               BalanceCard()
+                BalanceCard()
             }
         }
         Spacer(modifier = modifier.padding(10.dp))

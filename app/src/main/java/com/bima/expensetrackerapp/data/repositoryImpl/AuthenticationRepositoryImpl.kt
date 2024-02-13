@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.data.repositoryImpl
 
 import android.content.Context
+import android.util.Log
 import com.bima.expensetrackerapp.common.SharedPreferencesHelper
 import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import io.github.jan.supabase.gotrue.GoTrue
@@ -17,6 +18,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 this.email = email
                 this.password = password
             }
+            saveToken(context)
             true
         } catch (e: Exception) {
            false
@@ -31,8 +33,11 @@ class AuthenticationRepositoryImpl @Inject constructor(
         return goTrue.currentSessionOrNull()
     }
 
-    override suspend fun signOut() {
+    override suspend fun signOut(context:Context):Boolean {
+        val sharedPref = SharedPreferencesHelper(context)
         goTrue.logout()
+        sharedPref.clearPreferences()
+        return false
     }
 
     override fun saveToken(context: Context) {
@@ -49,6 +54,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun isUserLogin(context: Context): Boolean {
         return try {
             val token = getToken(context)
+            Log.d("token", token.toString())
             if (token.isNullOrEmpty()) {
                 false
             } else {

@@ -18,7 +18,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +38,6 @@ import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
-import kotlinx.coroutines.delay
 
 @Composable
 fun TitleScreen(
@@ -47,7 +45,6 @@ fun TitleScreen(
     navController: NavController,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
-    val sessionState by viewModel.session.collectAsState()
     val authState by viewModel.authState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val topBottomFade = Brush.verticalGradient(0.7f to Color.Red, 0.9f to Color.Transparent)

@@ -7,8 +7,7 @@ interface AuthenticationRepository {
     suspend fun signIn(context: Context,email:String, password:String) : Boolean
     suspend fun signUp(email:String, password:String) : Boolean
     suspend fun getSession(): UserSession?
-    suspend fun signOut()
-
+    suspend fun signOut(context:Context):Boolean
     fun saveToken(context:Context)
     fun getToken(context: Context): String?
     suspend fun isUserLogin(context: Context):Boolean
