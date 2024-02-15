@@ -1,12 +1,8 @@
 package com.bima.expensetrackerapp.presentation.component
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,9 +17,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bima.expensetrackerapp.common.convert
 import com.bima.expensetrackerapp.common.getSymbol
-
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
 
 @Composable
@@ -45,7 +41,9 @@ fun BalanceCard(
     val totalBalance = balanceState.balance?.totalBalance
     val expense = balanceState.balance?.expense
     val income = balanceState.balance?.income
-
+    var dialog by rememberSaveable {
+        mutableStateOf(false)
+    }
     ElevatedCard(
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(
@@ -70,7 +68,6 @@ fun BalanceCard(
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-
                         }) {
                     Text(
                         "Total Balane :",
@@ -92,7 +89,9 @@ fun BalanceCard(
                     )
                 }
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                              dialog = true
+                    },
                     modifier = modifier
                         .size(50.dp)
                         .constrainAs(editButtonRef) {
@@ -149,6 +148,11 @@ fun BalanceCard(
                 }
             }
         }
+    }
+    if (dialog) {
+        EditDialog(onDismissRequest = {
+            dialog = false
+        })
     }
 }
 

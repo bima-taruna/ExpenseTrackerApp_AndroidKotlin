@@ -13,7 +13,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Currency
 
-class CurrencyVisualTransformation() : VisualTransformation {
+class CurrencyVisualTransformation : VisualTransformation {
     /**
      * Currency formatter. Uses default Locale but there is an option to set
      * any Locale we want e.g. NumberFormat.getCurrencyInstance(Locale.ENGLISH)

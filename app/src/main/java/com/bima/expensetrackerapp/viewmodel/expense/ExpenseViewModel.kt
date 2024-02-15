@@ -35,7 +35,7 @@ class ExpenseViewModel @Inject constructor(
     val expenseState = _transactionState.asStateFlow()
 
     private val _deleteExpenseState = MutableStateFlow(EventTransactionState())
-    val deleteExpenseState = _deleteExpenseState.asStateFlow();
+    val deleteExpenseState = _deleteExpenseState.asStateFlow()
 
     fun getExpenses() {
         viewModelScope.launch {

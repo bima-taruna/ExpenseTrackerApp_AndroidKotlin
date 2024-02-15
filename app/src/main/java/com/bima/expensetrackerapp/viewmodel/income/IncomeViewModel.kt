@@ -35,7 +35,7 @@ class IncomeViewModel @Inject constructor(
     val incomeState = _incomeState.asStateFlow()
 
     private val _deleteIncomeState = MutableStateFlow(EventTransactionState())
-    val deleteIncomeState = _deleteIncomeState.asStateFlow();
+    val deleteIncomeState = _deleteIncomeState.asStateFlow()
 
     fun getIncomes() {
         viewModelScope.launch {
