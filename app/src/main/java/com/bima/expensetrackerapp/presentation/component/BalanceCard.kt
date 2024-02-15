@@ -44,6 +44,12 @@ fun BalanceCard(
     var dialog by rememberSaveable {
         mutableStateOf(false)
     }
+    val currency = rememberSaveable {
+        mutableStateOf("")
+    }
+    val amount = rememberSaveable {
+        mutableStateOf(0.0)
+    }
     ElevatedCard(
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(
@@ -90,7 +96,7 @@ fun BalanceCard(
                 }
                 IconButton(
                     onClick = {
-                              dialog = true
+                        dialog = true
                     },
                     modifier = modifier
                         .size(50.dp)
@@ -150,9 +156,14 @@ fun BalanceCard(
         }
     }
     if (dialog) {
-        EditDialog(onDismissRequest = {
-            dialog = false
-        })
+        EditDialog(
+            amount = amount,
+            text = currency,
+            onValueChange = {},
+            onDismissRequest = {
+                dialog = false
+            }
+        )
     }
 }
 

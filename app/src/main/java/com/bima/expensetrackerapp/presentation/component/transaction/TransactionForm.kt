@@ -234,9 +234,11 @@ fun TransactionForm(
             text = currency,
             isError = formState.amountError != null,
             amount = amount,
+            label = "Amount",
             onValueChange = {
                 onEvent(TransactionFormEvent.AmountChanged(currency.value))
-            })
+            },
+        )
         if (formState.amountError != null) {
             Text(
                 text = formState.amountError.asString(context),
