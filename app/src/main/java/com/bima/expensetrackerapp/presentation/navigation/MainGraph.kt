@@ -49,7 +49,6 @@ fun MainGraph(
             route = Screen.ProfileScreen.route
         ) {
             ProfileScreen(
-                navController = navController,
                 onNavigateToAuth = {
                     rootNavController.navigate(route = Graph.AUTH) {
                         popUpTo(Graph.ROOT)

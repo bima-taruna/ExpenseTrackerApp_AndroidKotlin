@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -35,11 +36,8 @@ fun HomeScreen(
 ) {
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
     val authState by authViewModel.authState.collectAsStateWithLifecycle()
-    LaunchedEffect(authState.isSuccess) {
-        if (!authState.isSuccess) {
-            onNavigateToAuth()
-        }
-    }
+    val context = LocalContext.current
+
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = MaterialTheme.colorScheme.secondaryContainer

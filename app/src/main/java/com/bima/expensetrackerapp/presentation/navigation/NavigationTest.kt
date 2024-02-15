@@ -34,7 +34,7 @@ fun NavigationTest(
         composable(
             route = Screen.ProfileScreen.route
         ) {
-            ProfileScreen(navController = navController, onNavigateToAuth = {})
+            ProfileScreen(onNavigateToAuth = {})
         }
         composable(
             route = Screen.SettingScreen.route
