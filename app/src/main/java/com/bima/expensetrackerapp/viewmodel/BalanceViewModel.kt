@@ -6,13 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
+import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.domain.use_case.balance.GetBalanceUseCase
+import com.bima.expensetrackerapp.domain.use_case.balance.UpdateBalanceUseCase
+import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
 import com.bima.expensetrackerapp.viewmodel.state.BalanceState
+import com.bima.expensetrackerapp.viewmodel.state.form.BalanceFormState
+import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
+import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,10 +28,21 @@ import javax.inject.Inject
 @HiltViewModel
 class BalanceViewModel @Inject constructor(
     private val context : ExpenseTrackerApp,
-    private val getBalanceUseCase: GetBalanceUseCase
+    private val getBalanceUseCase: GetBalanceUseCase,
+    private val updateBalanceUseCase: UpdateBalanceUseCase,
+    private val validateAmount: ValidateAmount
 ):ViewModel() {
     private val _balanceState = MutableStateFlow(BalanceState())
     val balanceState = _balanceState.asStateFlow()
+
+    private val _updateBalanceState = MutableStateFlow(EventTransactionState())
+    val updateBalanceState = _updateBalanceState.asStateFlow()
+
+    private val _updateBalanceFormState = MutableStateFlow(BalanceFormState())
+    val updateBalanceFormState = _updateBalanceFormState.asStateFlow()
+
+    private val validationEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
 
     init {
        getBalance()
@@ -50,6 +69,31 @@ class BalanceViewModel @Inject constructor(
                     }
                     is Resource.Loading -> {
                         _balanceState.update {
+                            it.copy(isLoading = true)
+                        }
+                    }
+                }
+            }.collect()
+        }
+    }
+
+    fun updateBalance(userId:String, data:Int) {
+        viewModelScope.launch {
+            updateBalanceUseCase.execute(userId, data).onEach { result->
+                when(result) {
+                    is Resource.Success -> {
+                        _updateBalanceState.update {
+                            it.copy(transaction = result.data ?: false, isLoading = false)
+                        }
+                    }
+                    is Resource.Error -> {
+                        _updateBalanceState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is Resource.Loading -> {
+                        _updateBalanceState.update {
                             it.copy(isLoading = true)
                         }
                     }
