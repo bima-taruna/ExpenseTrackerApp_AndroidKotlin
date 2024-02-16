@@ -11,4 +11,17 @@ class BalanceRepositoryImpl @Inject constructor(
     override suspend fun getBalance(): BalanceDto {
         return postgrest["balance"].select().decodeSingle()
     }
+
+    override suspend fun updateBalance(userId: String, data: Int): Boolean {
+        return try {
+            postgrest.from("balance").update({
+                set("total_balance", data)
+            }) {
+                eq("user_id", userId)
+            }
+            true
+        } catch (e: java.lang.Exception) {
+            throw e
+        }
+    }
 }
