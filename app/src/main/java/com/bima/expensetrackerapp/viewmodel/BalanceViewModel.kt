@@ -55,7 +55,7 @@ class BalanceViewModel @Inject constructor(
                 }
             }
             is BalanceFormEvent.Submit -> {
-
+                submitData()
             }
         }
     }
@@ -111,6 +111,23 @@ class BalanceViewModel @Inject constructor(
                     }
                 }
             }.collect()
+        }
+    }
+
+    private fun submitData() {
+        val amountResult = validateAmount.execute(_updateBalanceFormState.value.amount)
+        val hasError = !amountResult.successful
+
+        if (hasError) {
+            _updateBalanceFormState.update {
+                it.copy(
+                    amountError = amountResult.errorMessage
+                )
+            }
+            return
+        }
+        viewModelScope.launch {
+            validationEventChannel.send(ValidationEvent.Success)
         }
     }
 }
