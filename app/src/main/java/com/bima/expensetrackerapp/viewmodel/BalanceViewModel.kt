@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
+import com.bima.expensetrackerapp.common.form_event.BalanceFormEvent
 import com.bima.expensetrackerapp.domain.use_case.balance.GetBalanceUseCase
 import com.bima.expensetrackerapp.domain.use_case.balance.UpdateBalanceUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateAmount
@@ -44,8 +45,19 @@ class BalanceViewModel @Inject constructor(
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
-    init {
-       getBalance()
+    fun onEvent(event: BalanceFormEvent) {
+        when(event) {
+            is BalanceFormEvent.AmountChanged -> {
+                _updateBalanceFormState.update {
+                    it.copy(
+                        amount = event.amount
+                    )
+                }
+            }
+            is BalanceFormEvent.Submit -> {
+
+            }
+        }
     }
 
     fun getBalance() {

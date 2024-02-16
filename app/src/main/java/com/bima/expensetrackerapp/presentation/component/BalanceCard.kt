@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -49,6 +50,9 @@ fun BalanceCard(
     }
     val amount = rememberSaveable {
         mutableStateOf(0.0)
+    }
+    LaunchedEffect(balanceState.balance) {
+        balanceViewModel.getBalance()
     }
     ElevatedCard(
         shape = RoundedCornerShape(15.dp),
