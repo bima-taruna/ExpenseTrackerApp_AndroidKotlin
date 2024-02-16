@@ -5,6 +5,7 @@ import com.bima.expensetrackerapp.domain.repository.BalanceRepository
 import com.bima.expensetrackerapp.domain.repository.UserProfileRepository
 import com.bima.expensetrackerapp.domain.use_case.balance.BalanceUseCases
 import com.bima.expensetrackerapp.domain.use_case.balance.GetBalanceUseCase
+import com.bima.expensetrackerapp.domain.use_case.balance.UpdateBalanceUseCase
 import com.bima.expensetrackerapp.domain.use_case.user.GetProfileUseCase
 import com.bima.expensetrackerapp.domain.use_case.user.UserUseCases
 import dagger.Module
@@ -27,7 +28,8 @@ object BalanceModule {
     @Provides
     fun provideBalanceUseCases(repository: BalanceRepository): BalanceUseCases{
         return BalanceUseCases(
-            getBalance = GetBalanceUseCase(repository)
+            getBalance = GetBalanceUseCase(repository),
+            updateBalance = UpdateBalanceUseCase(repository)
         )
     }
 }
