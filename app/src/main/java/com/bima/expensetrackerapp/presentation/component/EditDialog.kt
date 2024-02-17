@@ -1,6 +1,9 @@
 package com.bima.expensetrackerapp.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,39 +31,48 @@ import com.bima.expensetrackerapp.viewmodel.state.form.BalanceFormState
 fun EditDialog(
     modifier: Modifier = Modifier,
     text: MutableState<String>,
-    amount:MutableState<Double>,
-    onValueChange:()->Unit,
-    onDismissRequest:()->Unit,
-    onSubmit:()->Unit,
-    formState:BalanceFormState
+    amount: MutableState<Double>,
+    onValueChange: () -> Unit,
+    onDismissRequest: () -> Unit,
+    onSubmit: () -> Unit,
+    formState: BalanceFormState,
 ) {
     val context = LocalContext.current
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp)
-                .padding(16.dp)
-
-            ,
+                ,
             shape = RoundedCornerShape(16.dp),
         ) {
-           CurrencyTextField(
-               text = text,
-               amount = amount,
-               label = "Total Balance",
-               onValueChange = { onValueChange() },
-               isError = formState.amountError != null,
-               modifier = modifier.padding(16.dp)
-           )
-            if (formState.amountError != null) {
-                Text(
-                    text = formState.amountError?.asString(context) ?: "",
-                    color = MaterialTheme.colorScheme.error
+            Column(
+                modifier = modifier.padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CurrencyTextField(
+                    text = text,
+                    amount = amount,
+                    label = "Total Balance",
+                    onValueChange = { onValueChange() },
+                    isError = formState.amountError != null,
+                    modifier = modifier
                 )
-            }
-            Button(onClick = { onSubmit() }) {
-                Text(text = "Update")
+                if (formState.amountError != null) {
+                    Text(
+                        text = formState.amountError.asString(context) ?: "",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, end = 8.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = { onSubmit() }) {
+                        Text(text = "Update")
+                    }
+                }
             }
         }
     }
