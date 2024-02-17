@@ -71,6 +71,7 @@ class BalanceViewModel @Inject constructor(
                                 balance = result.data
                             )
                         }
+                        Toast.makeText(context,"Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
