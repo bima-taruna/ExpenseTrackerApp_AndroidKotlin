@@ -71,7 +71,6 @@ class BalanceViewModel @Inject constructor(
                                 balance = result.data
                             )
                         }
-                        Toast.makeText(context,"Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
@@ -98,6 +97,7 @@ class BalanceViewModel @Inject constructor(
                         _updateBalanceState.update {
                             it.copy(transaction = result.data ?: false, isLoading = false)
                         }
+                        Toast.makeText(context,"Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         _updateBalanceState.update {
@@ -118,7 +118,6 @@ class BalanceViewModel @Inject constructor(
     private fun submitData() {
         val amountResult = validateAmount.execute(_updateBalanceFormState.value.amount)
         val hasError = !amountResult.successful
-
         if (hasError) {
             _updateBalanceFormState.update {
                 it.copy(
