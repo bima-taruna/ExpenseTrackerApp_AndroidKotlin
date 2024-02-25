@@ -103,9 +103,8 @@ class IncomeViewModel @Inject constructor(
                     is Resource.Success -> {
                         _deleteIncomeState.value = _deleteIncomeState.value.copy(
                             isLoading = false,
-                            transaction = true
+                            transaction = result.data ?: false
                         )
-                        getIncomes()
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {

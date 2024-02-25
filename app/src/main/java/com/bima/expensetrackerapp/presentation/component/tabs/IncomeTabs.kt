@@ -21,13 +21,15 @@ fun IncomeTabs(
     navController: NavController,
 ) {
     val state by incomeViewModel.incomesState.collectAsStateWithLifecycle()
+    val transactionDeleteState by incomeViewModel.deleteIncomeState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(context) {
         incomeViewModel.getIncomes()
     }
     println(state.transactions?.toString())
     TransactionList(
-        state = state,
+        transactionsState = state,
+        transactionDeleteState = transactionDeleteState,
         isIncome = true,
         navController = navController,
         swipeToDelete = {

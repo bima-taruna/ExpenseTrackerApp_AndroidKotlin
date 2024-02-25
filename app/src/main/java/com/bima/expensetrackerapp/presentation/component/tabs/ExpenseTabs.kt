@@ -21,13 +21,15 @@ fun ExpenseTabs(
     navController: NavController,
 ) {
     val context = LocalContext.current
-    val state by expenseViewModel.expensesState.collectAsStateWithLifecycle()
-    LaunchedEffect(context) {
+    val transactionsState by expenseViewModel.expensesState.collectAsStateWithLifecycle()
+    val transactionDeleteState by expenseViewModel.deleteExpenseState.collectAsStateWithLifecycle()
+    LaunchedEffect(context,transactionDeleteState.transaction) {
         expenseViewModel.getExpenses()
     }
-    println(state.transactions?.toString())
+    println(transactionsState.transactions?.toString())
     TransactionList(
-        state = state,
+        transactionsState = transactionsState,
+        transactionDeleteState = transactionDeleteState,
         isIncome = false,
         navController = navController,
         swipeToDelete = {

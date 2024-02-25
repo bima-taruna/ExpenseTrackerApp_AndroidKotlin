@@ -100,8 +100,9 @@ class ExpenseViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         _deleteExpenseState.update {
-                            it.copy(isLoading = false, transaction = result.data ?: true)
+                            it.copy(isLoading = false, transaction = result.data ?: false)
                         }
+                        Toast.makeText(context, "expense deleted", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()

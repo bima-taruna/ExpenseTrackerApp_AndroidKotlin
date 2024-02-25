@@ -14,18 +14,18 @@ class ValidateAmount @Inject constructor() {
                 errorMessage = UiText.StringResource(R.string.amount_blank_message)
             )
         }
-        if (amount.isCurrency()) {
-            return ValidationResult(
-                successful = false,
-                errorMessage = UiText.StringResource(R.string.amount_not_valid)
-            )
-        }
-//        if (!isNumber(amount)) {
+//        if (amount.isCurrency()) {
 //            return ValidationResult(
 //                successful = false,
 //                errorMessage = UiText.StringResource(R.string.amount_not_valid)
 //            )
 //        }
+        if (!isNumber(amount)) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = UiText.StringResource(R.string.amount_not_valid)
+            )
+        }
         return ValidationResult(
             successful = true
         )
