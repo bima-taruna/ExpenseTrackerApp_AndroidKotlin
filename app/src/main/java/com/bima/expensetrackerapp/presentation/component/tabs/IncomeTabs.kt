@@ -23,7 +23,7 @@ fun IncomeTabs(
     val state by incomeViewModel.incomesState.collectAsStateWithLifecycle()
     val transactionDeleteState by incomeViewModel.deleteIncomeState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    LaunchedEffect(context) {
+    LaunchedEffect(context, transactionDeleteState.transaction) {
         incomeViewModel.getIncomes()
     }
     println(state.transactions?.toString())
