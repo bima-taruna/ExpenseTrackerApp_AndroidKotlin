@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,26 +43,25 @@ class ExpenseViewModel @Inject constructor(
             getExpensesUseCase.execute().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _transactionsState.value = _transactionsState.value.copy(
-                            isLoading = false,
-                            transactions = result.data?.map {
-                                it.toTransactions()
-                            }
-                        )
+                        _transactionsState.update { transaction->
+                            transaction.copy(
+                                isLoading = false,
+                                transactions = result.data?.map {
+                                    it.toTransactions()
+                                }
+                            )
+                        }
                     }
-
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
-                        Log.d("error", result.message.toString())
-                        _transactionsState.value = _transactionsState.value.copy(
-                            isLoading = false
-                        )
+                        _transactionsState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
-
                     is Resource.Loading -> {
-                        _transactionsState.value = _transactionsState.value.copy(
-                            isLoading = true
-                        )
+                        _transactionsState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
@@ -74,54 +74,46 @@ class ExpenseViewModel @Inject constructor(
                 when(result){
                     is Resource.Success -> {
                         Log.d("from id", "Successs")
-                        _transactionState.value = _transactionState.value.copy(
-                            isLoading = false,
-                            transaction = result.data
-                        )
+                        _transactionState.update {
+                            it.copy(isLoading = false, transaction = result.data)
+                        }
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
-                        Log.d("error", result.message.toString())
-                        _transactionState.value = _transactionState.value.copy(
-                            isLoading = false,
-                        )
+                        _transactionState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
-
                     is Resource.Loading -> {
-                        _transactionState.value = _transactionState.value.copy(
-                            isLoading = true
-                        )
+                        _transactionState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
         }
     }
 
-
-
     fun deleteExpense(id: String) {
         viewModelScope.launch {
             deleteExpenseUseCase.execute(id).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _deleteExpenseState.value = _deleteExpenseState.value.copy(
-                            isLoading = false,
-                            transaction = true
-                        )
-                        getExpenses()
-                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        _deleteExpenseState.update {
+                            it.copy(isLoading = false, transaction = result.data ?: true)
+                        }
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _deleteExpenseState.value = _deleteExpenseState.value.copy(
-                            isLoading = false
-                        )
+                        _deleteExpenseState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
                     is Resource.Loading -> {
-                        _deleteExpenseState.value = _deleteExpenseState.value.copy(
-                            isLoading = true
-                        )
+                        _deleteExpenseState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
