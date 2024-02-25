@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,26 +43,26 @@ class IncomeViewModel @Inject constructor(
             getIncomeUseCase.execute().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _incomesState.value = _incomesState.value.copy(
-                            isLoading = false,
-                            transactions = result.data?.map {
-                                it.toTransactions()
-                            }
-                        )
+                        _incomesState.update { income->
+                            income.copy(
+                                isLoading = false,
+                                transactions = result.data?.map {
+                                    it.toTransactions()
+                                }
+                            )
+                        }
                     }
-
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _incomesState.value = _incomesState.value.copy(
-                            isLoading = false
-                        )
+                       _incomesState.update {
+                           it.copy(isLoading = false, error = result.message.toString())
+                       }
                     }
-
                     is Resource.Loading -> {
-                        _incomesState.value = _incomesState.value.copy(
-                            isLoading = true
-                        )
+                        _incomesState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
@@ -73,23 +74,21 @@ class IncomeViewModel @Inject constructor(
             getIncomeByIdUseCase.execute(id).onEach { result->
                 when(result){
                     is Resource.Success -> {
-                        _incomeState.value = _incomeState.value.copy(
-                            isLoading = false,
-                            transaction = result.data
-                        )
+                        _incomeState.update {
+                            it.copy(isLoading = false, transaction = result.data)
+                        }
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _incomeState.value = _incomeState.value.copy(
-                            isLoading = false
-                        )
+                        _incomeState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
-
                     is Resource.Loading -> {
-                        _incomeState.value = _incomeState.value.copy(
-                            isLoading = true
-                        )
+                        _incomeState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
@@ -101,23 +100,25 @@ class IncomeViewModel @Inject constructor(
             deleteIncomeUseCase.execute(id).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _deleteIncomeState.value = _deleteIncomeState.value.copy(
-                            isLoading = false,
-                            transaction = result.data ?: false
-                        )
-                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        _deleteIncomeState.update {
+                            it.copy(
+                                isLoading = false,
+                                transaction = result.data ?: false
+                            )
+                        }
+                        Toast.makeText(context, "Income deleted", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _deleteIncomeState.value = _deleteIncomeState.value.copy(
-                            isLoading = false
-                        )
+                        _deleteIncomeState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
                     is Resource.Loading -> {
-                        _deleteIncomeState.value = _deleteIncomeState.value.copy(
-                            isLoading = true
-                        )
+                        _deleteIncomeState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
