@@ -50,7 +50,7 @@ fun CurrencyTextField(
         },
         visualTransformation = CurrencyVisualTransformation(),
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.NumberPassword
+            keyboardType = KeyboardType.Decimal
         ),
         modifier = modifier
     )

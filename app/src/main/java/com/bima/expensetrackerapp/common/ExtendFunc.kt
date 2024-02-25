@@ -4,6 +4,10 @@ fun String.isAlphabet(): Boolean {
     return Regex("^[A-Za-z ]+\$").matches(this)
 }
 
+fun String.isCurrency():Boolean {
+    return Regex("^\\d*\\.?\\d*\$").matches(this)
+}
+
 fun String.stringFormatter():String {
     val formattedString = mutableListOf<Char>()
     for (i in this.indices) {

@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -51,14 +52,14 @@ fun TransactionList(
             modifier = modifier.fillMaxSize(),
             state=lazyColumnListState
         ) {
-            state.transactions?.size?.let {
-                items(it) { i->
-                    val transactions = state.transactions[i]
-                    Log.d("id", transactions.id.toString())
+            state.transactions?.let {
+                items(items = it, key = { transaction->
+                    transaction.id ?: ""
+                }) {
                     val delete = SwipeAction(
                         onSwipe = {
                             coroutineScope.launch {
-                                transactions.id?.let { id -> swipeToDelete(id) }
+                                it.id?.let { id -> swipeToDelete(id) }
                                 delay(1000)
                                 updateBalance()
                             }
@@ -72,10 +73,9 @@ fun TransactionList(
                         swipeThreshold = 200.dp,
                         endActions = listOf(delete)
                     ) {
-                        TransactionCard(state = transactions, isIncome = isIncome, navigateToDetail = {
+                        TransactionCard(state = it, isIncome = isIncome, navigateToDetail = {
                             navController.navigate(
-//                                Screen.TransactionDetailScreen.route + isThisIncome() + "/" + transactions.id
-                                isThisIncome(transactions.id ?: "")
+                                isThisIncome(it.id ?: "")
                             )
                         })
                     }
