@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,24 +48,24 @@ class AddIncomeViewModel @Inject constructor(
     fun onEvent(event:TransactionFormEvent) {
         when (event) {
             is TransactionFormEvent.NameChanged -> {
-                _incomeFormState.value = _incomeFormState.value.copy(
-                    name = event.name
-                )
+                _incomeFormState.update {
+                    it.copy(name = event.name)
+                }
             }
             is TransactionFormEvent.AmountChanged -> {
-                _incomeFormState.value = _incomeFormState.value.copy(
-                    amount = event.amount
-                )
+                _incomeFormState.update {
+                    it.copy(amount = event.amount)
+                }
             }
             is TransactionFormEvent.CategoryChanged -> {
-                _incomeFormState.value = _incomeFormState.value.copy(
-                    category = event.category
-                )
+                _incomeFormState.update {
+                    it.copy(category = event.category)
+                }
             }
             is TransactionFormEvent.DateChanged -> {
-                _incomeFormState.value = _incomeFormState.value.copy(
-                    date = event.date
-                )
+                _incomeFormState.update {
+                    it.copy(date = event.date)
+                }
             }
             is TransactionFormEvent.Submit -> {
                 submitData()
@@ -78,23 +79,22 @@ class AddIncomeViewModel @Inject constructor(
             createIncomeUseCase.execute(input).onEach { result->
                 when(result) {
                     is Resource.Success -> {
-                        _addIncomeState.value = _addIncomeState.value.copy(
-                            transaction = true,
-                            isLoading = false
-                        )
+                        _addIncomeState.update {
+                            it.copy(isLoading = false, transaction = result.data ?: false)
+                        }
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _addIncomeState.value = _addIncomeState.value.copy(
-                            isLoading = false
-                        )
+                        _addIncomeState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
                     is Resource.Loading -> {
-                        _addIncomeState.value = _addIncomeState.value.copy(
-                            isLoading = true
-                        )
+                        _addIncomeState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
@@ -115,12 +115,14 @@ class AddIncomeViewModel @Inject constructor(
             !it.successful
         }
         if (hasError) {
-            _incomeFormState.value = _incomeFormState.value.copy(
-                nameError = nameResult.errorMessage,
-                dateError = dateResult.errorMessage,
-                categoryError = categoryResult.errorMessage,
-                amountError = amountResult.errorMessage
-            )
+            _incomeFormState.update {
+                it.copy(
+                    nameError = nameResult.errorMessage,
+                    dateError = dateResult.errorMessage,
+                    categoryError = categoryResult.errorMessage,
+                    amountError = amountResult.errorMessage
+                )
+            }
             return
         }
         viewModelScope.launch {
