@@ -48,24 +48,24 @@ class AddExpenseViewModel @Inject constructor(
     fun onEvent(event:TransactionFormEvent) {
         when (event) {
             is TransactionFormEvent.NameChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
-                    name = event.name
-                )
+                _expenseFormState.update {
+                    it.copy(name = event.name)
+                }
             }
             is TransactionFormEvent.AmountChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
-                    amount = event.amount
-                )
+                _expenseFormState.update {
+                    it.copy(amount = event.amount)
+                }
             }
             is TransactionFormEvent.CategoryChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
-                    category = event.category
-                )
+                _expenseFormState.update {
+                    it.copy(category = event.category)
+                }
             }
             is TransactionFormEvent.DateChanged -> {
-                _expenseFormState.value = _expenseFormState.value.copy(
-                    date = event.date
-                )
+                _expenseFormState.update {
+                    it.copy(date = event.date)
+                }
             }
             is TransactionFormEvent.Submit -> {
                 submitData()
@@ -80,21 +80,21 @@ class AddExpenseViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _addExpenseState.update {
-                            it.copy(isLoading = false, transaction = true)
+                            it.copy(isLoading = false, transaction = result.data ?: false)
                         }
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _addExpenseState.value = _addExpenseState.value.copy(
-                            isLoading = false
-                        )
+                        _addExpenseState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
                     is Resource.Loading -> {
-                        _addExpenseState.value = _addExpenseState.value.copy(
-                            isLoading = true
-                        )
+                        _addExpenseState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
@@ -115,12 +115,14 @@ class AddExpenseViewModel @Inject constructor(
             !it.successful
         }
         if (hasError) {
-            _expenseFormState.value = _expenseFormState.value.copy(
-                nameError = nameResult.errorMessage,
-                dateError = dateResult.errorMessage,
-                categoryError = categoryResult.errorMessage,
-                amountError = amountResult.errorMessage
-            )
+            _expenseFormState.update {
+                it.copy(
+                    nameError = nameResult.errorMessage,
+                    dateError = dateResult.errorMessage,
+                    categoryError = categoryResult.errorMessage,
+                    amountError = amountResult.errorMessage
+                )
+            }
             return
         }
         viewModelScope.launch {
