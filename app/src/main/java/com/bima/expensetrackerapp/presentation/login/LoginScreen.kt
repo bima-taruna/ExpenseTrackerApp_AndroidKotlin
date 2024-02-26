@@ -1,5 +1,6 @@
-package com.bima.expensetrackerapp.presentation
+package com.bima.expensetrackerapp.presentation.login
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -40,50 +41,58 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.R
 import com.bima.expensetrackerapp.common.ValidationEvent
-import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
+import com.bima.expensetrackerapp.common.form_event.AuthEvent
 import com.bima.expensetrackerapp.presentation.navigation.Graph
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
+import com.bima.expensetrackerapp.viewmodel.state.AuthState
+import com.bima.expensetrackerapp.viewmodel.state.form.LoginFormState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SignInScreen(
+fun LoginScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    viewModel: AuthViewModel = hiltViewModel(),
+    state:AuthState? = null,
+    onEvent: (AuthEvent, Context) -> Unit,
+    validationEvent: Flow<ValidationEvent>? = null,
+    navigateBack : () -> Unit,
+    context: Context,
+    formState:LoginFormState? = null
 ) {
-    val state by viewModel.authState.collectAsState()
-    val formState by viewModel.loginFormState.collectAsState()
-    val context = LocalContext.current
-    LaunchedEffect(state.isSuccess) {
-        if (state.isSuccess) {
-            navController.popBackStack()
-            navController.navigate(Graph.MAIN)
-            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
-        }
-    }
+//    val state by viewModel.authState.collectAsState()
+//    val formState by viewModel.loginFormState.collectAsState()
+//    LaunchedEffect(state.isSuccess) {
+//        if (state.isSuccess) {
+//            navController.popBackStack()
+//            navController.navigate(Graph.MAIN)
+//            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
+//        }
+//    }
     LaunchedEffect(key1 = context) {
-        viewModel.validationEvents.collect {event->
+        validationEvent?.collect {event->
             when(event) {
                 is ValidationEvent.Success -> {
-                    viewModel.onLogin(context)
+                    onEvent(AuthEvent.Login, context)
                 }
             }
         }
     }
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = SnackbarHostState()) },
         topBar = {
             TopAppBar(
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigateUp()
+                        navigateBack()
                     }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
@@ -92,9 +101,7 @@ fun SignInScreen(
                         )
                     }
                 },
-                title = {
-                   
-                },
+                title = {},
             )
         }
     ) { paddingValues ->
@@ -118,17 +125,17 @@ fun SignInScreen(
                     maxLines = 1,
                     shape = RoundedCornerShape(32),
                     modifier = modifier.fillMaxWidth(),
-                    value = formState.email,
+                    value = formState?.email ?: "",
                     onValueChange = {
-                        viewModel.onEvent(LoginFormEvent.EmailChanged(it))
+                        onEvent(AuthEvent.EmailChanged(it), context)
                     },
-                    isError = formState.emailError != null,
+                    isError = formState?.emailError != null,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     )
                 )
-                if (formState.emailError != null) {
-                    Text(text = formState.emailError!!.asString(context), color = MaterialTheme.colorScheme.error)
+                if (formState?.emailError != null) {
+                    Text(text = formState.emailError.asString(context), color = MaterialTheme.colorScheme.error)
                 }
                 OutlinedTextField(
                     label = {
@@ -143,18 +150,18 @@ fun SignInScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp),
-                    value = formState.password,
+                    value = formState?.password ?: "",
                     onValueChange = {
-                        viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
+                        onEvent(AuthEvent.PasswordChanged(it), context)
                     },
-                    isError = formState.passwordError != null,
+                    isError = formState?.passwordError != null,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 )
-                if (formState.passwordError != null) {
-                    Text(text = formState.passwordError!!.asString(context), color = MaterialTheme.colorScheme.error)
+                if (formState?.passwordError != null) {
+                    Text(text = formState.passwordError.asString(context), color = MaterialTheme.colorScheme.error)
                 }
                 Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                     TextButton(onClick = { /*TODO*/ }) {
@@ -167,7 +174,7 @@ fun SignInScreen(
                     .padding(top = 12.dp, bottom = 8.dp),
                     onClick = {
                         localSoftwareKeyboardController?.hide()
-                        viewModel.onEvent(LoginFormEvent.Submit)
+                        onEvent(AuthEvent.Submit, context)
                     }) {
                     Text("Sign in")
                 }
@@ -193,9 +200,25 @@ fun SignInScreen(
                     }
                 }
             }
-            if (state.isLoading) {
-                CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
+            if (state != null) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(modifier = modifier.align(Alignment.Center))
+                }
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun LoginScreenPreview() {
+    val context = LocalContext.current
+    LoginScreen(
+        state = null,
+        onEvent = {authEvent, context ->  },
+        validationEvent = null,
+        navigateBack = { /*TODO*/ },
+        context = context,
+        formState = null
+    )
 }

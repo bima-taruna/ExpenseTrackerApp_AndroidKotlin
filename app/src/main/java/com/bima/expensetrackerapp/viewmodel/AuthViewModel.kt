@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
-import com.bima.expensetrackerapp.common.form_event.LoginFormEvent
+import com.bima.expensetrackerapp.common.form_event.AuthEvent
 import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.IsUserLogInUseCase
 import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
@@ -55,28 +55,34 @@ class AuthViewModel @Inject constructor(
         getSession()
     }
 
-    fun onEvent(event: LoginFormEvent) {
+    fun onEvent(event: AuthEvent, eventContext: Context = context) {
         when (event) {
-            is LoginFormEvent.EmailChanged -> {
+            is AuthEvent.EmailChanged -> {
                     _loginFormState.update {
                         it.copy(
                             email = event.email
                         )
                     }
             }
-            is LoginFormEvent.PasswordChanged -> {
+            is AuthEvent.PasswordChanged -> {
                 _loginFormState.update {
                     it.copy(
                         password = event.password
                     )
                 }
             }
-            is LoginFormEvent.Submit -> {
+            is AuthEvent.Submit -> {
                submitData()
+            }
+            is AuthEvent.Login -> {
+                onLogin(eventContext)
+            }
+            is AuthEvent.Logout -> {
+                signOut(eventContext)
             }
         }
     }
-  fun onLogin(context: Context) {
+  private fun onLogin(context: Context) {
         viewModelScope.launch {
             signInUseCase.execute(context = context,email = _loginFormState.value.email,password = _loginFormState.value.password)
                 .onEach {result ->

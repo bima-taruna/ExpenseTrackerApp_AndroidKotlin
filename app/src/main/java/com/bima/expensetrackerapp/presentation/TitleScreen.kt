@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.presentation
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -105,7 +106,11 @@ fun TitleScreen(
         }
     }
     if (authState.isLoading) {
-        Box {
+        Box(
+            modifier = modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.4f))
+            ,
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
     }
