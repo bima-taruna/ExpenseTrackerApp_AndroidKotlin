@@ -67,15 +67,6 @@ fun LoginScreen(
     context: Context,
     formState:LoginFormState? = null
 ) {
-//    val state by viewModel.authState.collectAsState()
-//    val formState by viewModel.loginFormState.collectAsState()
-//    LaunchedEffect(state.isSuccess) {
-//        if (state.isSuccess) {
-//            navController.popBackStack()
-//            navController.navigate(Graph.MAIN)
-//            Toast.makeText(context, "Login Berhasil", Toast.LENGTH_LONG).show()
-//        }
-//    }
     LaunchedEffect(key1 = context) {
         validationEvent?.collect {event->
             when(event) {
@@ -195,6 +186,7 @@ fun LoginScreen(
                                 imageOptions = ImageOptions(
                                     contentScale = ContentScale.Fit
                                 ),
+                                previewPlaceholder = R.drawable.icons8_google_48,
                                 modifier = modifier.size(36.dp)
                             )
                     }
