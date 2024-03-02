@@ -33,7 +33,6 @@ fun SettingsCard(
             .fillMaxWidth()) {
             Text(name)
         }
-
     }
 }
 

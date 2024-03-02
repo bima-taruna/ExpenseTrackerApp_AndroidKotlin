@@ -29,15 +29,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel(),
-    onNavigateToAuth: () -> Unit,
     navController: NavController,
 ) {
     val userState by userViewModel.userState.collectAsStateWithLifecycle()
-    val authState by authViewModel.authState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = MaterialTheme.colorScheme.secondaryContainer

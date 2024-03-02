@@ -15,15 +15,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val context : ExpenseTrackerApp,
+    private val context: ExpenseTrackerApp,
     private val getExpenseCategoryUseCase: GetExpenseCategoryUseCase,
-    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase
-):ViewModel() {
+    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase,
+) : ViewModel() {
     private val _categoryExpenseState = MutableStateFlow(CategoryState())
     val categoryExpenseState = _categoryExpenseState.asStateFlow()
 
@@ -31,27 +32,28 @@ class CategoryViewModel @Inject constructor(
     val categoryIncomeState = _categoryIncomeState.asStateFlow()
     fun getExpenseCategory() {
         viewModelScope.launch {
-            getExpenseCategoryUseCase.execute().onEach { result->
-                when(result) {
+            getExpenseCategoryUseCase.execute().onEach { result ->
+                when (result) {
                     is Resource.Success -> {
-                        _categoryExpenseState.value = _categoryExpenseState.value.copy(
-                            isLoading = false,
-                            category = result.data?.map {
-                                it.toCategory()
-                            }
-                        )
+                        _categoryExpenseState.update {
+                            it.copy(isLoading = false, category = result.data?.map { item ->
+                                item.toCategory()
+                            })
+                        }
                     }
+
                     is Resource.Error -> {
-                        Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _categoryExpenseState.value = _categoryExpenseState.value.copy(
-                            isLoading = false
-                        )
+                        _categoryExpenseState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
+
                     is Resource.Loading -> {
-                        _categoryExpenseState.value = _categoryExpenseState.value.copy(
-                            isLoading = true
-                        )
+                        _categoryExpenseState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
@@ -60,27 +62,28 @@ class CategoryViewModel @Inject constructor(
 
     fun getIncomeCategory() {
         viewModelScope.launch {
-            getIncomeCategoryUseCase.execute().onEach { result->
-                when(result) {
+            getIncomeCategoryUseCase.execute().onEach { result ->
+                when (result) {
                     is Resource.Success -> {
-                        _categoryIncomeState.value = _categoryIncomeState.value.copy(
-                            isLoading = false,
-                            category = result.data?.map {
-                                it.toCategory()
-                            }
-                        )
+                        _categoryIncomeState.update {
+                            it.copy(isLoading = false, category = result.data?.map { item ->
+                                item.toCategory()
+                            })
+                        }
                     }
+
                     is Resource.Error -> {
-                        Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _categoryIncomeState.value = _categoryIncomeState.value.copy(
-                            isLoading = false
-                        )
+                        _categoryIncomeState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
                     }
+
                     is Resource.Loading -> {
-                        _categoryIncomeState.value = _categoryIncomeState.value.copy(
-                            isLoading = true
-                        )
+                        _categoryIncomeState.update {
+                            it.copy(isLoading = true)
+                        }
                     }
                 }
             }.collect()
