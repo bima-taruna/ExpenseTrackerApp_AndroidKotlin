@@ -70,25 +70,25 @@ fun TransactionForm(
 ) {
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.ROOT)
     val calendar = Calendar.getInstance()
-    val expanded = remember { mutableStateOf(false) }
+    val expanded = rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
     val description = rememberSaveable {
         mutableStateOf("")
     }
     val datePickerState = rememberDatePickerState()
-    var showDatePicker by remember {
+    var showDatePicker by rememberSaveable {
         mutableStateOf(false)
     }
-    var selectedDate by remember {
+    var selectedDate by rememberSaveable {
         mutableStateOf(calendar.timeInMillis)
     }
 
-    var date by remember {
+    var date by rememberSaveable {
         mutableStateOf("")
     }
 
-    var name by remember {
+    var name by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -105,8 +105,6 @@ fun TransactionForm(
     val amount = rememberSaveable {
         mutableStateOf(0.0)
     }
-
-    val composableScope = rememberCoroutineScope()
 
     val addTransaction = { transaction: Transaction ->
         createExpense(transaction)
@@ -248,9 +246,7 @@ fun TransactionForm(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                composableScope.launch {
-                    onEvent(TransactionFormEvent.Submit)
-                }
+                onEvent(TransactionFormEvent.Submit)
             }) {
             Text(text = if (isUpdate) "Update" else "Add")
         }

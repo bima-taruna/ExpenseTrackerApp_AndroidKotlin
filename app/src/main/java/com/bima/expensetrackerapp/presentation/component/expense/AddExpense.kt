@@ -51,7 +51,6 @@ fun AddExpense(
             onEvent = {
                 addExpenseViewModel.onEvent(it)
             },
-
         )
     }
 }

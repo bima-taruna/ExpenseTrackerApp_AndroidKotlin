@@ -16,6 +16,7 @@ import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateEmail
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateLoginPassword
 import com.bima.expensetrackerapp.viewmodel.state.AuthState
+import com.bima.expensetrackerapp.viewmodel.state.LogoutState
 import com.bima.expensetrackerapp.viewmodel.state.form.LoginFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.gotrue.user.UserSession
@@ -46,6 +47,8 @@ class AuthViewModel @Inject constructor(
     val authState = _authState.asStateFlow()
     private val _loginFormState = MutableStateFlow(LoginFormState())
     val loginFormState = _loginFormState.asStateFlow()
+    private val _logoutState = MutableStateFlow(LogoutState())
+    val logoutState = _logoutState.asStateFlow()
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
@@ -130,24 +133,24 @@ class AuthViewModel @Inject constructor(
             signOutUseCase.execute(context).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _authState.update {
+                        _logoutState.update {
                             it.copy(
-                                isSuccess = result.data!!,
+                                isLogout = result.data ?: false,
                                 isLoading = false
                             )
                         }
                     }
                     is Resource.Error -> {
                         Toast.makeText(context,result.message, Toast.LENGTH_SHORT).show()
-                        _authState.update {
+                        _logoutState.update {
                             it.copy(
                                 isLoading = false,
-                                isSuccess = true
+                                error = result.message.toString()
                             )
                         }
                     }
                     is Resource.Loading -> {
-                        _authState.update {
+                        _logoutState.update {
                             it.copy(
                                 isLoading = true
                             )

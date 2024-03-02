@@ -37,7 +37,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         val sharedPref = SharedPreferencesHelper(context)
         goTrue.logout()
         sharedPref.clearPreferences()
-        return false
+        return true
     }
 
     override fun saveToken(context: Context) {
