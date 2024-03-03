@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 fun TransactionTabs(
     modifier: Modifier = Modifier,
     tabIndexViewModel: TabIndexViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
@@ -43,8 +43,10 @@ fun TransactionTabs(
                     },
                     onClick = {
                         tabIndexViewModel.saveTabIndex(index)
-                        coroutineScope.launch { pagerState.animateScrollToPage(index)
-                        } }
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    }
                 )
             }
         }

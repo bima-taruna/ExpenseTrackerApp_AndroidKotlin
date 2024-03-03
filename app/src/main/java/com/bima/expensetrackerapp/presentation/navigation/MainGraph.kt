@@ -32,11 +32,6 @@ fun MainGraph(
             route = Screen.HomeScreen.route
         ) {
             HomeScreen(
-                onNavigateToAuth = {
-                    rootNavController.navigate(route = Graph.AUTH) {
-                        popUpTo(Graph.ROOT)
-                    }
-                },
                 navController = navController
                 )
         }
