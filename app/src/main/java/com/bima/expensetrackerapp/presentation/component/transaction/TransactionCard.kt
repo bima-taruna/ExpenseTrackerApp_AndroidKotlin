@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bima.expensetrackerapp.common.convert
 import com.bima.expensetrackerapp.domain.model.Transactions
+import com.bima.expensetrackerapp.presentation.component.shapes_container.SmallCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,20 +29,7 @@ fun TransactionCard(
     isIncome:Boolean,
     navigateToDetail:()->Unit
 ) {
-        Card(
-            onClick = {
-                      navigateToDetail()
-            },
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 10.dp
-            ),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.background
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
+       SmallCard(onClick = { navigateToDetail() }) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -62,5 +50,5 @@ fun TransactionCard(
                     )
             }
         }
+       }
 
-}
