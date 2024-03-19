@@ -53,14 +53,9 @@ fun CategorySettings(
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Column(
-                    modifier = modifier.fillMaxSize()
-                ) {
 
-                }
             }
         }
-
     )
 }
 
