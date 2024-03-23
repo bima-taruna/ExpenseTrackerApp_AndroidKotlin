@@ -15,7 +15,7 @@ import com.bima.expensetrackerapp.viewmodel.expense.ExpenseViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ExpenseTabs(
+fun ExpenseTab(
     expenseViewModel: ExpenseViewModel = hiltViewModel(),
     balanceViewModel: BalanceViewModel = hiltViewModel(),
     navController: NavController,

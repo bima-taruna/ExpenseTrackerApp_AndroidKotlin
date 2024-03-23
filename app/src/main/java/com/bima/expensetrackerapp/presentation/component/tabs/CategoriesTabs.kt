@@ -22,7 +22,7 @@ import com.bima.expensetrackerapp.viewmodel.TabIndexViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun CategoryTabs(
+fun CategoriesTabs(
     modifier: Modifier = Modifier,
     tabIndexViewModel: TabIndexViewModel = hiltViewModel(),
     navController: NavController,

@@ -9,11 +9,11 @@ fun tabsItem(
     return listOf(
         TabItem(
             title = "Expense",
-            screen = { ExpenseTabs(navController = navController)}
+            screen = { ExpenseTab(navController = navController)}
         ),
         TabItem(
             title = "Income",
-            screen = { IncomeTabs(navController = navController) }
+            screen = { IncomeTab(navController = navController) }
         ),
     )
 }
