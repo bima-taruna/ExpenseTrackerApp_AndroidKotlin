@@ -68,7 +68,7 @@ fun categoriesItem(
     return listOf(
         TabItem(
             title = "Expense",
-            screen = {}
+            screen = { ExpenseTabCategory(navController = navController)}
         ),
         TabItem(
             title = "Income",

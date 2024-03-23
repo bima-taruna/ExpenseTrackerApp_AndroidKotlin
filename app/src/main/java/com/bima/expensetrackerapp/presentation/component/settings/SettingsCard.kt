@@ -21,10 +21,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SettingsCard(
     modifier: Modifier = Modifier,
-    name:String
+    name:String,
+    navigate : () -> Unit
 ) {
     Card(
-        onClick = { /*TODO*/ },
+        onClick = { navigate() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
@@ -40,5 +41,5 @@ fun SettingsCard(
 @Preview
 @Composable
 fun SettingsCardPreview() {
-    SettingsCard(name = "category")
+    SettingsCard(name = "category", navigate =  {})
 }

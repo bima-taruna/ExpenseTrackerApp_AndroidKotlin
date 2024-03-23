@@ -11,6 +11,7 @@ sealed class Screen(val route:String,val name:String ,val icon: ImageVector? = n
     data object StatScreen: Screen("stat_screen","Statistic", Icons.Default.AccountCircle)
     data object ProfileScreen: Screen("profile_screen","Profile", Icons.Filled.AccountCircle)
     data object SettingScreen: Screen("setting_screen","Setting", Icons.Filled.Settings)
+    data object CategorySettingScreen: Screen("category_setting_screen","Category Setting")
     data object ExpenseFormScreen: Screen("expense_form","Expense")
     data object IncomeFormScreen: Screen("income_form","Income")
     data object IncomeDetailScreen:Screen("income_detail_screen/", "income_detail")

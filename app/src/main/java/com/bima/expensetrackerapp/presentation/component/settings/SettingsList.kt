@@ -9,22 +9,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.bima.expensetrackerapp.presentation.navigation.Screen
 
 @Composable
 fun SettingsList(
     modifier: Modifier = Modifier,
     list: List<String>,
+    navController: NavController
 ) {
     LazyColumn() {
         items(list) {
-            SettingsCard(name = it, modifier = modifier.fillMaxWidth())
+            SettingsCard(name = it, modifier = modifier.fillMaxWidth(), navigate = {navController.navigate(
+                returnTheSettingsRoute(it))})
             Divider(modifier = modifier.padding(horizontal = 8.dp))
         }
     }
 }
 
-@Preview(showBackground = true, widthDp = 320, heightDp = 320)
-@Composable
-fun SettingsListPreview() {
-    SettingsList(list = listOf("Dark theme", "Currency", "Category"))
+fun returnTheSettingsRoute(name:String): String {
+    if (name == "Category") {
+        return Screen.CategorySettingScreen.route
+    }
+    return ""
 }
+
+//@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+//@Composable
+//fun SettingsListPreview() {
+//    SettingsList(list = listOf("Dark theme", "Currency", "Category"))
+//}

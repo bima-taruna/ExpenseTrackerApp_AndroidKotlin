@@ -16,6 +16,7 @@ import com.bima.expensetrackerapp.presentation.component.expense.UpdateExpense
 import com.bima.expensetrackerapp.presentation.component.income.AddIncome
 import com.bima.expensetrackerapp.presentation.component.income.IncomeDetail
 import com.bima.expensetrackerapp.presentation.component.income.UpdateIncome
+import com.bima.expensetrackerapp.presentation.component.settings.category.CategorySettings
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -54,6 +55,11 @@ fun MainGraph(
             route = Screen.SettingScreen.route
         ) {
             SettingsScreen()
+        }
+        composable(
+            route = Screen.CategorySettingScreen.route
+        ) {
+            CategorySettings(navController = navController)
         }
         composable(
             route = Screen.ExpenseFormScreen.route
