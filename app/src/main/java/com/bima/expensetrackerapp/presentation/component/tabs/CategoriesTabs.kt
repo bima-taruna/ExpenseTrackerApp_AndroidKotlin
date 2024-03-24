@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 
 package com.bima.expensetrackerapp.presentation.component.tabs
 
@@ -30,7 +30,7 @@ fun CategoriesTabs(
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
     Column(
-        modifier = Modifier
+        modifier = modifier
     ) {
         TabRow(selectedTabIndex = pagerState.currentPage, modifier.padding(bottom = 8.dp)) {
             categoriesItem(navController = navController).forEachIndexed { index, tabItem ->
@@ -50,17 +50,17 @@ fun CategoriesTabs(
                     }
                 )
             }
-            HorizontalPager(
-                pageCount = categoriesItem(navController = navController).size,
-                state = pagerState,
-                userScrollEnabled = false
-            ) {
-                categoriesItem(navController = navController)[pagerState.currentPage].screen()
-            }
+        }
+        HorizontalPager(
+            pageCount = categoriesItem(navController = navController).size,
+            state = pagerState,
+            userScrollEnabled = false
+        ) {
+            categoriesItem(navController = navController)[pagerState.currentPage].screen()
         }
     }
-
 }
+
 
 fun categoriesItem(
     navController: NavController,
@@ -68,7 +68,7 @@ fun categoriesItem(
     return listOf(
         TabItem(
             title = "Expense",
-            screen = { ExpenseTabCategory(navController = navController)}
+            screen = { ExpenseTabCategory(navController = navController) }
         ),
         TabItem(
             title = "Income",

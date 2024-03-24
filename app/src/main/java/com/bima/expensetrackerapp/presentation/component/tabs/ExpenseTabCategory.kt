@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,18 +25,22 @@ fun ExpenseTabCategory(
     val context = LocalContext.current
     val lazyColumnListState = rememberLazyListState()
     val expenseCategoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
+    LaunchedEffect(context) {
+        categoryViewModel.getExpenseCategory()
+    }
     Box {
-      LazyColumn(
-          modifier = modifier.fillMaxSize(),
-          state = lazyColumnListState
-      ) {
-          expenseCategoryState.category?.let {  category->
-              items(items = category, key = {id ->
-                  id.id ?: ""
-              }) {
-                  Text(text = it.name ?: "")
-              }
-          }
-      }
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize(),
+            state = lazyColumnListState
+        ) {
+            expenseCategoryState.category?.let { category ->
+                items(items = category, key = { id ->
+                    id.id ?: ""
+                }) {
+                    Text(text = it.name ?: "")
+                }
+            }
+        }
     }
 }

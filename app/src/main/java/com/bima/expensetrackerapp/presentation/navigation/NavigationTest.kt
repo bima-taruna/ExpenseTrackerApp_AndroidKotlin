@@ -39,7 +39,7 @@ fun NavigationTest(
         composable(
             route = Screen.SettingScreen.route
         ) {
-            SettingsScreen()
+            SettingsScreen(navController = navController)
         }
         composable(
             route = Screen.ExpenseFormScreen.route
