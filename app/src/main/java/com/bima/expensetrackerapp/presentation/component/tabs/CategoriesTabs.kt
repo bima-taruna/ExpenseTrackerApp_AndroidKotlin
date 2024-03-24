@@ -72,7 +72,7 @@ fun categoriesItem(
         ),
         TabItem(
             title = "Income",
-            screen = {}
+            screen = { IncomeTabCategory(navController = navController)}
         )
     )
 }
