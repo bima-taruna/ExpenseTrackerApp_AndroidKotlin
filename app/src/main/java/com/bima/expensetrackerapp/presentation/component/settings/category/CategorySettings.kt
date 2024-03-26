@@ -28,6 +28,7 @@ fun CategorySettings(
             CenterAlignedTopAppBar(
                 navigationIcon = {
                     IconButton(onClick = {
+                        navController.popBackStack()
                     }) {
                         Icon(Icons.Filled.ArrowBack, "backIcon")
                     }
