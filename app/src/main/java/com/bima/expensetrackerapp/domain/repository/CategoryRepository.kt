@@ -8,4 +8,6 @@ interface CategoryRepository {
     suspend fun getExpenseCategoryById(id:String):CategoryDto
 
     suspend fun getIncomeCategory() : List<CategoryDto>
+
+    suspend fun addCategory(name:String,type:String) : Boolean
 }

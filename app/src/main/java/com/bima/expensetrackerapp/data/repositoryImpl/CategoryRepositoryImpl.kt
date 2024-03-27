@@ -26,4 +26,17 @@ class CategoryRepositoryImpl @Inject constructor(
             eq("type", "income")
         }.decodeList()
     }
+
+    override suspend fun addCategory(name: String, type: String): Boolean {
+        return try {
+            val categoryDto = CategoryDto(
+                name = name,
+                type = type
+            )
+            postgrest["category"].insert(categoryDto)
+            true
+        } catch (e: java.lang.Exception) {
+            throw e
+        }
+    }
 }

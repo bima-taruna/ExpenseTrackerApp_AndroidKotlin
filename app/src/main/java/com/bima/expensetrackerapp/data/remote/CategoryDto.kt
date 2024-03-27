@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CategoryDto(
     @SerialName("id")
-    val id:String?,
+    val id:String? = "",
     @SerialName("name")
     val name:String?,
     @SerialName("type")
     val type:String?,
     @SerialName("created_by")
-    val createdBy:String?
+    val createdBy:String? = ""
 )
 
 fun CategoryDto.toCategory() : Category {
