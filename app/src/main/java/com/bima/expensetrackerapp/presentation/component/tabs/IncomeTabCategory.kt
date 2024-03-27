@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bima.expensetrackerapp.presentation.component.shapes_container.SmallCard
-import com.bima.expensetrackerapp.viewmodel.CategoryViewModel
+import com.bima.expensetrackerapp.viewmodel.category.CategoryViewModel
 
 @Composable
 fun IncomeTabCategory(

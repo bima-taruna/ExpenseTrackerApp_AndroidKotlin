@@ -3,7 +3,6 @@ package com.bima.expensetrackerapp.presentation.component.form
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,8 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.bima.expensetrackerapp.viewmodel.state.CategoryState
-import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,7 +24,7 @@ fun Dropdown(
     expanded: MutableState<Boolean>,
     selectedCategory:MutableState<String>,
     category:MutableState<String>,
-    categoryState:CategoryState,
+    categoryState: CategoryState,
     changeValue:() -> Unit,
     isError:Boolean
 ) {

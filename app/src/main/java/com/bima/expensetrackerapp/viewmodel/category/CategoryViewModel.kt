@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.viewmodel
+package com.bima.expensetrackerapp.viewmodel.category
 
 import android.util.Log
 import android.widget.Toast
@@ -9,12 +9,11 @@ import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toCategory
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetIncomeCategoryUseCase
-import com.bima.expensetrackerapp.viewmodel.state.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

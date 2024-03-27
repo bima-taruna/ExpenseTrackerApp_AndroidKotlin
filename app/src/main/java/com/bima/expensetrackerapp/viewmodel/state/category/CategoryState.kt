@@ -1,4 +1,4 @@
-package com.bima.expensetrackerapp.viewmodel.state
+package com.bima.expensetrackerapp.viewmodel.state.category
 
 import com.bima.expensetrackerapp.domain.model.Category
 

@@ -22,8 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,11 +38,10 @@ import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.component.form.TextField
 import com.bima.expensetrackerapp.presentation.navigation.Graph
-import com.bima.expensetrackerapp.viewmodel.state.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
