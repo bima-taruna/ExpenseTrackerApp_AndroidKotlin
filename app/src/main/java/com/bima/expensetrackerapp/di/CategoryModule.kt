@@ -3,6 +3,7 @@ package com.bima.expensetrackerapp.di
 import com.bima.expensetrackerapp.data.repositoryImpl.CategoryRepositoryImpl
 import com.bima.expensetrackerapp.domain.repository.CategoryRepository
 import com.bima.expensetrackerapp.domain.use_case.category.AddExpenseCategoryUseCase
+import com.bima.expensetrackerapp.domain.use_case.category.AddIncomeCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.CategoryUseCases
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
@@ -31,7 +32,8 @@ object CategoryModule {
             getExpenseCategory = GetExpenseCategoryUseCase(repository),
             getExpenseCategoryByIdUseCase = GetExpenseCategoryByIdUseCase(repository),
             getIncomeCategory = GetIncomeCategoryUseCase(repository),
-            addExpenseCategory = AddExpenseCategoryUseCase(repository)
+            addExpenseCategory = AddExpenseCategoryUseCase(repository),
+            addIncomeCategory = AddIncomeCategoryUseCase(repository)
         )
     }
 }
