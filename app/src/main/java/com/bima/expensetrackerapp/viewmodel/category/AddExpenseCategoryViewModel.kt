@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
+import com.bima.expensetrackerapp.common.form_event.CategoryFormEvent
 import com.bima.expensetrackerapp.domain.use_case.category.AddExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
 import com.bima.expensetrackerapp.viewmodel.state.category.EventCategoryState
@@ -36,6 +37,19 @@ class AddExpenseCategoryViewModel @Inject constructor(
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
+
+    fun onEvent(event:CategoryFormEvent) {
+        when(event) {
+            is CategoryFormEvent.NameChanged -> {
+                _expenseCategoryFormState.update {
+                    it.copy(name = event.name)
+                }
+            }
+            is CategoryFormEvent.Submit -> {
+                submitData()
+            }
+        }
+    }
 
     fun addExpenseCategory(name:String) {
         viewModelScope.launch {
