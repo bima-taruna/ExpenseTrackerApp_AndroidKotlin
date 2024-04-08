@@ -6,14 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
+import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.domain.use_case.category.AddExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
 import com.bima.expensetrackerapp.viewmodel.state.category.EventCategoryState
+import com.bima.expensetrackerapp.viewmodel.state.form.CategoryFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +30,12 @@ class AddExpenseCategoryViewModel @Inject constructor(
 ):ViewModel() {
     private val _addExpenseCategoryState = MutableStateFlow(EventCategoryState())
     val addExpenseCategoryState = _addExpenseCategoryState.asStateFlow()
+
+    private val _expenseCategoryFormState = MutableStateFlow(CategoryFormState())
+    val expenseCategoryFormState = _expenseCategoryFormState.asStateFlow()
+
+    private val validationEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validationEventChannel.receiveAsFlow()
 
     fun addExpenseCategory(name:String) {
         viewModelScope.launch {
@@ -51,6 +61,19 @@ class AddExpenseCategoryViewModel @Inject constructor(
                     }
                 }
             }.collect()
+        }
+    }
+
+    private fun submitData() {
+        val nameResult = validateName.execute(_expenseCategoryFormState.value.name)
+        if (!nameResult.successful) {
+            _expenseCategoryFormState.update {
+                it.copy(nameError = nameResult.errorMessage)
+            }
+            return
+        }
+        viewModelScope.launch {
+            validationEventChannel.send(ValidationEvent.Success)
         }
     }
 }
