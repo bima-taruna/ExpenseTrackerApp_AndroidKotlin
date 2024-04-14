@@ -17,7 +17,9 @@ class BalanceRepositoryImpl @Inject constructor(
             postgrest.from("balance").update({
                 set("total_balance", data)
             }) {
-                eq("user_id", userId)
+                filter {
+                    eq("user_id", userId)
+                }
             }
             true
         } catch (e: java.lang.Exception) {

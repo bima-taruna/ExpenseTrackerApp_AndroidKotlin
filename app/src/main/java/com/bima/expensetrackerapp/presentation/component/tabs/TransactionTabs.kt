@@ -26,7 +26,7 @@ fun TransactionTabs(
     tabIndexViewModel: TabIndexViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState {tabsItem(navController = navController).size}
     val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = modifier
@@ -51,7 +51,7 @@ fun TransactionTabs(
             }
         }
         HorizontalPager(
-            pageCount = tabsItem(navController = navController).size,
+//            pageCount = tabsItem(navController = navController).size,
             state = pagerState,
             userScrollEnabled = false
         ) {

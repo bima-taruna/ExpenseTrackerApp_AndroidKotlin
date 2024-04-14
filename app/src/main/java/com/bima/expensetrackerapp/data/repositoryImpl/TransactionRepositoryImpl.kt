@@ -16,7 +16,9 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun getTransactionById(type: String, id: String): TransactionDto {
         return postgrest[type].select(Columns.ALL) {
-            eq("id", id)
+            filter {
+                eq("id", id)
+            }
         }.decodeSingle()
     }
 
@@ -40,7 +42,9 @@ class TransactionRepositoryImpl @Inject constructor(
     override suspend fun deleteTransaction(id: String, type: String): Boolean {
         return try {
             postgrest.from(type).delete {
-                eq("id", id)
+                filter {
+                    eq("id", id)
+                }
             }
             true
         } catch (e: java.lang.Exception) {
@@ -50,7 +54,7 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun updateTransaction(
         id: String,
-        data:Transaction,
+        data: Transaction,
         type: String,
     ): Boolean {
         return try {
@@ -61,7 +65,9 @@ class TransactionRepositoryImpl @Inject constructor(
                 set("amount", data.amount)
                 set("date", data.date)
             }) {
-                eq("id", id)
+                filter {
+                    eq("id", id)
+                }
             }
             true
         } catch (e: java.lang.Exception) {

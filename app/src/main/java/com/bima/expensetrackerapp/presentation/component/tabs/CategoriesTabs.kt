@@ -27,7 +27,7 @@ fun CategoriesTabs(
     tabIndexViewModel: TabIndexViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState {tabsItem(navController = navController).size}
     val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = modifier
@@ -52,7 +52,7 @@ fun CategoriesTabs(
             }
         }
         HorizontalPager(
-            pageCount = categoriesItem(navController = navController).size,
+//            pageCount = categoriesItem(navController = navController).size,
             state = pagerState,
             userScrollEnabled = false
         ) {

@@ -4,17 +4,17 @@ import android.content.Context
 import android.util.Log
 import com.bima.expensetrackerapp.common.SharedPreferencesHelper
 import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
-import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.gotrue.user.UserSession
 import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
-    private val goTrue: GoTrue
+    private val goTrue: Auth
 ) : AuthenticationRepository {
     override suspend fun signIn(context: Context,email: String, password: String): Boolean {
        return try {
-            goTrue.loginWith(Email) {
+            goTrue.signInWith(Email) {
                 this.email = email
                 this.password = password
             }
@@ -35,7 +35,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
     override suspend fun signOut(context:Context):Boolean {
         val sharedPref = SharedPreferencesHelper(context)
-        goTrue.logout()
+        goTrue.signOut()
         sharedPref.clearPreferences()
         return true
     }

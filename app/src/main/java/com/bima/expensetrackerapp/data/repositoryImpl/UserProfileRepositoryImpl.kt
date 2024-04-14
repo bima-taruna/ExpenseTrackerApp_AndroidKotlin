@@ -7,11 +7,13 @@ import javax.inject.Inject
 
 class UserProfileRepositoryImpl @Inject constructor(
     private val postgrest: Postgrest
-):UserProfileRepository {
+) : UserProfileRepository {
     override suspend fun getProfile(id: String?): UserProfileDto {
         return postgrest["user_profiles"].select {
             if (id != null) {
-                eq("id", id)
+                filter {
+                    eq("id", id)
+                }
             }
         }.decodeSingle()
     }

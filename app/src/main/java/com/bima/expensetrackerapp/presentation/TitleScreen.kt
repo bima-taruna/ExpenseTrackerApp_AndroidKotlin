@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,7 @@ fun TitleScreen(
                     contentScale = ContentScale.FillHeight,
                     alignment = Alignment.Center,
                 ),
-                previewPlaceholder = R.drawable.josh_appel_netpasr_bmq_unsplash
+                previewPlaceholder = painterResource(id = R.drawable.josh_appel_netpasr_bmq_unsplash)
             )
         }
         Spacer(modifier = modifier.height(20.dp))

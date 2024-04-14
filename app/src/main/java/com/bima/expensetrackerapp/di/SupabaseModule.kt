@@ -1,34 +1,26 @@
 package com.bima.expensetrackerapp.di
 
 import android.content.Context
+import com.bima.expensetrackerapp.BuildConfig
+import com.bima.expensetrackerapp.ExpenseTrackerApp
+import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
+import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.createSupabaseClient
-import javax.inject.Singleton
-import com.bima.expensetrackerapp.BuildConfig
-import com.bima.expensetrackerapp.ExpenseTrackerApp
-import com.bima.expensetrackerapp.data.repositoryImpl.AuthenticationRepositoryImpl
-import com.bima.expensetrackerapp.data.repositoryImpl.UserProfileRepositoryImpl
-import com.bima.expensetrackerapp.domain.repository.AuthenticationRepository
-import com.bima.expensetrackerapp.domain.repository.UserProfileRepository
-import com.bima.expensetrackerapp.domain.use_case.auth.AuthUseCases
-import com.bima.expensetrackerapp.domain.use_case.auth.GetSessionUseCase
-import com.bima.expensetrackerapp.domain.use_case.auth.SignInUseCase
-import com.bima.expensetrackerapp.domain.use_case.auth.SignOutUseCase
-import com.bima.expensetrackerapp.domain.use_case.user.GetProfileUseCase
-import com.bima.expensetrackerapp.domain.use_case.user.UserUseCases
-import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.FlowType
-import io.github.jan.supabase.gotrue.GoTrue
-import io.github.jan.supabase.gotrue.gotrue
+import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.storage.storage
+import javax.inject.Singleton
 
 
 @InstallIn(SingletonComponent::class)
@@ -43,7 +35,7 @@ object SupabaseModule {
             supabaseKey = BuildConfig.API_KEY
         ) {
             install(Postgrest)
-            install(GoTrue) {
+            install(Auth) {
                 flowType = FlowType.PKCE
                 scheme = "app"
                 host = "supabase.com"
@@ -60,8 +52,8 @@ object SupabaseModule {
 
     @Provides
     @Singleton
-    fun provideSupabaseGoTrue(client: SupabaseClient): GoTrue {
-        return client.gotrue
+    fun provideSupabaseGoTrue(client: SupabaseClient): Auth {
+        return client.auth
     }
 
 
@@ -74,7 +66,7 @@ object SupabaseModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(goTrue: GoTrue): AuthenticationRepository {
+    fun provideAuthRepository(goTrue: Auth): AuthenticationRepository {
         return AuthenticationRepositoryImpl(goTrue)
     }
 
