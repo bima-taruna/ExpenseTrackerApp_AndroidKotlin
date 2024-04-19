@@ -1,7 +1,9 @@
 package com.bima.expensetrackerapp.presentation.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -18,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,6 +39,7 @@ import com.bima.expensetrackerapp.common.ValidationEvent
 import com.bima.expensetrackerapp.common.convert
 import com.bima.expensetrackerapp.common.form_event.BalanceFormEvent
 import com.bima.expensetrackerapp.common.getSymbol
+import com.bima.expensetrackerapp.presentation.component.form.CurrencyTextField
 import com.bima.expensetrackerapp.viewmodel.AuthViewModel
 import com.bima.expensetrackerapp.viewmodel.BalanceViewModel
 import kotlinx.coroutines.delay
@@ -55,7 +60,7 @@ fun BalanceCard(
     val updateBalanceFormState by balanceViewModel.updateBalanceFormState.collectAsStateWithLifecycle()
     val validationEvent = balanceViewModel.validationEvents
     val composableScope = rememberCoroutineScope()
-//    val context = LocalContext.current
+    val context = LocalContext.current
     var dialog by rememberSaveable {
         mutableStateOf(false)
     }
@@ -63,17 +68,19 @@ fun BalanceCard(
         mutableStateOf("")
     }
     val amount = rememberSaveable {
-        mutableStateOf(0.0)
+        mutableDoubleStateOf(0.0)
     }
     LaunchedEffect(balanceState.balance) {
         balanceViewModel.getBalance()
-        currency.value = if (balanceState.balance?.totalBalance != null) balanceState.balance?.totalBalance?.toInt().toString() else ""
+        currency.value =
+            if (balanceState.balance?.totalBalance != null) balanceState.balance?.totalBalance?.toInt()
+                .toString() else ""
         balanceViewModel.onEvent(BalanceFormEvent.AmountChanged(balanceState.balance?.totalBalance.toString()))
     }
 
     LaunchedEffect(updateBalanceState) {
         validationEvent.collect { event ->
-            when(event) {
+            when (event) {
                 is ValidationEvent.Success -> {
                     balanceViewModel.updateBalance(id?.user?.id ?: "", amount.value.toInt())
                 }
@@ -187,29 +194,49 @@ fun BalanceCard(
         }
     }
     if (dialog) {
-        EditDialog(
-            amount = amount,
-            text = currency,
-            onValueChange = {
-                balanceViewModel.onEvent(
-                    BalanceFormEvent.AmountChanged(currency.value)
-                )
-            },
-            formState = updateBalanceFormState,
+        Modal(
             onDismissRequest = {
                 dialog = false
             },
-            onSubmit = {
-                composableScope.launch {
-                    balanceViewModel.onEvent(BalanceFormEvent.Submit)
-                    delay(500)
-                    if (updateBalanceState.transaction) {
-                        balanceViewModel.getBalance()
-                        dialog = false
+        ) {
+            CurrencyTextField(
+                text = currency,
+                amount = amount,
+                label = "Total Balance",
+                onValueChange = {
+                    balanceViewModel.onEvent(
+                        BalanceFormEvent.AmountChanged(currency.value)
+                    )
+                },
+                isError = updateBalanceFormState.amountError != null,
+                modifier = modifier
+            )
+            if (updateBalanceFormState.amountError != null) {
+                Text(
+                    text = updateBalanceFormState.amountError!!.asString(context),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, end = 8.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(onClick = {
+                    composableScope.launch {
+                        balanceViewModel.onEvent(BalanceFormEvent.Submit)
+                        delay(500)
+                        if (updateBalanceState.transaction) {
+                            balanceViewModel.getBalance()
+                            dialog = false
+                        }
                     }
+                }) {
+                    Text(text = "Update")
                 }
             }
-        )
+        }
     }
 }
 
