@@ -33,7 +33,7 @@ class AddIncomeCategoryViewModel @Inject constructor(
     val addIncomeCategoryState = _addIncomeCategoryState.asStateFlow()
 
     private val _incomeCategoryFormState = MutableStateFlow(CategoryFormState())
-    val incomeeCategoryFormState = _incomeCategoryFormState.asStateFlow()
+    val incomeCategoryFormState = _incomeCategoryFormState.asStateFlow()
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
