@@ -29,7 +29,7 @@ fun ExpenseTabCategory(
     val context = LocalContext.current
     val lazyColumnListState = rememberLazyListState()
     val expenseCategoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
-    LaunchedEffect(context) {
+    LaunchedEffect(context, expenseCategoryState.category) {
         categoryViewModel.getExpenseCategory()
     }
     Box {

@@ -52,7 +52,7 @@ class AddIncomeCategoryViewModel @Inject constructor(
         }
     }
 
-    fun addExpenseCategory(name:String) {
+    fun addIncomeCategory(name:String) {
         viewModelScope.launch {
             addIncomeCategoryUseCase.execute(name).onEach {result->
                 when(result) {
