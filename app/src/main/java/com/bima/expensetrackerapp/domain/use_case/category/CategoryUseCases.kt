@@ -5,5 +5,6 @@ data class CategoryUseCases(
     val getExpenseCategoryByIdUseCase: GetExpenseCategoryByIdUseCase,
     val getIncomeCategory : GetIncomeCategoryUseCase,
     val addExpenseCategory : AddExpenseCategoryUseCase,
-    val addIncomeCategory : AddIncomeCategoryUseCase
+    val addIncomeCategory : AddIncomeCategoryUseCase,
+    val deleteCategory : DeleteCategoryUseCase
 )
