@@ -45,4 +45,17 @@ class CategoryRepositoryImpl @Inject constructor(
             throw e
         }
     }
+
+    override suspend fun deleteCategory(id: String): Boolean {
+        return try {
+            postgrest["category"].delete {
+                filter {
+                    eq("id", id)
+                }
+            }
+            true
+        } catch (e: java.lang.Exception) {
+            throw e
+        }
+    }
 }

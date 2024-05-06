@@ -10,4 +10,6 @@ interface CategoryRepository {
     suspend fun getIncomeCategory() : List<CategoryDto>
 
     suspend fun addCategory(name:String,type:String) : Boolean
+
+    suspend fun deleteCategory(id:String) : Boolean
 }
