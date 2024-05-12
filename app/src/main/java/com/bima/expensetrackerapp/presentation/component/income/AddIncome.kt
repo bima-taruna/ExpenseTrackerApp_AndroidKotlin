@@ -24,7 +24,7 @@ fun AddIncome(
     addIncomeViewModel: AddIncomeViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val categoryState by categoryViewModel.categoryIncomeState.collectAsStateWithLifecycle()
+    val categoryState by categoryViewModel.categoriesIncomeState.collectAsStateWithLifecycle()
     val formState by addIncomeViewModel.incomeFormState.collectAsStateWithLifecycle()
     val addExpenseState by addIncomeViewModel.addIncomeState.collectAsStateWithLifecycle()
     val validationEvent = addIncomeViewModel.validationEvents
@@ -40,7 +40,7 @@ fun AddIncome(
             modifier.fillMaxSize(),
             navController = navController,
             transactionEventState = addExpenseState,
-            categoryState = categoryState,
+            categoriesState = categoryState,
             formState = formState,
             validationEvent = validationEvent,
             createExpense = {

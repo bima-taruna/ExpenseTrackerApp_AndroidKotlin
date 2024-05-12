@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoriesState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +24,7 @@ fun Dropdown(
     expanded: MutableState<Boolean>,
     selectedCategory:MutableState<String>,
     category:MutableState<String>,
-    categoryState: CategoryState,
+    categoriesState: CategoriesState,
     changeValue:() -> Unit,
     isError:Boolean
 ) {
@@ -52,7 +52,7 @@ fun Dropdown(
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false }
         ) {
-            if (categoryState.isLoading) {
+            if (categoriesState.isLoading) {
                 Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -60,7 +60,7 @@ fun Dropdown(
                     CircularProgressIndicator()
                 }
             } else {
-                categoryState.category?.forEach { item ->
+                categoriesState.categories?.forEach { item ->
                     DropdownMenuItem(
                         text = { Text(text = item.name.toString()) },
                         onClick = {

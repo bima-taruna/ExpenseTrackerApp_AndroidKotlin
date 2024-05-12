@@ -10,7 +10,7 @@ import com.bima.expensetrackerapp.data.remote.toCategory
 import com.bima.expensetrackerapp.domain.use_case.category.DeleteCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetIncomeCategoryUseCase
-import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoriesState
 import com.bima.expensetrackerapp.viewmodel.state.category.EventCategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,22 +28,23 @@ class CategoryViewModel @Inject constructor(
     private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {
-    private val _categoryExpenseState = MutableStateFlow(CategoryState())
-    val categoryExpenseState = _categoryExpenseState.asStateFlow()
+    private val _categoriesExpenseState = MutableStateFlow(CategoriesState())
+    val categoriesExpenseState = _categoriesExpenseState.asStateFlow()
 
-    private val _categoryIncomeState = MutableStateFlow(CategoryState())
-    val categoryIncomeState = _categoryIncomeState.asStateFlow()
+    private val _categoriesIncomeState = MutableStateFlow(CategoriesState())
+    val categoriesIncomeState = _categoriesIncomeState.asStateFlow()
 
     private val _deleteCategoryState = MutableStateFlow(EventCategoryState())
     val deleteCategoryState = _deleteCategoryState.asStateFlow()
+
 
     fun getExpenseCategory() {
         viewModelScope.launch {
             getExpenseCategoryUseCase.execute().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _categoryExpenseState.update {
-                            it.copy(isLoading = false, category = result.data?.map { item ->
+                        _categoriesExpenseState.update {
+                            it.copy(isLoading = false, categories = result.data?.map { item ->
                                 item.toCategory()
                             })
                         }
@@ -52,13 +53,13 @@ class CategoryViewModel @Inject constructor(
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _categoryExpenseState.update {
+                        _categoriesExpenseState.update {
                             it.copy(isLoading = false, error = result.message.toString())
                         }
                     }
 
                     is Resource.Loading -> {
-                        _categoryExpenseState.update {
+                        _categoriesExpenseState.update {
                             it.copy(isLoading = true)
                         }
                     }
@@ -72,8 +73,8 @@ class CategoryViewModel @Inject constructor(
             getIncomeCategoryUseCase.execute().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _categoryIncomeState.update {
-                            it.copy(isLoading = false, category = result.data?.map { item ->
+                        _categoriesIncomeState.update {
+                            it.copy(isLoading = false, categories = result.data?.map { item ->
                                 item.toCategory()
                             })
                         }
@@ -82,13 +83,13 @@ class CategoryViewModel @Inject constructor(
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                         Log.d("error", result.message.toString())
-                        _categoryIncomeState.update {
+                        _categoriesIncomeState.update {
                             it.copy(isLoading = false, error = result.message.toString())
                         }
                     }
 
                     is Resource.Loading -> {
-                        _categoryIncomeState.update {
+                        _categoriesIncomeState.update {
                             it.copy(isLoading = true)
                         }
                     }

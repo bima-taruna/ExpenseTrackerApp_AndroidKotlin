@@ -38,7 +38,7 @@ import com.bima.expensetrackerapp.presentation.component.form.Dropdown
 import com.bima.expensetrackerapp.presentation.component.form.TextArea
 import com.bima.expensetrackerapp.presentation.component.form.TextField
 import com.bima.expensetrackerapp.presentation.navigation.Graph
-import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoriesState
 import com.bima.expensetrackerapp.viewmodel.state.form.TransactionFormState
 import com.bima.expensetrackerapp.viewmodel.state.transaction.EventTransactionState
 import kotlinx.coroutines.flow.Flow
@@ -52,7 +52,7 @@ import java.util.Locale
 @Composable
 fun TransactionForm(
     modifier: Modifier = Modifier,
-    categoryState: CategoryState,
+    categoriesState: CategoriesState,
     formState: TransactionFormState,
     transactionEventState: EventTransactionState,
     state: Transaction? = null,
@@ -199,7 +199,7 @@ fun TransactionForm(
                 expanded = expanded,
                 selectedCategory = selectedCategory,
                 category = category,
-                categoryState = categoryState,
+                categoriesState = categoriesState,
                 changeValue = {
                     onEvent(TransactionFormEvent.CategoryChanged(category.value))
                 },

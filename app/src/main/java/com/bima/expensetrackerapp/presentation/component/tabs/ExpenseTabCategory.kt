@@ -28,8 +28,8 @@ fun ExpenseTabCategory(
 ) {
     val context = LocalContext.current
     val lazyColumnListState = rememberLazyListState()
-    val expenseCategoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
-    LaunchedEffect(context, expenseCategoryState.category) {
+    val expenseCategoryState by categoryViewModel.categoriesExpenseState.collectAsStateWithLifecycle()
+    LaunchedEffect(context, expenseCategoryState.categories) {
         categoryViewModel.getExpenseCategory()
     }
     Box {
@@ -38,7 +38,7 @@ fun ExpenseTabCategory(
                 .fillMaxSize(),
             state = lazyColumnListState
         ) {
-            expenseCategoryState.category?.let { category ->
+            expenseCategoryState.categories?.let { category ->
                 items(items = category, key = { id ->
                     id.id ?: ""
                 }) {

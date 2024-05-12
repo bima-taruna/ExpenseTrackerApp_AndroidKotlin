@@ -27,7 +27,7 @@ fun UpdateIncome(
     updateIncomeViewModel: UpdateIncomeViewModel = hiltViewModel(),
     categoryViewModel: CategoryViewModel = hiltViewModel(),
 ) {
-    val categoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
+    val categoryState by categoryViewModel.categoriesExpenseState.collectAsStateWithLifecycle()
     val incomeState by incomeViewModel.incomeState.collectAsStateWithLifecycle()
     val updateIncomeState by updateIncomeViewModel.updateIncomeState.collectAsStateWithLifecycle()
     val validationEvent = updateIncomeViewModel.validationEvents
@@ -42,7 +42,7 @@ fun UpdateIncome(
             navController.popBackStack()
         }) {
         TransactionForm(
-            categoryState = categoryState,
+            categoriesState = categoryState,
             formState = updateFormState,
             transactionEventState = updateIncomeState,
             id = id,

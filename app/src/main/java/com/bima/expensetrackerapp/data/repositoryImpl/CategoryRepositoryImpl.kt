@@ -17,7 +17,7 @@ class CategoryRepositoryImpl @Inject constructor(
         }.decodeList()
     }
 
-    override suspend fun getExpenseCategoryById(id: String): CategoryDto {
+    override suspend fun getCategoryById(id: String): CategoryDto {
         return postgrest["category"].select(columns = Columns.list("id")) {
             filter {
             eq("id", id)

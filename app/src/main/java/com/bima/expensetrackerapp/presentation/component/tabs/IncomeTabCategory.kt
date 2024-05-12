@@ -28,8 +28,8 @@ fun IncomeTabCategory(
 ) {
     val context = LocalContext.current
     val lazyColumnListState = rememberLazyListState()
-    val incomeCategoryState by categoryViewModel.categoryIncomeState.collectAsStateWithLifecycle()
-    LaunchedEffect(context, incomeCategoryState.category) {
+    val incomeCategoryState by categoryViewModel.categoriesIncomeState.collectAsStateWithLifecycle()
+    LaunchedEffect(context, incomeCategoryState.categories) {
         categoryViewModel.getIncomeCategory()
     }
     Box {
@@ -38,7 +38,7 @@ fun IncomeTabCategory(
                 .fillMaxSize(),
             state = lazyColumnListState
         ) {
-            incomeCategoryState.category?.let { category ->
+            incomeCategoryState.categories?.let { category ->
                 items(items = category, key = { id ->
                     id.id ?: ""
                 }) {

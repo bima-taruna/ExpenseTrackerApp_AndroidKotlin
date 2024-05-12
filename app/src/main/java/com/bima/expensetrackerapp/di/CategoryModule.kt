@@ -6,7 +6,7 @@ import com.bima.expensetrackerapp.domain.use_case.category.AddExpenseCategoryUse
 import com.bima.expensetrackerapp.domain.use_case.category.AddIncomeCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.CategoryUseCases
 import com.bima.expensetrackerapp.domain.use_case.category.DeleteCategoryUseCase
-import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryByIdUseCase
+import com.bima.expensetrackerapp.domain.use_case.category.GetCategoryByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetIncomeCategoryUseCase
 import dagger.Module
@@ -31,7 +31,7 @@ object CategoryModule {
     fun provideCategoryUseCases(repository: CategoryRepository): CategoryUseCases {
         return CategoryUseCases(
             getExpenseCategory = GetExpenseCategoryUseCase(repository),
-            getExpenseCategoryByIdUseCase = GetExpenseCategoryByIdUseCase(repository),
+            getCategoryByIdUseCase = GetCategoryByIdUseCase(repository),
             getIncomeCategory = GetIncomeCategoryUseCase(repository),
             addExpenseCategory = AddExpenseCategoryUseCase(repository),
             addIncomeCategory = AddIncomeCategoryUseCase(repository),

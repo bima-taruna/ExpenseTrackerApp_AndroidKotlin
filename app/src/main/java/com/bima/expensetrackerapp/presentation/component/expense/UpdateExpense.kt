@@ -27,7 +27,7 @@ fun UpdateExpense(
     updateExpenseViewModel: UpdateExpenseViewModel = hiltViewModel(),
     categoryViewModel: CategoryViewModel = hiltViewModel(),
 ) {
-    val categoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
+    val categoryState by categoryViewModel.categoriesExpenseState.collectAsStateWithLifecycle()
     val expenseState by expenseViewModel.expenseState.collectAsStateWithLifecycle()
     val updateExpenseState by updateExpenseViewModel.updateExpenseState.collectAsStateWithLifecycle()
     val validationEvent = updateExpenseViewModel.validationEvents
@@ -42,7 +42,7 @@ fun UpdateExpense(
             navController.popBackStack()
         }) {
         TransactionForm(
-            categoryState = categoryState,
+            categoriesState = categoryState,
             formState = updateFormState,
             transactionEventState = updateExpenseState,
             id = id,

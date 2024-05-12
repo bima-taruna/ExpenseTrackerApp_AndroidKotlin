@@ -24,7 +24,7 @@ fun AddExpense(
     addExpenseViewModel: AddExpenseViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val categoryState by categoryViewModel.categoryExpenseState.collectAsStateWithLifecycle()
+    val categoryState by categoryViewModel.categoriesExpenseState.collectAsStateWithLifecycle()
     val formState by addExpenseViewModel.expenseFormState.collectAsStateWithLifecycle()
     val addExpenseState by addExpenseViewModel.addExpenseState.collectAsStateWithLifecycle()
     val validationEvent = addExpenseViewModel.validationEvents
@@ -39,7 +39,7 @@ fun AddExpense(
             modifier.fillMaxSize(),
             navController = navController,
             transactionEventState = addExpenseState,
-            categoryState = categoryState,
+            categoriesState = categoryState,
             formState = formState,
             validationEvent = validationEvent,
             createExpense = {

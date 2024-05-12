@@ -10,14 +10,14 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
-class GetExpenseCategoryByIdUseCase @Inject constructor(
+class GetCategoryByIdUseCase @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
     suspend fun execute(id:String):Flow<Resource<CategoryDto>> = flow {
         try {
             emit(Resource.Loading())
             val result = withContext(Dispatchers.IO) {
-                categoryRepository.getExpenseCategoryById(id)
+                categoryRepository.getCategoryById(id)
             }
             emit(Resource.Success(result))
         } catch (e:Exception) {
