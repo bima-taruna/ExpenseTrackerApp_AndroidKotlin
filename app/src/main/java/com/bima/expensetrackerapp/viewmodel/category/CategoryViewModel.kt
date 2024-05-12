@@ -8,9 +8,11 @@ import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.data.remote.toCategory
 import com.bima.expensetrackerapp.domain.use_case.category.DeleteCategoryUseCase
+import com.bima.expensetrackerapp.domain.use_case.category.GetCategoryByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetIncomeCategoryUseCase
 import com.bima.expensetrackerapp.viewmodel.state.category.CategoriesState
+import com.bima.expensetrackerapp.viewmodel.state.category.CategoryState
 import com.bima.expensetrackerapp.viewmodel.state.category.EventCategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +27,9 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(
     private val context: ExpenseTrackerApp,
     private val getExpenseCategoryUseCase: GetExpenseCategoryUseCase,
+    private val getCategoryByIdUseCase: GetCategoryByIdUseCase,
     private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
 ) : ViewModel() {
     private val _categoriesExpenseState = MutableStateFlow(CategoriesState())
     val categoriesExpenseState = _categoriesExpenseState.asStateFlow()
@@ -37,6 +40,8 @@ class CategoryViewModel @Inject constructor(
     private val _deleteCategoryState = MutableStateFlow(EventCategoryState())
     val deleteCategoryState = _deleteCategoryState.asStateFlow()
 
+    private val _categoryState = MutableStateFlow(CategoryState())
+    val categoryState = _categoryState.asStateFlow()
 
     fun getExpenseCategory() {
         viewModelScope.launch {
@@ -64,6 +69,31 @@ class CategoryViewModel @Inject constructor(
                         }
                     }
                 }
+            }.collect()
+        }
+    }
+
+    fun getCategoryById(id: String) {
+        viewModelScope.launch {
+            getCategoryByIdUseCase.execute(id).onEach { result->
+                when (result) {
+                    is Resource.Success -> {
+                        _categoryState.update {
+                            it.copy(isLoading = false, category = result.data)
+                        }
+                    }
+                    is Resource.Error -> {
+                        _categoryState.update {
+                            it.copy(isLoading = false, error = result.message.toString())
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _categoryState.update {
+                            it.copy(isLoading = true)
+                        }
+                    }
+                }
+
             }.collect()
         }
     }
