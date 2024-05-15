@@ -1,6 +1,7 @@
 package com.bima.expensetrackerapp.data.repositoryImpl
 
 import com.bima.expensetrackerapp.data.remote.CategoryDto
+import com.bima.expensetrackerapp.domain.model.Category
 import com.bima.expensetrackerapp.domain.repository.CategoryRepository
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.query.Columns
@@ -49,6 +50,21 @@ class CategoryRepositoryImpl @Inject constructor(
     override suspend fun deleteCategory(id: String): Boolean {
         return try {
             postgrest["category"].delete {
+                filter {
+                    eq("id", id)
+                }
+            }
+            true
+        } catch (e: java.lang.Exception) {
+            throw e
+        }
+    }
+
+    override suspend fun updateCategory(id: String, name: String): Boolean {
+        return try {
+            postgrest["category"].update({
+                set("name", name)
+            }) {
                 filter {
                     eq("id", id)
                 }

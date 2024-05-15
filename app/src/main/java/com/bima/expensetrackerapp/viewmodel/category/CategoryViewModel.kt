@@ -93,7 +93,6 @@ class CategoryViewModel @Inject constructor(
                         }
                     }
                 }
-
             }.collect()
         }
     }
