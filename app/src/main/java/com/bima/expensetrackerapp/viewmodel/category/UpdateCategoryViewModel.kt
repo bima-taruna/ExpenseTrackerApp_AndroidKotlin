@@ -62,4 +62,17 @@ class UpdateCategoryViewModel @Inject constructor(
             }.collect()
         }
     }
+
+    private fun submitDate() {
+        val nameResult = validateName.execute(_updateCategoryFormState.value.name)
+        if (!nameResult.successful) {
+            _updateCategoryFormState.update {
+                it.copy(nameError = nameResult.errorMessage)
+            }
+            return
+        }
+        viewModelScope.launch {
+            validationEventChannel.send(ValidationEvent.Success)
+        }
+    }
 }
