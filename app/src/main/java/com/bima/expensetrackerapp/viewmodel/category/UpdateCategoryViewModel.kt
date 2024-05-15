@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.bima.expensetrackerapp.ExpenseTrackerApp
 import com.bima.expensetrackerapp.common.Resource
 import com.bima.expensetrackerapp.common.ValidationEvent
+import com.bima.expensetrackerapp.common.form_event.CategoryFormEvent
 import com.bima.expensetrackerapp.domain.use_case.category.UpdateCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.form_validation.ValidateName
 import com.bima.expensetrackerapp.viewmodel.state.category.EventCategoryState
@@ -37,6 +38,19 @@ class UpdateCategoryViewModel @Inject constructor(
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
 
+    fun onEvent(event: CategoryFormEvent) {
+        when(event) {
+            is CategoryFormEvent.NameChanged -> {
+                _updateCategoryFormState.update {
+                    it.copy(name = event.name)
+                }
+            }
+            is CategoryFormEvent.Submit -> {
+                submitData()
+            }
+        }
+    }
+
     fun updateCategory(id:String, name:String) {
         viewModelScope.launch {
             updateCategoryUseCase.execute(id,name).onEach { result ->
@@ -63,7 +77,7 @@ class UpdateCategoryViewModel @Inject constructor(
         }
     }
 
-    private fun submitDate() {
+    private fun submitData() {
         val nameResult = validateName.execute(_updateCategoryFormState.value.name)
         if (!nameResult.successful) {
             _updateCategoryFormState.update {
