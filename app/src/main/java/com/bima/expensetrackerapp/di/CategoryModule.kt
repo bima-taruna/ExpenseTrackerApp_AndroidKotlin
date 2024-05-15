@@ -9,6 +9,7 @@ import com.bima.expensetrackerapp.domain.use_case.category.DeleteCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetCategoryByIdUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetExpenseCategoryUseCase
 import com.bima.expensetrackerapp.domain.use_case.category.GetIncomeCategoryUseCase
+import com.bima.expensetrackerapp.domain.use_case.category.UpdateCategoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +36,8 @@ object CategoryModule {
             getIncomeCategory = GetIncomeCategoryUseCase(repository),
             addExpenseCategory = AddExpenseCategoryUseCase(repository),
             addIncomeCategory = AddIncomeCategoryUseCase(repository),
-            deleteCategory =  DeleteCategoryUseCase(repository)
+            deleteCategory =  DeleteCategoryUseCase(repository),
+            updateCategory = UpdateCategoryUseCase(repository)
         )
     }
 }
