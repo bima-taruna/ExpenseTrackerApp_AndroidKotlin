@@ -57,7 +57,7 @@ class AddExpenseCategoryViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _addExpenseCategoryState.update {
-                            it.copy(isLoading = false, category = true)
+                            it.copy(isLoading = false, category = result.data ?: false)
                         }
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     }
