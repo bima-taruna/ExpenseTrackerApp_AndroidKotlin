@@ -1,7 +1,6 @@
 package com.bima.expensetrackerapp.data.repositoryImpl
 
 import com.bima.expensetrackerapp.data.remote.CategoryDto
-import com.bima.expensetrackerapp.domain.model.Category
 import com.bima.expensetrackerapp.domain.repository.CategoryRepository
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.query.Columns

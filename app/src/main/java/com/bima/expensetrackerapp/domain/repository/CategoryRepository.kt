@@ -1,7 +1,6 @@
 package com.bima.expensetrackerapp.domain.repository
 
 import com.bima.expensetrackerapp.data.remote.CategoryDto
-import com.bima.expensetrackerapp.domain.model.Category
 
 interface CategoryRepository {
     suspend fun getExpenseCategory(): List<CategoryDto>

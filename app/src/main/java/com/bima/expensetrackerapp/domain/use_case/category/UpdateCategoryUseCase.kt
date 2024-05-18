@@ -1,7 +1,6 @@
 package com.bima.expensetrackerapp.domain.use_case.category
 
 import com.bima.expensetrackerapp.common.Resource
-import com.bima.expensetrackerapp.domain.model.Transaction
 import com.bima.expensetrackerapp.domain.repository.CategoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
