@@ -94,9 +94,9 @@ fun ExpenseTabCategory(
                     SmallCard(onClick = {
                         composableScope.launch {
                             categoryId = it.id ?: ""
-                            delay(1000)
                             categoryViewModel.getCategoryById(categoryId)
-                            Log.d("categoryName", expenseCategoryDetailState.toString())
+                            delay(500)
+                            categoryName = expenseCategoryDetailState.category?.name ?: ""
                             dialog = true
                         }
                     }) {
@@ -120,7 +120,7 @@ fun ExpenseTabCategory(
                         categoryName = it
                     },
                     isError = updateCategoryFormState.nameError != null,
-                    value = expenseCategoryDetailState.category?.name ?: categoryName
+                    value = categoryName
                 )
                 if (updateCategoryFormState.nameError != null) {
                     Text(
