@@ -81,11 +81,13 @@ class CategoryViewModel @Inject constructor(
                         _categoryState.update {
                             it.copy(isLoading = false, category = result.data)
                         }
+                            Log.d("category from viewmodel", result.data.toString())
                     }
                     is Resource.Error -> {
                         _categoryState.update {
                             it.copy(isLoading = false, error = result.message.toString())
                         }
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> {
                         _categoryState.update {

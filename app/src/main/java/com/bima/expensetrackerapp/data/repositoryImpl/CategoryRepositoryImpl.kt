@@ -10,7 +10,7 @@ class CategoryRepositoryImpl @Inject constructor(
    private val postgrest: Postgrest
 ):CategoryRepository {
     override suspend fun getExpenseCategory(): List<CategoryDto> {
-        return postgrest["category"].select(columns = Columns.list("id","name","type","created_by")) {
+        return postgrest["category"].select(columns = Columns.ALL) {
             filter {
                 eq("type", "expense")
             }
@@ -18,7 +18,7 @@ class CategoryRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCategoryById(id: String): CategoryDto {
-        return postgrest["category"].select(columns = Columns.list("id")) {
+        return postgrest["category"].select(columns = Columns.ALL) {
             filter {
             eq("id", id)
             }
@@ -26,7 +26,7 @@ class CategoryRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getIncomeCategory(): List<CategoryDto> {
-        return postgrest["category"].select(columns = Columns.list("id","name","type","created_by")) {
+        return postgrest["category"].select(columns = Columns.ALL) {
             filter {
                 eq("type", "income")
             }
